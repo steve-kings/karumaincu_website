@@ -37,12 +37,10 @@ export default function MemberPrayersPage() {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const url = filter === 'all' 
-        ? '/api/member/prayers'
-        : `/api/member/prayers?status=${filter}`;
+      const url = filter === 'all' ? '/api/member/prayers' : '/api/member/prayers?status=' + filter;
       
       const response = await fetch(url, {
-        headers: { 'Authorization': `Bearer ${token}` }
+        headers: { 'Authorization': 'Bearer ' + token }
       });
       
       if (response.ok) {
@@ -60,7 +58,7 @@ export default function MemberPrayersPage() {
     try {
       const token = localStorage.getItem('token');
       const response = await fetch('/api/member/prayers/stats', {
-        headers: { 'Authorization': `Bearer ${token}` }
+        headers: { 'Authorization': 'Bearer ' + token }
       });
       
       if (response.ok) {
@@ -81,7 +79,7 @@ export default function MemberPrayersPage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Authorization': 'Bearer ' + token
         },
         body: JSON.stringify(formData)
       });
