@@ -121,7 +121,6 @@ export default function MemberPrayersPage() {
           </div>
         </div>
 
-        {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-white dark:bg-neutral-950 p-6 rounded-xl shadow-md border border-gray-100 dark:border-neutral-900">
             <div className="flex items-center justify-between">
@@ -164,51 +163,33 @@ export default function MemberPrayersPage() {
           </div>
         </div>
 
-        {/* Filters */}
         <div className="flex gap-2 mb-8">
           <button
             onClick={() => setFilter('all')}
-            className={`px-4 py-2 rounded-lg transition ${
-              filter === 'all'
-                ? 'bg-pink-600 text-white'
-                : 'bg-white dark:bg-neutral-950 text-gray-700 dark:text-neutral-300 border border-gray-200 dark:border-neutral-900'
-            }`}
+            className={'px-4 py-2 rounded-lg transition ' + (filter === 'all' ? 'bg-pink-600 text-white' : 'bg-white dark:bg-neutral-950 text-gray-700 dark:text-neutral-300 border border-gray-200 dark:border-neutral-900')}
           >
             All
           </button>
           <button
             onClick={() => setFilter('active')}
-            className={`px-4 py-2 rounded-lg transition ${
-              filter === 'active'
-                ? 'bg-pink-600 text-white'
-                : 'bg-white dark:bg-neutral-950 text-gray-700 dark:text-neutral-300 border border-gray-200 dark:border-neutral-900'
-            }`}
+            className={'px-4 py-2 rounded-lg transition ' + (filter === 'active' ? 'bg-pink-600 text-white' : 'bg-white dark:bg-neutral-950 text-gray-700 dark:text-neutral-300 border border-gray-200 dark:border-neutral-900')}
           >
             Active
           </button>
           <button
             onClick={() => setFilter('answered')}
-            className={`px-4 py-2 rounded-lg transition ${
-              filter === 'answered'
-                ? 'bg-pink-600 text-white'
-                : 'bg-white dark:bg-neutral-950 text-gray-700 dark:text-neutral-300 border border-gray-200 dark:border-neutral-900'
-            }`}
+            className={'px-4 py-2 rounded-lg transition ' + (filter === 'answered' ? 'bg-pink-600 text-white' : 'bg-white dark:bg-neutral-950 text-gray-700 dark:text-neutral-300 border border-gray-200 dark:border-neutral-900')}
           >
             Answered
           </button>
           <button
             onClick={() => setFilter('archived')}
-            className={`px-4 py-2 rounded-lg transition ${
-              filter === 'archived'
-                ? 'bg-pink-600 text-white'
-                : 'bg-white dark:bg-neutral-950 text-gray-700 dark:text-neutral-300 border border-gray-200 dark:border-neutral-900'
-            }`}
+            className={'px-4 py-2 rounded-lg transition ' + (filter === 'archived' ? 'bg-pink-600 text-white' : 'bg-white dark:bg-neutral-950 text-gray-700 dark:text-neutral-300 border border-gray-200 dark:border-neutral-900')}
           >
             Archived
           </button>
         </div>
 
-        {/* Form Modal */}
         {showForm && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white dark:bg-neutral-950 rounded-2xl p-8 max-w-2xl w-full border border-gray-200 dark:border-neutral-900">
@@ -311,7 +292,6 @@ export default function MemberPrayersPage() {
           </div>
         )}
 
-        {/* Prayers List */}
         {loading ? (
           <div className="text-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-600 mx-auto"></div>
@@ -343,11 +323,7 @@ export default function MemberPrayersPage() {
                       <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300">
                         {categories.find(c => c.value === prayer.category)?.icon} {prayer.category}
                       </span>
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        prayer.priority === 'urgent' ? 'bg-red-100 dark:bg-red-950 text-red-800 dark:text-red-300' :
-                        prayer.priority === 'high' ? 'bg-orange-100 dark:bg-orange-950 text-orange-800 dark:text-orange-300' :
-                        'bg-gray-100 dark:bg-gray-950 text-gray-800 dark:text-gray-300'
-                      }`}>
+                      <span className={'px-3 py-1 rounded-full text-xs font-medium ' + (prayer.priority === 'urgent' ? 'bg-red-100 dark:bg-red-950 text-red-800 dark:text-red-300' : prayer.priority === 'high' ? 'bg-orange-100 dark:bg-orange-950 text-orange-800 dark:text-orange-300' : 'bg-gray-100 dark:bg-gray-950 text-gray-800 dark:text-gray-300')}>
                         {prayer.priority}
                       </span>
                     </div>
