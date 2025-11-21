@@ -40,8 +40,4 @@ next-env.d.ts
 /public/uploads/*
 !/public/uploads/.gitkeep
 
-# documentation and test files (local only)
-/docs/
-/tests/
-DOCUMENTATION_INDEX.md
-ORGANIZATION_COMPLETE.md
+
