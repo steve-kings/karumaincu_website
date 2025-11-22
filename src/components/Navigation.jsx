@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
@@ -8,7 +8,30 @@ import ThemeToggle from './ThemeToggle'
 
 export default function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [user, setUser] = useState(null)
   const pathname = usePathname()
+
+  useEffect(() => {
+    checkAuth()
+  }, [])
+
+  const checkAuth = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) return
+
+      const response = await fetch('/api/auth/profile', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setUser(data)
+      }
+    } catch (error) {
+      console.error('Auth check error:', error)
+    }
+  }
 
   const navigation = [
     { name: 'Home', href: '/' },
@@ -105,20 +128,33 @@ export default function Navigation() {
                 <span>Give</span>
               </Link>
 
-              {/* Auth Buttons */}
+              {/* Auth Buttons / Dashboard Links */}
               <div className="hidden md:flex items-center space-x-2">
-                <Link
-                  href="/login"
-                  className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 font-medium transition-colors"
-                >
-                  Login
-                </Link>
-                <Link
-                  href="/register"
-                  className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium"
-                >
-                  Join Us
-                </Link>
+                {user ? (
+                  <>
+                    <Link
+                      href={user.role === 'admin' ? '/admin' : user.role === 'editor' ? '/editor' : '/member'}
+                      className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium"
+                    >
+                      {user.role === 'admin' ? 'Admin' : user.role === 'editor' ? 'Editor' : 'Dashboard'}
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      href="/login"
+                      className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 font-medium transition-colors"
+                    >
+                      Login
+                    </Link>
+                    <Link
+                      href="/register"
+                      className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium"
+                    >
+                      Join Us
+                    </Link>
+                  </>
+                )}
               </div>
 
               {/* Mobile Menu Button */}
@@ -187,20 +223,32 @@ export default function Navigation() {
                 </Link>
 
                 <div className="space-y-2">
-                  <Link
-                    href="/login"
-                    className="block w-full text-center py-3 border border-purple-200 dark:border-purple-800 text-purple-600 dark:text-purple-400 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Login
-                  </Link>
-                  <Link
-                    href="/register"
-                    className="block w-full text-center py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Join Us
-                  </Link>
+                  {user ? (
+                    <Link
+                      href={user.role === 'admin' ? '/admin' : user.role === 'editor' ? '/editor' : '/member'}
+                      className="block w-full text-center py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {user.role === 'admin' ? 'Admin Dashboard' : user.role === 'editor' ? 'Editor Dashboard' : 'My Dashboard'}
+                    </Link>
+                  ) : (
+                    <>
+                      <Link
+                        href="/login"
+                        className="block w-full text-center py-3 border border-purple-200 dark:border-purple-800 text-purple-600 dark:text-purple-400 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        Login
+                      </Link>
+                      <Link
+                        href="/register"
+                        className="block w-full text-center py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        Join Us
+                      </Link>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
