@@ -41,3 +41,7 @@ next-env.d.ts
 !/public/uploads/.gitkeep
 
 
+
+# documentation (keep local only)
+*.md
+!README.md
