@@ -87,14 +87,47 @@ class UserService {
   }
 
   async update(id, data) {
-    const { full_name, role, status, phone, profile_image } = data
+    const user = await this.getById(id)
 
-    await this.getById(id)
+    // Build dynamic update query
+    const updates = []
+    const params = []
+
+    if (data.full_name !== undefined) {
+      updates.push('full_name = ?')
+      params.push(data.full_name)
+    }
+
+    if (data.role !== undefined) {
+      updates.push('role = ?')
+      params.push(data.role)
+    }
+
+    if (data.status !== undefined) {
+      updates.push('status = ?')
+      params.push(data.status)
+    }
+
+    if (data.phone !== undefined) {
+      updates.push('phone = ?')
+      params.push(data.phone)
+    }
+
+    if (data.profile_image !== undefined) {
+      updates.push('profile_image = ?')
+      params.push(data.profile_image)
+    }
+
+    if (updates.length === 0) {
+      return user
+    }
+
+    updates.push('updated_at = CURRENT_TIMESTAMP')
+    params.push(id)
 
     await executeQuery(
-      `UPDATE users SET full_name = ?, role = ?, status = ?, phone = ?, profile_image = ?, updated_at = CURRENT_TIMESTAMP 
-       WHERE id = ?`,
-      [full_name, role, status, phone, profile_image, id]
+      `UPDATE users SET ${updates.join(', ')} WHERE id = ?`,
+      params
     )
 
     return await this.getById(id)

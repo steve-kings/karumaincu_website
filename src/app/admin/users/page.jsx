@@ -42,6 +42,10 @@ export default function UserManagementPage() {
   }
 
   const handleStatusChange = async (userId, newStatus) => {
+    if (!confirm(`Change user status to ${newStatus}?`)) {
+      return
+    }
+
     try {
       const token = localStorage.getItem('token')
       const response = await fetch(`/api/admin/users/${userId}`, {
@@ -54,14 +58,22 @@ export default function UserManagementPage() {
       })
 
       if (response.ok) {
+        alert(`User status updated to ${newStatus} successfully!`)
         fetchUsers()
+      } else {
+        alert('Failed to update user status')
       }
     } catch (error) {
       console.error('Error updating user status:', error)
+      alert('Failed to update user status')
     }
   }
 
   const handleRoleChange = async (userId, newRole) => {
+    if (!confirm(`Change user role to ${newRole}?`)) {
+      return
+    }
+
     try {
       const token = localStorage.getItem('token')
       const response = await fetch(`/api/admin/users/${userId}`, {
@@ -74,10 +86,14 @@ export default function UserManagementPage() {
       })
 
       if (response.ok) {
+        alert(`User role updated to ${newRole} successfully!`)
         fetchUsers()
+      } else {
+        alert('Failed to update user role')
       }
     } catch (error) {
       console.error('Error updating user role:', error)
+      alert('Failed to update user role')
     }
   }
 
