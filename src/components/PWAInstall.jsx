@@ -32,28 +32,40 @@ export default function PWAInstall() {
       }
     }
 
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
+    // Only add listener if beforeinstallprompt is supported
+    if (typeof window !== 'undefined') {
+      window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
 
-    // Check if already installed
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-      setShowInstallPrompt(false)
+      // Check if already installed
+      if (window.matchMedia('(display-mode: standalone)').matches) {
+        setShowInstallPrompt(false)
+      }
     }
 
     return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
+      }
     }
   }, [])
 
   const handleInstallClick = async () => {
-    if (!deferredPrompt) return
+    if (!deferredPrompt) {
+      console.log('Banner not shown: beforeinstallprompt event not fired')
+      return
+    }
 
-    deferredPrompt.prompt()
-    const { outcome } = await deferredPrompt.userChoice
-    
-    console.log(`User response to install prompt: ${outcome}`)
-    
-    setDeferredPrompt(null)
-    setShowInstallPrompt(false)
+    try {
+      deferredPrompt.prompt()
+      const { outcome } = await deferredPrompt.userChoice
+      
+      console.log(`User response to install prompt: ${outcome}`)
+      
+      setDeferredPrompt(null)
+      setShowInstallPrompt(false)
+    } catch (error) {
+      console.error('Error showing install prompt:', error)
+    }
   }
 
   const handleDismiss = () => {

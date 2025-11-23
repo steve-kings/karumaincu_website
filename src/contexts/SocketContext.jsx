@@ -12,7 +12,7 @@ export function SocketProvider({ children }) {
 
   useEffect(() => {
     // Initialize socket connection
-    const socketInstance = io('http://localhost:3002', {
+    const socketInstance = io('http://localhost:3000', {
       transports: ['websocket', 'polling']
     })
 

@@ -2,9 +2,7 @@ import { Inter, Poppins } from 'next/font/google'
 import './globals.css'
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
-import { SocketProvider } from '@/contexts/SocketContext'
 import { ThemeProvider } from '@/contexts/ThemeContext'
-import RealtimeNotifications from '@/components/RealtimeNotifications'
 import GoogleOAuthProvider from '@/components/GoogleOAuthProvider'
 import PWAInstall from '@/components/PWAInstall'
 
@@ -29,6 +27,11 @@ export const metadata = {
     template: '%s | KarUCU Main Campus'
   },
   description: 'Join KarUCU Main Campus - Karatina University Christian Union. Experience vibrant worship, Bible study, fellowship, and spiritual growth. Committed to serving the Lord and transforming campus life through Christ.',
+  icons: {
+    icon: '/logo.png',
+    shortcut: '/logo.png',
+    apple: '/logo.png',
+  },
   keywords: [
     'Karatina University',
     'Christian Union',
@@ -120,13 +123,10 @@ export default function RootLayout({ children }) {
       <body className={`${inter.variable} ${poppins.variable} font-sans antialiased`}>
         <GoogleOAuthProvider>
           <ThemeProvider>
-            <SocketProvider>
-              <RealtimeNotifications />
-              <PWAInstall />
-              <Navigation />
-              <main className="md:pt-24 pt-16">{children}</main>
-              <Footer />
-            </SocketProvider>
+            <PWAInstall />
+            <Navigation />
+            <main className="md:pt-24 pt-16">{children}</main>
+            <Footer />
           </ThemeProvider>
         </GoogleOAuthProvider>
       </body>
