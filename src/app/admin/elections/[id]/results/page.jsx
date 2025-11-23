@@ -16,9 +16,8 @@ export default function ElectionResultsPage() {
 
   const fetchResults = async () => {
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch(`/api/admin/elections/${params.id}/results`, {
-        headers: { 'Authorization': `Bearer ${token}` }
+            const response = await fetch(`/api/admin/elections/${params.id}/results`, {
+        credentials: 'include'
       })
       
       if (response.ok) {

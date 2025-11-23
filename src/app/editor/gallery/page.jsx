@@ -16,6 +16,8 @@ export default function EditorGalleryPage() {
     platform: 'google_photos'
   });
 
+
+
   useEffect(() => {
     fetchGalleries();
   }, []);
@@ -23,13 +25,16 @@ export default function EditorGalleryPage() {
   const fetchGalleries = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/gallery');
+      const response = await fetch('/api/gallery', {
+        credentials: 'include'
+      });
       if (response.ok) {
         const data = await response.json();
-        setGalleries(data);
+        setGalleries(Array.isArray(data) ? data : (data.data || []));
       }
     } catch (error) {
       console.error('Error fetching galleries:', error);
+      setGalleries([]);
     } finally {
       setLoading(false);
     }
@@ -39,13 +44,10 @@ export default function EditorGalleryPage() {
     e.preventDefault();
 
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('/api/admin/gallery', {
+            const response = await fetch('/api/admin/gallery', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
-        },
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(formData)
       });
 
@@ -99,12 +101,20 @@ export default function EditorGalleryPage() {
                 key={gallery.id}
                 className="bg-white dark:bg-neutral-900 rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-neutral-800"
               >
-                {gallery.thumbnail_url && (
+                {gallery.thumbnail_url && gallery.thumbnail_url.includes('unsplash.com') ? (
                   <img
                     src={gallery.thumbnail_url}
                     alt={gallery.title}
                     className="w-full h-48 object-cover"
+                    onError={(e) => {
+                      e.target.src = '/logo.png'
+                      e.target.className = 'w-24 h-24 object-contain mx-auto mt-12'
+                    }}
                   />
+                ) : (
+                  <div className="w-full h-48 flex items-center justify-center bg-gradient-to-br from-purple-100 to-teal-100">
+                    <img src="/logo.png" alt="KarUCU" className="w-24 h-24 object-contain" />
+                  </div>
                 )}
                 <div className="p-4">
                   <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{gallery.title}</h3>

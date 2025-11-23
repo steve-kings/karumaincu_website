@@ -245,7 +245,8 @@ This is an automated email. Please do not reply to this message.
 export async function POST(request) {
   try {
     const user = await verifyAuth(request)
-    if (!user || user.role !== 'admin') {
+    // Allow both admin and editor
+    if (!user || (user.role !== 'admin' && user.role !== 'editor')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 

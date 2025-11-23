@@ -202,6 +202,9 @@ export default function Footer() {
                 © {currentYear} Karatina University Christian Union - Main Campus. 
                 All rights reserved.
               </p>
+              <p className="text-gray-500 text-xs mt-1">
+                Developed by <a href="https://kingscreation.co.ke" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 transition-colors">kingscreation.co.ke</a> • 2025
+              </p>
             </div>
             <div className="flex items-center space-x-6 text-sm text-gray-400">
               <Link href="/privacy" className="hover:text-white transition-colors">

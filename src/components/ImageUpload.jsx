@@ -47,8 +47,7 @@ export default function ImageUpload({ value, onChange, label = "Upload Image", a
       formData.append('type', type) // Pass type for folder organization
 
       // Get auth token from localStorage
-      const token = localStorage.getItem('token')
-      const headers = {}
+            const headers = {}
       if (token) {
         headers['Authorization'] = `Bearer ${token}`
       }

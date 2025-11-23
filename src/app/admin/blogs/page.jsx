@@ -29,14 +29,13 @@ export default function BlogModerationPage() {
   const fetchBlogs = async () => {
     try {
       setLoading(true)
-      const token = localStorage.getItem('token')
-      const params = new URLSearchParams()
+            const params = new URLSearchParams()
       
       if (filterStatus !== 'all') params.append('status', filterStatus)
       if (search) params.append('search', search)
 
       const response = await fetch(`/api/admin/blogs?${params}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
 
       if (response.ok) {
@@ -52,13 +51,12 @@ export default function BlogModerationPage() {
 
   const handleApprove = async (id) => {
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch(`/api/admin/blogs/${id}`, {
+            const response = await fetch(`/api/admin/blogs/${id}`, {
         method: 'PUT',
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({ status: 'approved' })
       })
 
@@ -75,13 +73,12 @@ export default function BlogModerationPage() {
     if (!reason) return
 
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch(`/api/admin/blogs/${id}`, {
+            const response = await fetch(`/api/admin/blogs/${id}`, {
         method: 'PUT',
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({ status: 'rejected', rejection_reason: reason })
       })
 
@@ -97,15 +94,14 @@ export default function BlogModerationPage() {
     e.preventDefault()
     
     try {
-      const token = localStorage.getItem('token')
-      const tags = formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
+            const tags = formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
       
       const response = await fetch('/api/admin/blogs', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({
           ...formData,
           tags
@@ -132,13 +128,12 @@ export default function BlogModerationPage() {
 
   const handleToggleFeatured = async (id, currentFeatured) => {
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch(`/api/admin/blogs/${id}`, {
+            const response = await fetch(`/api/admin/blogs/${id}`, {
         method: 'PUT',
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({ featured: !currentFeatured })
       })
 
@@ -154,10 +149,9 @@ export default function BlogModerationPage() {
     if (!confirm('Are you sure you want to delete this blog?')) return
 
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch(`/api/admin/blogs/${id}`, {
+            const response = await fetch(`/api/admin/blogs/${id}`, {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
 
       if (response.ok) {
@@ -165,6 +159,30 @@ export default function BlogModerationPage() {
       }
     } catch (error) {
       console.error('Error deleting blog:', error)
+    }
+  }
+
+  const handleCleanupOldBlogs = async () => {
+    if (!confirm('This will delete all approved blogs older than 2 months and archive them. Continue?')) {
+      return
+    }
+
+    try {
+      const response = await fetch('/api/admin/blogs/cleanup-old', {
+        method: 'DELETE',
+        credentials: 'include'
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        alert(`Successfully deleted ${data.deleted} old blogs. They have been archived.`)
+        fetchBlogs()
+      } else {
+        alert('Failed to cleanup old blogs')
+      }
+    } catch (error) {
+      console.error('Error cleaning up blogs:', error)
+      alert('Error cleaning up blogs')
     }
   }
 
@@ -206,6 +224,14 @@ export default function BlogModerationPage() {
           <p className="text-gray-600 dark:text-gray-400 mt-1">Review and approve blog posts</p>
         </div>
         <div className="flex space-x-3">
+          <button
+            onClick={handleCleanupOldBlogs}
+            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors"
+            title="Delete blogs older than 2 months"
+          >
+            <Trash2 className="w-5 h-5" />
+            <span>Cleanup Old Blogs</span>
+          </button>
           <button
             onClick={() => setShowCreateModal(true)}
             className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors"

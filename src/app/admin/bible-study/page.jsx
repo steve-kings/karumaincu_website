@@ -32,29 +32,17 @@ export default function BibleStudyAdmin() {
   }, [activeTab])
 
   const checkAuth = async () => {
-    const token = localStorage.getItem('token')
-    if (!token) {
-      router.push('/login')
-      return
-    }
+    // Auth is handled by AdminLayout component
+    // No need for token check here
   }
 
   const fetchData = async () => {
     setLoading(true)
     try {
-      const token = localStorage.getItem('token')
-      
-      if (!token) {
-        console.error('No token found in localStorage')
-        alert('Session expired. Please login again.')
-        router.push('/login')
-        return
-      }
-      
       if (activeTab === 'sessions') {
-        console.log('Fetching sessions with token:', token ? 'Token exists' : 'No token')
+        console.log('Fetching sessions...')
         const res = await fetch('/api/admin/bible-study/sessions', {
-          headers: { 'Authorization': `Bearer ${token}` }
+          credentials: 'include'
         })
         
         console.log('Sessions API response status:', res.status)
@@ -76,7 +64,7 @@ export default function BibleStudyAdmin() {
         setSessions(data.data || [])
       } else if (activeTab === 'locations') {
         const res = await fetch('/api/admin/bible-study/locations', {
-          headers: { 'Authorization': `Bearer ${token}` }
+          credentials: 'include'
         })
         if (res.ok) {
           const data = await res.json()
@@ -86,7 +74,7 @@ export default function BibleStudyAdmin() {
         if (selectedSession) {
           console.log('[Frontend] Fetching registrations for session:', selectedSession)
           const res = await fetch(`/api/admin/bible-study/registrations?session_id=${selectedSession}`, {
-            headers: { 'Authorization': `Bearer ${token}` }
+            credentials: 'include'
           })
           console.log('[Frontend] Registrations API response status:', res.status)
           if (res.ok) {
@@ -114,14 +102,13 @@ export default function BibleStudyAdmin() {
 
   const handleExportExcel = async () => {
     try {
-      const token = localStorage.getItem('token')
       const params = new URLSearchParams()
       if (selectedSession) params.append('session_id', selectedSession)
       if (filterLocation) params.append('location_id', filterLocation)
       if (filterGroup) params.append('group_number', filterGroup)
 
       const res = await fetch(`/api/admin/bible-study/export?${params}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
       
       if (res.ok) {
@@ -151,13 +138,12 @@ export default function BibleStudyAdmin() {
     if (!membersPerGroup) return
 
     try {
-      const token = localStorage.getItem('token')
       const res = await fetch('/api/admin/bible-study/registrations/assign-groups', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
-        },
+        , credentials: 'include'},
+        credentials: 'include',
         body: JSON.stringify({
           session_id: selectedSession,
           location_id: filterLocation || null,
@@ -183,10 +169,9 @@ export default function BibleStudyAdmin() {
     if (!confirm('Are you sure you want to delete this session?')) return
     
     try {
-      const token = localStorage.getItem('token')
       const res = await fetch(`/api/admin/bible-study/sessions/${id}`, {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
       
       if (res.ok) {
@@ -203,10 +188,9 @@ export default function BibleStudyAdmin() {
     if (!confirm('Are you sure you want to delete this location?')) return
     
     try {
-      const token = localStorage.getItem('token')
       const res = await fetch(`/api/admin/bible-study/locations/${id}`, {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
       
       if (res.ok) {
@@ -806,17 +790,16 @@ function SessionModal({ session, onClose, onSuccess }) {
     setLoading(true)
 
     try {
-      const token = localStorage.getItem('token')
-      const url = session 
+            const url = session 
         ? `/api/admin/bible-study/sessions/${session.id}`
         : '/api/admin/bible-study/sessions'
       
       const res = await fetch(url, {
         method: session ? 'PUT' : 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify(formData)
       })
 
@@ -966,17 +949,16 @@ function LocationModal({ location, onClose, onSuccess }) {
     setLoading(true)
 
     try {
-      const token = localStorage.getItem('token')
-      const url = location 
+            const url = location 
         ? `/api/admin/bible-study/locations/${location.id}`
         : '/api/admin/bible-study/locations'
       
       const res = await fetch(url, {
         method: location ? 'PUT' : 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify(formData)
       })
 

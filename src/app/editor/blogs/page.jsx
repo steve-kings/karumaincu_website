@@ -16,9 +16,8 @@ export default function EditorBlogsPage() {
   const fetchBlogs = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
       const response = await fetch('/api/editor/blogs?status=' + filter, {
-        headers: { 'Authorization': 'Bearer ' + token }
+        credentials: 'include'
       });
 
       if (response.ok) {
@@ -36,10 +35,9 @@ export default function EditorBlogsPage() {
     if (!confirm('Approve this blog post?')) return;
 
     try {
-      const token = localStorage.getItem('token');
       const response = await fetch('/api/editor/blogs/' + blogId + '/approve', {
         method: 'POST',
-        headers: { 'Authorization': 'Bearer ' + token }
+        credentials: 'include'
       });
 
       if (response.ok) {
@@ -60,13 +58,12 @@ export default function EditorBlogsPage() {
     if (!reason) return;
 
     try {
-      const token = localStorage.getItem('token');
       const response = await fetch('/api/editor/blogs/' + blogId + '/reject', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
+          'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({ reason })
       });
 
@@ -119,7 +116,9 @@ export default function EditorBlogsPage() {
           </div>
         ) : blogs.length === 0 ? (
           <div className="text-center py-16 bg-white dark:bg-neutral-900 rounded-xl border border-gray-200 dark:border-neutral-800">
-            <span className="text-6xl block mb-4">📝</span>
+            <div className="w-20 h-20 bg-gray-100 dark:bg-neutral-800 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i className="fas fa-blog text-gray-400 dark:text-neutral-500 text-4xl"></i>
+            </div>
             <p className="text-gray-600 dark:text-neutral-400">No blogs found</p>
           </div>
         ) : (

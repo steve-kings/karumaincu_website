@@ -1,0 +1,127 @@
+# KarUCU Main Campus Website - Technical Architecture
+
+## 1. Project Overview
+The KarUCU Main Campus website is a full-stack web application built using **Next.js 14**. It serves as a comprehensive platform for the Christian Union, managing members, events, sermons, blogs, and leadership information. It features a robust role-based authentication system, real-time updates, and a custom content management system (CMS).
+
+## 2. Technology Stack
+
+### Frontend
+*   **Framework**: Next.js 14 (App Router)
+*   **Language**: JavaScript (React 18)
+*   **Styling**: Tailwind CSS (Utility-first CSS framework)
+*   **Animations**: Framer Motion
+*   **Icons**: Lucide React
+*   **HTTP Client**: Axios
+
+### Backend
+*   **Runtime**: Node.js
+*   **Server Framework**: Next.js API Routes + Custom Express/Node Server (`server.js`) for WebSocket support.
+*   **Database**: MySQL (using `mysql2` driver)
+*   **Real-time**: Socket.io (Client & Server)
+*   **Authentication**: Custom JWT (JSON Web Tokens) + Google OAuth (`@react-oauth/google`)
+*   **Email**: Nodemailer
+
+### Utilities
+*   **Image Processing**: Sharp
+*   **Excel Processing**: XLSX (for data export/import)
+*   **Security**: Bcryptjs (hashing), Dotenv
+
+## 3. System Architecture
+
+### High-Level Design
+The application follows a **Monolithic Architecture** where the frontend and backend reside in the same repository but are logically separated.
+
+1.  **Client Layer**: React components rendered via Next.js (Server Components & Client Components).
+2.  **API Layer**: Next.js Route Handlers (`src/app/api/...`) serve as the REST API.
+3.  **Service Layer**: `src/lib` contains core business logic (Auth, DB connection, Email service).
+4.  **Data Layer**: MySQL Database stores all persistent data (Users, Events, Sermons, etc.).
+5.  **Real-Time Layer**: A custom `server.js` entry point initializes both the Next.js app and a Socket.io server to handle real-time events (e.g., chat, notifications).
+
+## 4. Key Components & Modules
+
+### Authentication (`src/lib/auth.js`)
+*   Implements JWT-based stateless authentication.
+*   Supports Google OAuth flow.
+*   Middleware/HOCs protect routes based on user roles (`admin`, `member`, `editor`).
+
+### Database (`src/lib/db.js`)
+*   Manages connection pooling to the MySQL database.
+*   Executes raw SQL queries (or uses a query builder pattern if implemented) to interact with data.
+
+### Real-Time Engine (`server.js`)
+*   Integrates `socket.io` with the Next.js server.
+*   Handles event broadcasting for immediate updates to connected clients.
+
+### Media Management
+*   Images are processed using `sharp` for optimization.
+*   Files are likely stored in `public/uploads` or an external storage service (to be confirmed).
+
+## 5. Folder Structure
+*   `src/app`: Main application routes (Pages & API).
+    *   `api/`: Backend endpoints.
+    *   `(routes)`: Frontend pages (Home, About, Admin, Member).
+*   `src/components`: Reusable UI components.
+*   `src/lib`: Core utilities (Database, Auth, Email).
+*   `src/services`: Specific business logic services.
+*   `public`: Static assets and uploads.
+
+## 6. Data Flow
+1.  **User Request**: User interacts with the UI.
+2.  **Frontend Logic**: React component calls an API endpoint via Axios.
+3.  **API Route**: Next.js API route receives the request.
+4.  **Auth Check**: Request is validated for a valid JWT token.
+5.  **Controller/Service**: Logic in `src/lib` or `src/services` processes the request.
+6.  **Database**: Query is sent to MySQL.
+7.  **Response**: Data is returned to the frontend and UI updates.
+
+## 7. API Documentation & Endpoints
+
+The API is organized into modular routes under `src/app/api`. All responses are typically in JSON format.
+
+### 🔐 Authentication (`/api/auth`)
+*   `POST /api/auth/login`: Authenticates user with email/password. Returns JWT.
+*   `POST /api/auth/register`: Creates a new user account.
+*   `POST /api/auth/google`: Handles Google OAuth login/signup.
+*   `POST /api/auth/logout`: Clears authentication cookies/tokens.
+*   `POST /api/auth/forgot-password`: Initiates password reset flow via email.
+*   `POST /api/auth/reset-password`: Resets password using a token.
+*   `GET /api/auth/profile`: Fetches the currently logged-in user's profile.
+*   `POST /api/auth/complete-profile`: Finalizes profile setup after initial registration.
+
+### 🛠 Admin Management (`/api/admin`)
+*   **Dashboard**:
+    *   `GET /api/admin/stats`: Returns aggregate data (user counts, event stats) for the dashboard.
+*   **Users**:
+    *   `GET /api/admin/users`: Lists all registered users.
+    *   `PUT /api/admin/users/[id]`: Updates user roles or status (ban/promote).
+*   **Content**:
+    *   `GET/POST /api/admin/announcements`: Manage homepage announcements.
+    *   `GET/POST /api/admin/events`: Create and manage calendar events.
+    *   `GET/POST /api/admin/blogs`: Manage blog posts (publish/unpublish).
+    *   `GET/POST /api/admin/sermons`: Upload and manage sermon links/files.
+    *   `GET/POST /api/admin/gallery`: Manage photo gallery items.
+*   **Ministry**:
+    *   `GET/POST /api/admin/leaders`: Manage leadership profiles.
+    *   `GET/POST /api/admin/elections`: Configure election periods and positions.
+    *   `GET/POST /api/admin/bible-study`: Manage study materials.
+
+### 👤 Member Features (`/api/member`)
+*   **Spiritual Life**:
+    *   `GET/POST /api/member/prayers`: Manage personal prayer journal entries.
+    *   `GET/POST /api/member/prayer-requests`: Submit requests to leadership.
+    *   `GET/POST /api/member/reading-progress`: Track Bible reading plan progress.
+*   **Engagement**:
+    *   `POST /api/member/nominations`: Submit nominations during election periods.
+    *   `GET /api/member/search-members`: Search for other members (if enabled).
+
+### 🌍 Public Content (`/api/...`)
+*   `GET /api/blogs`: Fetches published blog posts.
+*   `GET /api/blogs/[id]`: Fetches a single blog post by ID.
+*   `GET /api/events`: Fetches upcoming public events.
+*   `GET /api/sermons`: Fetches the sermon archive.
+*   `GET /api/leaders`: Fetches current leadership team info.
+*   `GET /api/verse-of-day`: Fetches the daily scripture.
+
+### ⚙️ Utilities
+*   `POST /api/upload`: Handles file uploads (images, documents).
+*   `GET /api/proxy-image`: Proxies external images for security/performance.

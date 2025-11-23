@@ -1,26 +1,111 @@
 import { NextResponse } from 'next/server'
 import { query } from '@/lib/db'
-import jwt from 'jsonwebtoken'
-
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production'
-
-function verifyToken(request) {
-  const authHeader = request.headers.get('authorization')
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return null
-  }
-
-  const token = authHeader.substring(7)
-  try {
-    return jwt.verify(token, JWT_SECRET)
-  } catch (error) {
-    return null
-  }
-}
+import { verifyToken } from '@/lib/auth'
+import { cookies } from 'next/headers'
 
 export async function GET(request) {
   try {
-    const decoded = verifyToken(request)
+    // Get token from Authorization header or cookies
+    let token = null
+
+    // Try Authorization header first
+    const authHeader = request.headers.get('authorization')
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      token = authHeader.substring(7)
+    }
+
+    // Fall back to cookies if no header
+    if (!token) {
+      const cookieStore = cookies()
+      token = cookieStore.get('token')?.value
+    }
+
+    if (!token) {
+      return NextResponse.json(
+        { success: false, message: 'No token provided' },
+        { status: 401 }
+      )
+    }
+
+    // Verify and decode token
+    const decoded = verifyToken(token)
+
+    if (!decoded) {
+      console.log('Profile: Token verification failed')
+      return NextResponse.json(
+        { success: false, message: 'Invalid or expired token' },
+        { status: 401 }
+      )
+    }
+
+    // Get fresh user data from database
+    const users = await query(
+      'SELECT id, email, full_name, role, status, profile_image, registration_number, phone, member_type, course, year_of_study, created_at FROM users WHERE id = ?',
+      [decoded.id || decoded.userId]
+    )
+
+    if (users.length === 0) {
+      return NextResponse.json(
+        { success: false, message: 'User not found' },
+        { status: 404 }
+      )
+    }
+
+    const user = users[0]
+    console.log(`Profile: Returning user ${user.email} with role: ${user.role}`)
+
+    // Check if account is still active
+    if (user.status !== 'active') {
+      return NextResponse.json(
+        { success: false, message: 'Account is not active' },
+        { status: 403 }
+      )
+    }
+
+    // Return user profile data (using snake_case for consistency with frontend)
+    return NextResponse.json({
+      success: true,
+      user: {
+        id: user.id,
+        registration_number: user.registration_number,
+        email: user.email,
+        full_name: user.full_name,
+        phone: user.phone,
+        member_type: user.member_type,
+        role: user.role ? user.role.trim() : 'member', // Fresh role from database
+        status: user.status,
+        profile_image: user.profile_image,
+        course: user.course,
+        year_of_study: user.year_of_study,
+        created_at: user.created_at
+      }
+    })
+
+  } catch (error) {
+    console.error('Profile fetch error:', error)
+    return NextResponse.json(
+      { success: false, message: 'Failed to fetch profile' },
+      { status: 500 }
+    )
+  }
+}
+
+// PUT - Update user profile
+export async function PUT(request) {
+  try {
+    // Get token from cookies
+    const cookieStore = cookies()
+    const token = cookieStore.get('token')?.value
+
+    if (!token) {
+      return NextResponse.json(
+        { success: false, message: 'No token provided' },
+        { status: 401 }
+      )
+    }
+
+    // Verify token
+    const decoded = verifyToken(token)
     if (!decoded) {
       return NextResponse.json(
         { success: false, message: 'Invalid or expired token' },
@@ -28,24 +113,30 @@ export async function GET(request) {
       )
     }
 
-    // Fetch user data from database (decoded.id comes from the JWT token)
-    const userId = decoded.id || decoded.userId
+    // Get request body
+    const body = await request.json()
+    const { full_name, email, phone, course, year_of_study } = body
+
+    // Validate required fields
+    if (!full_name || !email) {
+      return NextResponse.json(
+        { success: false, message: 'Full name and email are required' },
+        { status: 400 }
+      )
+    }
+
+    // Update user in database
+    await query(
+      `UPDATE users 
+       SET full_name = ?, email = ?, phone = ?, course = ?, year_of_study = ?
+       WHERE id = ?`,
+      [full_name, email, phone || null, course || null, year_of_study || null, decoded.id]
+    )
+
+    // Get updated user data
     const users = await query(
-      `SELECT 
-        id,
-        full_name,
-        email,
-        phone,
-        registration_number,
-        course,
-        year_of_study,
-        member_type,
-        role,
-        status,
-        created_at
-      FROM users 
-      WHERE id = ? AND status = 'active'`,
-      [userId]
+      'SELECT id, email, full_name, role, status, profile_image, registration_number, phone, member_type, course, year_of_study, created_at FROM users WHERE id = ?',
+      [decoded.id]
     )
 
     if (users.length === 0) {
@@ -59,74 +150,27 @@ export async function GET(request) {
 
     return NextResponse.json({
       success: true,
+      message: 'Profile updated successfully',
       user: {
-        user_id: user.id,
-        full_name: user.full_name,
-        email: user.email,
-        phone: user.phone,
+        id: user.id,
         registration_number: user.registration_number,
+        email: user.email,
+        full_name: user.full_name,
+        phone: user.phone,
+        member_type: user.member_type,
+        role: user.role ? user.role.trim() : 'member',
+        status: user.status,
+        profile_image: user.profile_image,
         course: user.course,
         year_of_study: user.year_of_study,
-        member_type: user.member_type,
-        role: user.role,
-        status: user.status,
         created_at: user.created_at
       }
     })
 
   } catch (error) {
-    console.error('Profile fetch error:', error)
-    return NextResponse.json(
-      { success: false, message: 'Server error' },
-      { status: 500 }
-    )
-  }
-}
-
-
-export async function PUT(request) {
-  try {
-    const decoded = verifyToken(request)
-    if (!decoded) {
-      return NextResponse.json(
-        { success: false, message: 'Invalid or expired token' },
-        { status: 401 }
-      )
-    }
-
-    const body = await request.json()
-    const { full_name, email, phone, course, year_of_study } = body
-
-    // Validate required fields
-    if (!full_name || !email) {
-      return NextResponse.json(
-        { success: false, message: 'Full name and email are required' },
-        { status: 400 }
-      )
-    }
-
-    // Update user profile
-    const userId = decoded.id || decoded.userId
-    await query(
-      `UPDATE users 
-       SET full_name = ?, 
-           email = ?, 
-           phone = ?, 
-           course = ?, 
-           year_of_study = ?
-       WHERE id = ?`,
-      [full_name, email, phone || null, course || null, year_of_study || null, userId]
-    )
-
-    return NextResponse.json({
-      success: true,
-      message: 'Profile updated successfully'
-    })
-
-  } catch (error) {
     console.error('Profile update error:', error)
     return NextResponse.json(
-      { success: false, message: 'Server error' },
+      { success: false, message: 'Failed to update profile' },
       { status: 500 }
     )
   }

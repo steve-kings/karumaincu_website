@@ -16,17 +16,18 @@ export default function EditorBibleStudyPage() {
   const fetchSessions = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
       const response = await fetch('/api/member/bible-study/sessions', {
-        headers: { 'Authorization': 'Bearer ' + token }
+        credentials: 'include'
       });
 
       if (response.ok) {
         const data = await response.json();
-        setSessions(data);
+        // Handle both array and object with data property
+        setSessions(Array.isArray(data) ? data : (data.data || []));
       }
     } catch (error) {
       console.error('Error fetching sessions:', error);
+      setSessions([]); // Set empty array on error
     } finally {
       setLoading(false);
     }
@@ -34,17 +35,18 @@ export default function EditorBibleStudyPage() {
 
   const fetchRegistrations = async (sessionId) => {
     try {
-      const token = localStorage.getItem('token');
       const response = await fetch('/api/admin/bible-study/registrations?session_id=' + sessionId, {
-        headers: { 'Authorization': 'Bearer ' + token }
+        credentials: 'include'
       });
 
       if (response.ok) {
         const data = await response.json();
-        setRegistrations(data);
+        // Handle both array and object with data property
+        setRegistrations(Array.isArray(data) ? data : (data.data || []));
       }
     } catch (error) {
       console.error('Error fetching registrations:', error);
+      setRegistrations([]); // Set empty array on error
     }
   };
 
@@ -67,7 +69,9 @@ export default function EditorBibleStudyPage() {
           </div>
         ) : sessions.length === 0 ? (
           <div className="text-center py-16 bg-white dark:bg-neutral-900 rounded-xl border border-gray-200 dark:border-neutral-800">
-            <span className="text-6xl block mb-4">📖</span>
+            <div className="w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i className="fas fa-book-bible text-green-600 dark:text-green-400 text-4xl"></i>
+            </div>
             <p className="text-gray-600 dark:text-neutral-400">No bible study sessions found</p>
           </div>
         ) : (
@@ -82,9 +86,9 @@ export default function EditorBibleStudyPage() {
                     <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{session.title}</h3>
                     <p className="text-gray-700 dark:text-neutral-300 mb-3">{session.description}</p>
                     <div className="flex gap-4 text-sm text-gray-600 dark:text-neutral-400">
-                      <span>📅 Start: {new Date(session.start_date).toLocaleDateString()}</span>
-                      <span>📅 End: {new Date(session.end_date).toLocaleDateString()}</span>
-                      <span>⏰ Deadline: {new Date(session.registration_deadline).toLocaleDateString()}</span>
+                      <span><i className="fas fa-calendar-alt mr-1"></i> Start: {new Date(session.start_date).toLocaleDateString()}</span>
+                      <span><i className="fas fa-calendar-alt mr-1"></i> End: {new Date(session.end_date).toLocaleDateString()}</span>
+                      <span><i className="fas fa-clock mr-1"></i> Deadline: {new Date(session.registration_deadline).toLocaleDateString()}</span>
                     </div>
                   </div>
                   <span className={'px-3 py-1 rounded-full text-xs font-medium ' + (session.is_open ? 'bg-green-100 dark:bg-green-950 text-green-800 dark:text-green-300' : 'bg-red-100 dark:bg-red-950 text-red-800 dark:text-red-300')}>

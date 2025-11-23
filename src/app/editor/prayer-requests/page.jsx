@@ -15,9 +15,8 @@ export default function EditorPrayerRequestsPage() {
   const fetchPrayers = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
       const response = await fetch('/api/admin/prayers?status=' + filter, {
-        headers: { 'Authorization': 'Bearer ' + token }
+        credentials: 'include'
       });
 
       if (response.ok) {
@@ -58,7 +57,9 @@ export default function EditorPrayerRequestsPage() {
           </div>
         ) : prayers.length === 0 ? (
           <div className="text-center py-16 bg-white dark:bg-neutral-900 rounded-xl border border-gray-200 dark:border-neutral-800">
-            <span className="text-6xl block mb-4">🙏</span>
+            <div className="w-20 h-20 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i className="fas fa-praying-hands text-blue-600 dark:text-blue-400 text-4xl"></i>
+            </div>
             <p className="text-gray-600 dark:text-neutral-400">No prayer requests found</p>
           </div>
         ) : (

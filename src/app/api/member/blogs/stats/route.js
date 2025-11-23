@@ -1,27 +1,22 @@
 import { NextResponse } from 'next/server'
 import { query } from '@/lib/db'
-import jwt from 'jsonwebtoken'
+import { verifyToken } from '@/lib/auth'
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production'
-
-function verifyToken(request) {
+// Helper to extract token from request and verify
+function verifyRequest(request) {
   const authHeader = request.headers.get('authorization')
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return null
   }
 
   const token = authHeader.substring(7)
-  try {
-    return jwt.verify(token, JWT_SECRET)
-  } catch (error) {
-    return null
-  }
+  return verifyToken(token)
 }
 
 // GET - Get user's blog statistics
 export async function GET(request) {
   try {
-    const decoded = verifyToken(request)
+    const decoded = verifyRequest(request)
     if (!decoded) {
       return NextResponse.json(
         { success: false, message: 'Unauthorized' },

@@ -9,6 +9,7 @@ export default function SpiritualContentManagementPage() {
   
   // Verse of Day State
   const [verses, setVerses] = useState([])
+  const [todayVerse, setTodayVerse] = useState(null)
   const [showVerseForm, setShowVerseForm] = useState(false)
   const [verseForm, setVerseForm] = useState({
     verse_reference: '',
@@ -22,6 +23,7 @@ export default function SpiritualContentManagementPage() {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1)
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
   const [showReadingForm, setShowReadingForm] = useState(false)
+  const [editingReading, setEditingReading] = useState(null)
   const [readingForm, setReadingForm] = useState({
     day: '',
     book: '',
@@ -51,17 +53,29 @@ export default function SpiritualContentManagementPage() {
   useEffect(() => {
     if (activeTab === 'verse-of-day') {
       fetchVerses()
+      fetchTodayVerse()
     } else if (activeTab === 'reading-calendar') {
       fetchReadings()
     }
   }, [activeTab, selectedMonth, selectedYear])
 
+  const fetchTodayVerse = async () => {
+    try {
+      const response = await fetch('/api/verse-of-day')
+      if (response.ok) {
+        const data = await response.json()
+        setTodayVerse(data.data)
+      }
+    } catch (error) {
+      console.error('Error fetching today verse:', error)
+    }
+  }
+
   const fetchVerses = async () => {
     try {
       setLoading(true)
-      const token = localStorage.getItem('token')
-      const response = await fetch('/api/admin/spiritual/verse-of-day', {
-        headers: { 'Authorization': `Bearer ${token}` }
+            const response = await fetch('/api/admin/spiritual/verse-of-day', {
+        credentials: 'include'
       })
 
       if (response.ok) {
@@ -78,9 +92,8 @@ export default function SpiritualContentManagementPage() {
   const fetchReadings = async () => {
     try {
       setLoading(true)
-      const token = localStorage.getItem('token')
-      const response = await fetch(`/api/admin/spiritual/reading-calendar?month=${selectedMonth}&year=${selectedYear}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
+            const response = await fetch(`/api/admin/spiritual/reading-calendar?month=${selectedMonth}&year=${selectedYear}`, {
+        credentials: 'include'
       })
 
       if (response.ok) {
@@ -97,17 +110,17 @@ export default function SpiritualContentManagementPage() {
   const handleVerseSubmit = async (e) => {
     e.preventDefault()
     try {
-      const token = localStorage.getItem('token')
       const response = await fetch('/api/admin/spiritual/verse-of-day', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify(verseForm)
       })
 
       if (response.ok) {
+        alert('Verse of the day created successfully!')
         setShowVerseForm(false)
         setVerseForm({
           verse_reference: '',
@@ -116,22 +129,32 @@ export default function SpiritualContentManagementPage() {
           date: new Date().toISOString().split('T')[0]
         })
         fetchVerses()
+        fetchTodayVerse()
+      } else {
+        const data = await response.json()
+        alert(data.message || 'Failed to create verse')
       }
     } catch (error) {
       console.error('Error creating verse:', error)
+      alert('Error creating verse. Please try again.')
     }
   }
 
   const handleReadingSubmit = async (e) => {
     e.preventDefault()
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch('/api/admin/spiritual/reading-calendar', {
-        method: 'POST',
+      const url = editingReading
+        ? `/api/admin/spiritual/reading-calendar/${editingReading.id}`
+        : '/api/admin/spiritual/reading-calendar'
+      
+      const method = editingReading ? 'PUT' : 'POST'
+
+      const response = await fetch(url, {
+        method,
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({
           ...readingForm,
           month: selectedMonth,
@@ -145,7 +168,9 @@ export default function SpiritualContentManagementPage() {
       })
 
       if (response.ok) {
+        alert(editingReading ? 'Reading plan updated successfully!' : 'Reading plan created successfully!')
         setShowReadingForm(false)
+        setEditingReading(null)
         setReadingForm({
           day: '',
           book: '',
@@ -156,9 +181,73 @@ export default function SpiritualContentManagementPage() {
           devotional_note: ''
         })
         fetchReadings()
+      } else {
+        const data = await response.json()
+        alert(data.message || 'Failed to save reading plan')
       }
     } catch (error) {
-      console.error('Error creating reading:', error)
+      console.error('Error saving reading:', error)
+      alert('Error saving reading plan. Please try again.')
+    }
+  }
+
+  const handleEditReading = (reading) => {
+    setEditingReading(reading)
+    setReadingForm({
+      day: reading.day.toString(),
+      book: reading.book,
+      chapter_start: reading.chapter_start.toString(),
+      chapter_end: reading.chapter_end ? reading.chapter_end.toString() : '',
+      verse_start: reading.verse_start ? reading.verse_start.toString() : '',
+      verse_end: reading.verse_end ? reading.verse_end.toString() : '',
+      devotional_note: reading.devotional_note || ''
+    })
+    setShowReadingForm(true)
+  }
+
+  const handleDeleteReading = async (id) => {
+    if (!confirm('Are you sure you want to delete this reading plan?')) return
+
+    try {
+      const response = await fetch(`/api/admin/spiritual/reading-calendar/${id}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      })
+
+      if (response.ok) {
+        alert('Reading plan deleted successfully!')
+        fetchReadings()
+      } else {
+        const data = await response.json()
+        alert(data.message || 'Failed to delete reading plan')
+      }
+    } catch (error) {
+      console.error('Error deleting reading:', error)
+      alert('Error deleting reading plan. Please try again.')
+    }
+  }
+
+  const handleCleanupOldVerses = async () => {
+    if (!confirm('This will delete all verses older than 30 days. Continue?')) {
+      return
+    }
+
+    try {
+      const response = await fetch('/api/admin/spiritual/cleanup-old-verses', {
+        method: 'DELETE',
+        credentials: 'include'
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        alert(`Successfully deleted ${data.deleted} old verses`)
+        fetchVerses()
+      } else {
+        alert('Failed to cleanup old verses')
+      }
+    } catch (error) {
+      console.error('Error cleaning up verses:', error)
+      alert('Error cleaning up verses')
     }
   }
 
@@ -249,14 +338,62 @@ export default function SpiritualContentManagementPage() {
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <h3 className="text-xl font-semibold text-gray-800 dark:text-white">Verse of the Day Management</h3>
-                <button
-                  onClick={() => setShowVerseForm(!showVerseForm)}
-                  className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors"
-                >
-                  <Plus className="w-4 h-4 inline mr-2" />
-                  Add New Verse
-                </button>
+                <div className="flex space-x-3">
+                  <button
+                    onClick={handleCleanupOldVerses}
+                    className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
+                    title="Delete verses older than 30 days"
+                  >
+                    <i className="fas fa-trash mr-2"></i>
+                    Cleanup Old Verses
+                  </button>
+                  <button
+                    onClick={() => setShowVerseForm(!showVerseForm)}
+                    className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors"
+                  >
+                    <Plus className="w-4 h-4 inline mr-2" />
+                    Add New Verse
+                  </button>
+                </div>
               </div>
+
+              {/* Today's Verse Preview */}
+              {todayVerse && (
+                <div className={`rounded-lg p-6 border-2 ${
+                  todayVerse.auto_generated 
+                    ? 'bg-amber-50 dark:bg-amber-950/20 border-amber-300 dark:border-amber-800' 
+                    : 'bg-green-50 dark:bg-green-950/20 border-green-300 dark:border-green-800'
+                }`}>
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-center space-x-2">
+                      <Sun className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                      <h4 className="font-semibold text-gray-800 dark:text-white">
+                        Today's Verse ({new Date().toLocaleDateString()})
+                      </h4>
+                    </div>
+                    {todayVerse.auto_generated && (
+                      <span className="bg-amber-200 dark:bg-amber-900 text-amber-800 dark:text-amber-200 text-xs font-semibold px-3 py-1 rounded-full">
+                        Auto-Generated
+                      </span>
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    <p className="font-semibold text-purple-600 dark:text-purple-400">{todayVerse.verse_reference}</p>
+                    <p className="text-gray-700 dark:text-gray-300">{todayVerse.verse_text}</p>
+                    {todayVerse.commentary && (
+                      <p className="text-gray-600 dark:text-gray-400 text-sm italic">{todayVerse.commentary}</p>
+                    )}
+                  </div>
+                  {todayVerse.auto_generated && (
+                    <div className="mt-4 p-3 bg-amber-100 dark:bg-amber-950/40 rounded-lg">
+                      <p className="text-sm text-amber-800 dark:text-amber-300">
+                        <i className="fas fa-info-circle mr-2"></i>
+                        This verse was automatically generated from the Bible API. Add your own verse above to replace it.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Verse Form */}
               {showVerseForm && (
@@ -455,11 +592,14 @@ export default function SpiritualContentManagementPage() {
                         type="submit"
                         className="bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition-colors"
                       >
-                        Create Reading
+                        {editingReading ? 'Update Reading' : 'Create Reading'}
                       </button>
                       <button
                         type="button"
-                        onClick={() => setShowReadingForm(false)}
+                        onClick={() => {
+                          setShowReadingForm(false)
+                          setEditingReading(null)
+                        }}
                         className="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-400 transition-colors"
                       >
                         Cancel
@@ -498,6 +638,22 @@ export default function SpiritualContentManagementPage() {
                             {reading.devotional_note && (
                               <p className="text-gray-600 dark:text-gray-400 text-sm mt-2">{reading.devotional_note}</p>
                             )}
+                          </div>
+                          <div className="flex items-center space-x-2 ml-4">
+                            <button
+                              onClick={() => handleEditReading(reading)}
+                              className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm"
+                              title="Edit reading"
+                            >
+                              <i className="fas fa-edit"></i>
+                            </button>
+                            <button
+                              onClick={() => handleDeleteReading(reading.id)}
+                              className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-sm"
+                              title="Delete reading"
+                            >
+                              <i className="fas fa-trash"></i>
+                            </button>
                           </div>
                         </div>
                       </div>

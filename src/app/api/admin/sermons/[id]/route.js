@@ -10,7 +10,7 @@ export async function PUT(request, { params }) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { id } = params
+    const { id } = await params
     const body = await request.json()
     const { title, speaker, sermon_date, video_url, audio_url, description, series, featured, status } = body
 
@@ -41,7 +41,7 @@ export async function DELETE(request, { params }) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { id } = params
+    const { id } = await params
 
     await executeQuery('DELETE FROM sermons WHERE id = ?', [id])
 

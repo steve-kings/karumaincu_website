@@ -33,14 +33,13 @@ export default function EventManagementPage() {
   const fetchEvents = async () => {
     try {
       setLoading(true)
-      const token = localStorage.getItem('token')
-      const params = new URLSearchParams()
+            const params = new URLSearchParams()
       
       if (filterStatus !== 'all') params.append('status', filterStatus)
       if (search) params.append('search', search)
 
       const response = await fetch(`/api/admin/events?${params}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
 
       if (response.ok) {
@@ -57,17 +56,16 @@ export default function EventManagementPage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const token = localStorage.getItem('token')
-      const url = editingEvent 
+            const url = editingEvent 
         ? `/api/admin/events/${editingEvent.id}`
         : '/api/admin/events'
       
       const response = await fetch(url, {
         method: editingEvent ? 'PUT' : 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify(formData)
       })
 
@@ -105,10 +103,9 @@ export default function EventManagementPage() {
     if (!confirm('Are you sure you want to delete this event?')) return
 
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch(`/api/admin/events/${id}`, {
+            const response = await fetch(`/api/admin/events/${id}`, {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
 
       if (response.ok) {

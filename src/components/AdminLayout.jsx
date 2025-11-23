@@ -7,6 +7,8 @@ import { usePathname, useRouter } from 'next/navigation'
 export default function AdminLayout({ children }) {
   const [darkMode, setDarkMode] = useState(true)
   const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
   const pathname = usePathname()
   const router = useRouter()
 
@@ -15,6 +17,7 @@ export default function AdminLayout({ children }) {
     if (savedTheme) {
       setDarkMode(savedTheme === 'dark')
     }
+    checkAuth()
   }, [])
 
   useEffect(() => {
@@ -26,6 +29,41 @@ export default function AdminLayout({ children }) {
       localStorage.setItem('adminTheme', 'light')
     }
   }, [darkMode])
+
+  const checkAuth = async () => {
+    try {
+      console.log('AdminLayout: Checking authentication...')
+      const response = await fetch('/api/auth/profile', {
+        cache: 'no-store',
+        credentials: 'include'
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        const userRole = data.user.role ? data.user.role.trim().toLowerCase() : 'member'
+        
+        console.log('AdminLayout: User role:', userRole)
+
+        // Only allow admin role
+        if (userRole !== 'admin') {
+          console.error('AdminLayout: Access denied - not admin')
+          alert('Access Denied: Admin privileges required')
+          router.push('/login')
+          return
+        }
+
+        setUser(data.user)
+      } else {
+        console.error('AdminLayout: Auth failed, redirecting to login')
+        router.push('/login')
+      }
+    } catch (error) {
+      console.error('AdminLayout: Auth error:', error)
+      router.push('/login')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const toggleTheme = () => {
     setDarkMode(!darkMode)
@@ -65,24 +103,25 @@ export default function AdminLayout({ children }) {
     return pathname.startsWith(item.href)
   }
 
-  const [user, setUser] = useState({})
-
-  useEffect(() => {
-    // Load user data on client side only
-    const userData = localStorage.getItem('user')
-    if (userData) {
-      try {
-        setUser(JSON.parse(userData))
-      } catch (e) {
-        setUser({})
-      }
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' })
+      router.push('/login')
+    } catch (error) {
+      console.error('Logout failed:', error)
+      router.push('/login')
     }
-  }, [])
+  }
 
-  const handleLogout = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
-    router.push('/login')
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-black">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600 dark:text-gray-400">Verifying access...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -108,7 +147,7 @@ export default function AdminLayout({ children }) {
                 <i className="fas fa-user-circle text-lg"></i>
                 <span>{user.full_name || 'Admin'}</span>
               </div>
-              
+
               <button
                 onClick={toggleTheme}
                 className="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-white transition"
@@ -149,11 +188,10 @@ export default function AdminLayout({ children }) {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`flex-shrink-0 flex flex-col items-center gap-1 px-4 py-2 rounded-lg transition ${
-                  isActive(item)
-                    ? 'bg-white dark:bg-neutral-900 text-purple-600 dark:text-purple-400'
-                    : 'text-white hover:bg-white/10'
-                }`}
+                className={`flex-shrink-0 flex flex-col items-center gap-1 px-4 py-2 rounded-lg transition ${isActive(item)
+                  ? 'bg-white dark:bg-neutral-900 text-purple-600 dark:text-purple-400'
+                  : 'text-white hover:bg-white/10'
+                  }`}
               >
                 <i className={`fas ${item.icon}`}></i>
                 <span className="text-xs whitespace-nowrap">{item.name}</span>
@@ -165,9 +203,8 @@ export default function AdminLayout({ children }) {
 
       {/* Sidebar */}
       <div
-        className={`fixed left-0 top-[120px] bottom-0 bg-white dark:bg-neutral-950 border-r border-gray-200 dark:border-neutral-900 transition-all duration-300 z-40 shadow-xl ${
-          sidebarOpen ? 'w-64' : 'w-0'
-        } overflow-hidden`}
+        className={`fixed left-0 top-[120px] bottom-0 bg-white dark:bg-neutral-950 border-r border-gray-200 dark:border-neutral-900 transition-all duration-300 z-40 shadow-xl ${sidebarOpen ? 'w-64' : 'w-0'
+          } overflow-hidden`}
       >
         <div className="h-full overflow-y-auto">
           <nav className="p-4 space-y-1">
@@ -178,11 +215,10 @@ export default function AdminLayout({ children }) {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
-                  isActive(item)
-                    ? 'bg-gradient-to-r from-purple-600 to-teal-600 text-white shadow-md'
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-neutral-900'
-                }`}
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${isActive(item)
+                  ? 'bg-gradient-to-r from-purple-600 to-teal-600 text-white shadow-md'
+                  : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-neutral-900'
+                  }`}
               >
                 <i className={`fas ${item.icon} w-5 text-center`}></i>
                 <span className="font-medium text-sm">{item.name}</span>
@@ -205,9 +241,8 @@ export default function AdminLayout({ children }) {
 
       {/* Main Content */}
       <div
-        className={`transition-all duration-300 pt-[120px] ${
-          sidebarOpen ? 'ml-64' : 'ml-0'
-        }`}
+        className={`transition-all duration-300 pt-[120px] ${sidebarOpen ? 'ml-64' : 'ml-0'
+          }`}
       >
         {children}
       </div>

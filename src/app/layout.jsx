@@ -6,15 +6,16 @@ import { SocketProvider } from '@/contexts/SocketContext'
 import { ThemeProvider } from '@/contexts/ThemeContext'
 import RealtimeNotifications from '@/components/RealtimeNotifications'
 import GoogleOAuthProvider from '@/components/GoogleOAuthProvider'
+import PWAInstall from '@/components/PWAInstall'
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700', '800'],
   variable: '--font-inter',
   display: 'swap',
 })
 
-const poppins = Poppins({ 
+const poppins = Poppins({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700', '800'],
   variable: '--font-poppins',
@@ -22,9 +23,81 @@ const poppins = Poppins({
 })
 
 export const metadata = {
-  title: 'KarUCU Main Campus - Karatina University Christian Union',
-  description: 'Committed to serve the Lord - Karatina University Christian Union Main Campus',
-  metadataBase: new URL('http://localhost:3002'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'),
+  title: {
+    default: 'KarUCU Main Campus - Karatina University Christian Union',
+    template: '%s | KarUCU Main Campus'
+  },
+  description: 'Join KarUCU Main Campus - Karatina University Christian Union. Experience vibrant worship, Bible study, fellowship, and spiritual growth. Committed to serving the Lord and transforming campus life through Christ.',
+  keywords: [
+    'Karatina University',
+    'Christian Union',
+    'KarUCU',
+    'Campus Ministry',
+    'Student Fellowship',
+    'Bible Study',
+    'Worship',
+    'Prayer',
+    'Spiritual Growth',
+    'Kenya Christian Students',
+    'University Ministry',
+    'Campus Evangelism',
+    'Christian Community',
+    'Faith',
+    'Discipleship'
+  ],
+  authors: [{ name: 'KarUCU Main Campus' }],
+  creator: 'KarUCU Main Campus',
+  publisher: 'Karatina University Christian Union',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_KE',
+    url: '/',
+    siteName: 'KarUCU Main Campus',
+    title: 'KarUCU Main Campus - Karatina University Christian Union',
+    description: 'Join KarUCU Main Campus - Experience vibrant worship, Bible study, fellowship, and spiritual growth. Committed to serving the Lord and transforming campus life through Christ.',
+    images: [
+      {
+        url: '/logo.png',
+        width: 1200,
+        height: 630,
+        alt: 'KarUCU Main Campus Logo',
+      }
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'KarUCU Main Campus - Karatina University Christian Union',
+    description: 'Join KarUCU Main Campus - Experience vibrant worship, Bible study, fellowship, and spiritual growth.',
+    images: ['/logo.png'],
+    creator: '@karucumain',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    google: 'your-google-verification-code',
+    // yandex: 'your-yandex-verification-code',
+    // bing: 'your-bing-verification-code',
+  },
+  alternates: {
+    canonical: '/',
+  },
+  category: 'religion',
+  manifest: "/manifest.json",
 }
 
 // Enable viewport optimization
@@ -32,6 +105,7 @@ export const viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
+  themeColor: "#000000",
 }
 
 export default function RootLayout({ children }) {
@@ -48,6 +122,7 @@ export default function RootLayout({ children }) {
           <ThemeProvider>
             <SocketProvider>
               <RealtimeNotifications />
+              <PWAInstall />
               <Navigation />
               <main className="md:pt-24 pt-16">{children}</main>
               <Footer />

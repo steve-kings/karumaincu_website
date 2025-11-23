@@ -24,11 +24,72 @@ async function getGalleries() {
   }
 }
 
+// Server-side data fetching for announcements
+async function getAnnouncements() {
+  try {
+    const query = `
+      SELECT id, title, content, priority, status
+      FROM announcements
+      WHERE status = 'published'
+      AND (expires_at IS NULL OR expires_at > NOW())
+      ORDER BY priority DESC, created_at DESC
+      LIMIT 5
+    `
+    
+    const announcements = await executeQuery(query)
+    return announcements
+  } catch (error) {
+    console.error('Error fetching announcements:', error)
+    return []
+  }
+}
+
 export default async function MediaPage() {
   const galleries = await getGalleries()
+  const announcements = await getAnnouncements()
+  
+  console.log('📢 Announcements loaded:', announcements.length)
+  if (announcements.length > 0) {
+    console.log('First announcement:', announcements[0].title)
+  }
 
   return (
     <div className="min-h-screen">
+      {/* Announcements Scrolling Banner */}
+      {announcements.length > 0 && (
+        <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white py-3 overflow-hidden relative">
+          <div className="flex items-center">
+            <div className="flex-shrink-0 px-4 font-bold flex items-center">
+              <i className="fas fa-bullhorn mr-2 text-xl"></i>
+              <span className="text-sm uppercase tracking-wide">Announcements</span>
+            </div>
+            <div className="flex-1 overflow-hidden">
+              <div className="animate-scroll whitespace-nowrap inline-block">
+                {announcements.map((announcement, index) => (
+                  <span key={announcement.id} className="inline-flex items-center mx-8">
+                    <i className="fas fa-circle text-xs mr-3"></i>
+                    <span className="font-semibold">{announcement.title}</span>
+                    {announcement.content && (
+                      <span className="ml-2 opacity-90">- {announcement.content}</span>
+                    )}
+                  </span>
+                ))}
+                {/* Duplicate for seamless loop */}
+                {announcements.map((announcement, index) => (
+                  <span key={`dup-${announcement.id}`} className="inline-flex items-center mx-8">
+                    <i className="fas fa-circle text-xs mr-3"></i>
+                    <span className="font-semibold">{announcement.title}</span>
+                    {announcement.content && (
+                      <span className="ml-2 opacity-90">- {announcement.content}</span>
+                    )}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Hero Section */}
       <section className="relative py-20 bg-gradient-to-br from-purple-800 via-teal-700 to-emerald-700 text-white">
         <div className="container mx-auto px-4">
@@ -98,6 +159,13 @@ export default async function MediaPage() {
                 >
                   <i className="fab fa-youtube mr-3 text-xl"></i>
                   Visit Our YouTube Channel
+                </a>
+                <a 
+                  href="/sermons" 
+                  className="bg-gradient-to-r from-purple-500 to-purple-600 text-white px-8 py-4 rounded-lg font-semibold hover:from-purple-600 hover:to-purple-700 transition-all inline-flex items-center justify-center text-lg shadow-lg hover:shadow-xl"
+                >
+                  <i className="fas fa-book-bible mr-3 text-xl"></i>
+                  Browse Sermons
                 </a>
               </div>
 

@@ -6,7 +6,8 @@ export async function GET(request) {
   try {
     const user = await verifyAuth(request)
     
-    if (!user || user.role !== 'admin') {
+    // Allow both admin and editor
+    if (!user || (user.role !== 'admin' && user.role !== 'editor')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -14,7 +15,7 @@ export async function GET(request) {
     const month = searchParams.get('month')
     const year = searchParams.get('year')
 
-    let query = 'SELECT * FROM reading_calendar WHERE 1=1'
+    let query = 'SELECT * FROM bible_reading_calendar WHERE 1=1'
     const params = []
 
     if (month) {
@@ -45,27 +46,70 @@ export async function POST(request) {
   try {
     const user = await verifyAuth(request)
     
-    if (!user || user.role !== 'admin') {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    // Allow both admin and editor
+    if (!user || (user.role !== 'admin' && user.role !== 'editor')) {
+      return NextResponse.json({ 
+        success: false,
+        error: 'Unauthorized',
+        message: 'You must be an admin or editor to create reading plans'
+      }, { status: 401 })
     }
 
     const body = await request.json()
     const { month, year, day, book, chapter_start, chapter_end, verse_start, verse_end, devotional_note } = body
 
-    const result = await executeQuery(
-      `INSERT INTO reading_calendar (month, year, day, book, chapter_start, chapter_end, verse_start, verse_end, devotional_note) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [month, year, day, book, chapter_start, chapter_end || null, verse_start || null, verse_end || null, devotional_note || null]
+    // Validate required fields
+    if (!month || !year || !day || !book || !chapter_start) {
+      return NextResponse.json({
+        success: false,
+        error: 'Validation Error',
+        message: 'Month, year, day, book, and chapter_start are required'
+      }, { status: 400 })
+    }
+
+    // Check if reading already exists for this date
+    const existing = await executeQuery(
+      'SELECT id FROM bible_reading_calendar WHERE year = ? AND month = ? AND day = ?',
+      [year, month, day]
     )
 
-    const [newReading] = await executeQuery('SELECT * FROM reading_calendar WHERE id = ?', [result.insertId])
+    if (existing.length > 0) {
+      return NextResponse.json({
+        success: false,
+        error: 'Duplicate Entry',
+        message: `A reading plan already exists for ${year}-${month}-${day}. Please choose a different date or update the existing one.`
+      }, { status: 409 })
+    }
+
+    const result = await executeQuery(
+      `INSERT INTO bible_reading_calendar (month, year, day, book, chapter_start, chapter_end, verse_start, verse_end, devotional_note, created_by) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [month, year, day, book, chapter_start, chapter_end || null, verse_start || null, verse_end || null, devotional_note || null, user.id]
+    )
+
+    const [newReading] = await executeQuery('SELECT * FROM bible_reading_calendar WHERE id = ?', [result.insertId])
 
     return NextResponse.json({
       success: true,
+      message: 'Reading plan created successfully',
       data: newReading
     })
   } catch (error) {
     console.error('Error creating reading:', error)
-    return NextResponse.json({ error: 'Failed to create reading' }, { status: 500 })
+    
+    // Check for duplicate entry error
+    if (error.code === 'ER_DUP_ENTRY') {
+      return NextResponse.json({
+        success: false,
+        error: 'Duplicate Entry',
+        message: 'A reading plan already exists for this date'
+      }, { status: 409 })
+    }
+    
+    return NextResponse.json({ 
+      success: false,
+      error: 'Database Error',
+      message: error.message || 'Failed to create reading plan'
+    }, { status: 500 })
   }
 }

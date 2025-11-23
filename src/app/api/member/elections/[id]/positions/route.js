@@ -10,7 +10,7 @@ export async function GET(request, { params }) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { id } = params
+    const { id } = await params
 
     const positions = await query(
       'SELECT id, title, description FROM election_positions WHERE election_id = ? ORDER BY display_order ASC',

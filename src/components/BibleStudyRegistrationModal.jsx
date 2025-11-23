@@ -31,8 +31,7 @@ export default function BibleStudyRegistrationModal({ isOpen, onClose, session, 
     setError('')
 
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch('/api/member/bible-study/register', {
+            const response = await fetch('/api/member/bible-study/register', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

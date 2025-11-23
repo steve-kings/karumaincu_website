@@ -10,7 +10,7 @@ export async function PUT(request, { params }) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { id } = params
+    const { id } = await params
     const { status, testimony } = await request.json()
 
     // Check if prayer belongs to user
@@ -45,7 +45,7 @@ export async function DELETE(request, { params }) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { id } = params
+    const { id } = await params
 
     const result = await query(
       'DELETE FROM prayer_requests WHERE id = ? AND requester_id = ?',

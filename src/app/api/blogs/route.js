@@ -10,7 +10,7 @@ export async function GET(request) {
     const offset = (page - 1) * limit
 
     const filters = {
-      status: searchParams.get('status') || 'published',
+      status: searchParams.get('status') || 'approved',
       search: searchParams.get('search'),
       limit: limit.toString(),
       offset: offset.toString()

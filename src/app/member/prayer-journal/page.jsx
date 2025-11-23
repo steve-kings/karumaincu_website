@@ -22,9 +22,8 @@ export default function PrayerJournalPage() {
 
   const fetchPrayers = async () => {
     try {
-      const token = localStorage.getItem('token')
       const response = await fetch('/api/member/prayers', {
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
       
       if (response.ok) {
@@ -42,7 +41,6 @@ export default function PrayerJournalPage() {
     e.preventDefault()
     
     try {
-      const token = localStorage.getItem('token')
       const url = editingPrayer 
         ? `/api/member/prayers/${editingPrayer.id}`
         : '/api/member/prayers'
@@ -50,9 +48,9 @@ export default function PrayerJournalPage() {
       const response = await fetch(url, {
         method: editingPrayer ? 'PUT' : 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify(formData)
       })
 
@@ -83,10 +81,9 @@ export default function PrayerJournalPage() {
     if (!confirm('Delete this prayer?')) return
 
     try {
-      const token = localStorage.getItem('token')
       const response = await fetch(`/api/member/prayers/${id}`, {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
 
       if (response.ok) {
@@ -103,13 +100,12 @@ export default function PrayerJournalPage() {
     if (!answer) return
 
     try {
-      const token = localStorage.getItem('token')
       const response = await fetch(`/api/member/prayers/${id}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({ 
           status: 'answered',
           answer_description: answer
@@ -175,7 +171,7 @@ export default function PrayerJournalPage() {
                 <p className="text-3xl font-bold text-pink-600 dark:text-pink-400">{stats.total}</p>
               </div>
               <div className="w-14 h-14 bg-pink-100 dark:bg-pink-950 rounded-xl flex items-center justify-center">
-                <span className="text-2xl">🙏</span>
+                <i className="fas fa-praying-hands text-2xl text-pink-600 dark:text-pink-400"></i>
               </div>
             </div>
           </div>
@@ -336,7 +332,7 @@ export default function PrayerJournalPage() {
           </div>
         ) : filteredPrayers.length === 0 ? (
           <div className="text-center py-16 bg-white dark:bg-neutral-950 rounded-2xl shadow-lg border border-gray-100 dark:border-neutral-900">
-            <span className="text-6xl mb-4 block">🙏</span>
+            <i className="fas fa-praying-hands text-6xl mb-4 block text-gray-400 dark:text-neutral-600"></i>
             <h3 className="text-xl font-semibold text-gray-600 dark:text-neutral-400 mb-2">No prayers yet</h3>
             <p className="text-gray-500 dark:text-neutral-500 mb-6">Start your prayer journal today</p>
             <button

@@ -44,14 +44,13 @@ export default function GalleryManagementPage() {
   const fetchGalleries = async () => {
     try {
       setLoading(true)
-      const token = localStorage.getItem('token')
-      const params = new URLSearchParams()
+            const params = new URLSearchParams()
       
       if (search) params.append('search', search)
       if (filterCategory !== 'all') params.append('category', filterCategory)
 
       const response = await fetch(`/api/admin/gallery?${params}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
 
       if (response.ok) {
@@ -68,17 +67,16 @@ export default function GalleryManagementPage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const token = localStorage.getItem('token')
-      const url = editingGallery 
+            const url = editingGallery 
         ? `/api/admin/gallery/${editingGallery.id}`
         : '/api/admin/gallery'
       
       const response = await fetch(url, {
         method: editingGallery ? 'PUT' : 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify(formData)
       })
 
@@ -111,10 +109,9 @@ export default function GalleryManagementPage() {
     if (!confirm('Are you sure you want to delete this gallery?')) return
 
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch(`/api/admin/gallery/${id}`, {
+            const response = await fetch(`/api/admin/gallery/${id}`, {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
 
       if (response.ok) {
@@ -146,6 +143,8 @@ export default function GalleryManagementPage() {
     }
     return icons[platform] || 'fas fa-cloud'
   }
+
+
 
   const stats = {
     total: galleries.length,
@@ -250,11 +249,19 @@ export default function GalleryManagementPage() {
           galleries.map((gallery) => (
             <div key={gallery.id} className="bg-white dark:bg-neutral-950 rounded-lg shadow-lg border border-gray-100 dark:border-neutral-900 overflow-hidden">
               <div className="relative h-48 bg-gradient-to-br from-pink-500 to-purple-600">
-                {gallery.thumbnail_url ? (
-                  <img src={gallery.thumbnail_url} alt={gallery.title} className="w-full h-full object-cover" />
+                {gallery.thumbnail_url && gallery.thumbnail_url.includes('unsplash.com') ? (
+                  <img 
+                    src={gallery.thumbnail_url} 
+                    alt={gallery.title} 
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.src = '/logo.png'
+                      e.target.className = 'w-24 h-24 object-contain mx-auto'
+                    }}
+                  />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
-                    <Image className="w-16 h-16 text-white opacity-50" />
+                    <img src="/logo.png" alt="KarUCU" className="w-24 h-24 object-contain" />
                   </div>
                 )}
                 
@@ -427,8 +434,11 @@ export default function GalleryManagementPage() {
                     value={formData.thumbnail_url}
                     onChange={(e) => setFormData({ ...formData, thumbnail_url: e.target.value })}
                     className="w-full px-3 py-2 bg-gray-50 dark:bg-black border border-gray-300 dark:border-neutral-800 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
-                    placeholder="https://example.com/thumbnail.jpg"
+                    placeholder="https://images.unsplash.com/photo-..."
                   />
+                  <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                    💡 Tip: Use Unsplash image URLs only. Other URLs will show the KarUCU logo as fallback.
+                  </p>
                 </div>
 
                 <div className="flex items-center">

@@ -5,7 +5,7 @@ const { Server } = require('socket.io')
 
 const dev = process.env.NODE_ENV !== 'production'
 const hostname = 'localhost'
-const port = 3002
+const port = process.env.PORT || 3000
 
 const app = next({ dev, hostname, port })
 const handle = app.getRequestHandler()
@@ -72,6 +72,12 @@ app.prepare().then(() => {
     // Handle user activity
     socket.on('activity:update', (activityData) => {
       io.emit('activity:new', activityData)
+    })
+
+    // Handle new reading calendar entry
+    socket.on('reading-calendar:new', (readingData) => {
+      console.log('New reading calendar entry:', readingData.book)
+      io.emit('reading-calendar:created', readingData)
     })
 
     // Handle typing indicator for comments

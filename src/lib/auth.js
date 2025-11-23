@@ -1,9 +1,17 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { cookies } from 'next/headers'
+import crypto from 'crypto'
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key'
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d'
+// Auto-generate secure JWT secret if not provided
+const JWT_SECRET = process.env.JWT_SECRET || (() => {
+  const generatedSecret = crypto.randomBytes(64).toString('hex')
+  console.warn('⚠️  WARNING: Using auto-generated JWT_SECRET. Please set JWT_SECRET in .env for production!')
+  console.log('Generated JWT_SECRET:', generatedSecret)
+  return generatedSecret
+})()
+
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '30d' // 30 days default
 
 // Generate JWT token
 export function generateToken(payload) {
@@ -33,12 +41,12 @@ export async function comparePassword(password, hashedPassword) {
 // Get current user from cookies
 export function getCurrentUser() {
   const cookieStore = cookies()
-  const token = cookieStore.get('accessToken')?.value
-  
+  const token = cookieStore.get('token')?.value
+
   if (!token) {
     return null
   }
-  
+
   return verifyToken(token)
 }
 
@@ -50,15 +58,15 @@ export function isAuthenticated() {
 // Check if user has required role
 export function hasRole(requiredRoles = []) {
   const user = getCurrentUser()
-  
+
   if (!user) {
     return false
   }
-  
+
   if (requiredRoles.length === 0) {
     return true
   }
-  
+
   return requiredRoles.includes(user.role)
 }
 
@@ -73,7 +81,7 @@ export async function verifyAuth(request) {
       return user
     }
   }
-  
+
   // Fall back to cookies
   return getCurrentUser()
 }
@@ -81,15 +89,15 @@ export async function verifyAuth(request) {
 // Middleware to protect API routes
 export function withAuth(handler, options = {}) {
   return async (request, context) => {
-    const user = getCurrentUser()
-    
+    const user = await verifyAuth(request)
+
     if (!user) {
       return Response.json(
         { success: false, message: 'Unauthorized' },
         { status: 401 }
       )
     }
-    
+
     // Check role if specified
     if (options.roles && !options.roles.includes(user.role)) {
       return Response.json(
@@ -97,10 +105,10 @@ export function withAuth(handler, options = {}) {
         { status: 403 }
       )
     }
-    
+
     // Add user to request
     request.user = user
-    
+
     return handler(request, context)
   }
 }

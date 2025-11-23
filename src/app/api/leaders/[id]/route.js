@@ -4,7 +4,7 @@ import LeaderService from '@/services/LeaderService'
 // GET /api/leaders/[id] - Get single leader (public)
 export async function GET(request, { params }) {
   try {
-    const { id } = params
+    const { id } = await params
     const leader = await LeaderService.getById(id)
 
     return NextResponse.json({

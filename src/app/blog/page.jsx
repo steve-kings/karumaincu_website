@@ -1,13 +1,14 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 
 export default function BlogPage() {
+  const router = useRouter()
   const [blogPosts, setBlogPosts] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [selectedPost, setSelectedPost] = useState(null)
   const [selectedCategory, setSelectedCategory] = useState('all')
 
   useEffect(() => {
@@ -108,7 +109,10 @@ export default function BlogPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  onClick={() => setSelectedPost(post)}
+                  onClick={() => {
+                    console.log('Clicking blog:', post.id)
+                    router.push(`/blog/${post.id}`)
+                  }}
                 >
                   <div className="relative">
                     <img 
@@ -132,7 +136,9 @@ export default function BlogPage() {
                     
                     <div className="flex items-center justify-between">
                       <span className="text-gray-700 font-medium">{post.author_name || 'Anonymous'}</span>
-                      <span className="text-gray-500 text-sm">{post.view_count || 0} views</span>
+                      <span className="text-gray-500 text-sm">
+                        {new Date(post.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                      </span>
                     </div>
                   </div>
                 </motion.article>
@@ -142,55 +148,7 @@ export default function BlogPage() {
         </div>
       </section>
 
-      {/* Blog Post Modal */}
-      {selectedPost && (
-        <div 
-          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
-          onClick={() => setSelectedPost(null)}
-        >
-          <div 
-            className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="relative">
-              <img 
-                src={getFeaturedImage(selectedPost)} 
-                alt={selectedPost.title}
-                className="w-full h-64 object-cover rounded-t-2xl"
-              />
-              <button 
-                onClick={() => setSelectedPost(null)}
-                className="absolute top-4 right-4 bg-black/50 hover:bg-black/70 text-white w-10 h-10 rounded-full flex items-center justify-center"
-              >
-                <i className="fas fa-times"></i>
-              </button>
-            </div>
-            
-            <div className="p-8">
-              <h1 className="font-heading font-bold text-3xl text-gray-800 mb-6">
-                {selectedPost.title}
-              </h1>
-              
-              <div className="flex items-center mb-8">
-                <img 
-                  src={getAuthorImage(selectedPost.author_name)} 
-                  alt={selectedPost.author_name}
-                  className="w-16 h-16 rounded-full object-cover mr-4"
-                />
-                <div>
-                  <p className="font-semibold text-gray-800 text-lg">{selectedPost.author_name || 'Anonymous'}</p>
-                  <p className="text-gray-600">{new Date(selectedPost.created_at).toLocaleDateString()}</p>
-                </div>
-              </div>
-              
-              <div 
-                className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: selectedPost.content }}
-              />
-            </div>
-          </div>
-        </div>
-      )}
+
     </div>
   )
 }

@@ -4,7 +4,7 @@ import AnnouncementService from '@/services/AnnouncementService'
 // GET /api/announcements/[id] - Get single announcement (public)
 export async function GET(request, { params }) {
   try {
-    const { id } = params
+    const { id } = await params
     const announcement = await AnnouncementService.getById(id)
 
     if (!announcement) {

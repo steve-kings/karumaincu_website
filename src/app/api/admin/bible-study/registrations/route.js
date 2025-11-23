@@ -5,7 +5,8 @@ import BibleStudyService from '@/services/BibleStudyService'
 export async function GET(request) {
   try {
     const user = await verifyAuth(request)
-    if (!user || user.role !== 'admin') {
+    // Allow both admin and editor
+    if (!user || (user.role !== 'admin' && user.role !== 'editor')) {
       console.log('[Registrations API] Unauthorized access attempt')
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }

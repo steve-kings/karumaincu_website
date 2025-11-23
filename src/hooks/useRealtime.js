@@ -121,3 +121,28 @@ export function emitNewPrayer(socket, prayerData) {
     socket.emit('prayer:new', prayerData)
   }
 }
+
+export function useRealtimeReadingCalendar() {
+  const { socket } = useSocket()
+  const [newReading, setNewReading] = useState(null)
+
+  useEffect(() => {
+    if (!socket) return
+
+    socket.on('reading-calendar:created', (readingData) => {
+      setNewReading(readingData)
+    })
+
+    return () => {
+      socket.off('reading-calendar:created')
+    }
+  }, [socket])
+
+  return newReading
+}
+
+export function emitNewReadingCalendar(socket, readingData) {
+  if (socket) {
+    socket.emit('reading-calendar:new', readingData)
+  }
+}

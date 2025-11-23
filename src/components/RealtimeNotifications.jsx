@@ -17,7 +17,7 @@ export default function RealtimeNotifications() {
         type: 'blog',
         title: 'New Blog Post',
         message: newBlog.title,
-        icon: '📝'
+        icon: 'fa-blog'
       })
     }
   }, [newBlog])
@@ -29,7 +29,7 @@ export default function RealtimeNotifications() {
         type: 'event',
         title: 'New Event',
         message: newEvent.title,
-        icon: '📅'
+        icon: 'fa-calendar-alt'
       })
     }
   }, [newEvent])
@@ -41,7 +41,7 @@ export default function RealtimeNotifications() {
         type: 'announcement',
         title: 'New Announcement',
         message: newAnnouncement.title,
-        icon: '📢'
+        icon: 'fa-bullhorn'
       })
     }
   }, [newAnnouncement])
@@ -53,7 +53,7 @@ export default function RealtimeNotifications() {
         type: 'prayer',
         title: 'New Prayer Request',
         message: `${newPrayer.userName} needs prayer`,
-        icon: '🙏'
+        icon: 'fa-praying-hands'
       })
     }
   }, [newPrayer])
@@ -78,19 +78,21 @@ export default function RealtimeNotifications() {
       {notifications.map((notification) => (
         <div
           key={notification.id}
-          className="bg-white rounded-lg shadow-lg border border-gray-200 p-4 animate-slide-in-right"
+          className="bg-white dark:bg-neutral-900 rounded-lg shadow-lg border border-gray-200 dark:border-neutral-800 p-4 animate-slide-in-right"
         >
           <div className="flex items-start space-x-3">
-            <div className="text-2xl">{notification.icon}</div>
+            <div className="text-2xl text-blue-600 dark:text-blue-400">
+              <i className={`fas ${notification.icon}`}></i>
+            </div>
             <div className="flex-1">
-              <h4 className="font-semibold text-gray-900">{notification.title}</h4>
-              <p className="text-sm text-gray-600 mt-1">{notification.message}</p>
+              <h4 className="font-semibold text-gray-900 dark:text-white">{notification.title}</h4>
+              <p className="text-sm text-gray-600 dark:text-neutral-400 mt-1">{notification.message}</p>
             </div>
             <button
               onClick={() => removeNotification(notification.id)}
-              className="text-gray-400 hover:text-gray-600"
+              className="text-gray-400 hover:text-gray-600 dark:text-neutral-500 dark:hover:text-neutral-300"
             >
-              ✕
+              <i className="fas fa-times"></i>
             </button>
           </div>
         </div>

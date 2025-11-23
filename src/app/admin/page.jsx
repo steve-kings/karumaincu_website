@@ -15,22 +15,26 @@ export default function AdminDashboard() {
     fetchStats()
   }, [])
 
-  const checkAuth = () => {
-    const token = localStorage.getItem('token')
-    const user = JSON.parse(localStorage.getItem('user') || '{}')
-    
-    if (!token || user.role !== 'admin') {
+  const checkAuth = async () => {
+    try {
+      const response = await fetch('/api/auth/profile', {
+        cache: 'no-store',
+        credentials: 'include'
+      })
+      
+      if (!response.ok) {
+        router.push('/login')
+      }
+    } catch (error) {
+      console.error('Auth check error:', error)
       router.push('/login')
     }
   }
 
   const fetchStats = async () => {
     try {
-      const token = localStorage.getItem('token')
-      console.log('Fetching stats with token:', token ? 'Token exists' : 'No token')
-      
       const response = await fetch('/api/admin/stats', {
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
       
       console.log('Stats response status:', response.status)

@@ -56,14 +56,10 @@ export default function CompleteProfilePage() {
     setLoading(true)
 
     try {
-      const token = localStorage.getItem('token')
-      
-      const response = await fetch('/api/auth/complete-profile', {
+            const response = await fetch('/api/auth/complete-profile', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(formData),
       })
 

@@ -10,7 +10,7 @@ export async function GET(request, { params }) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { id } = params
+    const { id } = await params
     const [location] = await executeQuery(
       'SELECT id, name as location_name, description, capacity, is_active, created_at, updated_at FROM study_locations WHERE id = ?',
       [id]
@@ -35,7 +35,7 @@ export async function PUT(request, { params }) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { id } = params
+    const { id } = await params
     const body = await request.json()
     const { location_name, description, capacity, is_active } = body
 
@@ -86,7 +86,7 @@ export async function DELETE(request, { params }) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { id } = params
+    const { id } = await params
 
     // Check if location exists
     const [existing] = await executeQuery(

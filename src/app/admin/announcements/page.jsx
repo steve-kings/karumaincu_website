@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { Megaphone, Plus, Search, X, AlertCircle, Trash2 } from 'lucide-react'
-import ImageUpload from '@/components/ImageUpload'
 
 export default function AnnouncementManagementPage() {
   const [announcements, setAnnouncements] = useState([])
@@ -16,7 +15,6 @@ export default function AnnouncementManagementPage() {
     priority: 'medium',
     category: 'general',
     expires_at: '',
-    featured_image: '',
     status: 'published'
   })
 
@@ -27,13 +25,12 @@ export default function AnnouncementManagementPage() {
   const fetchAnnouncements = async () => {
     try {
       setLoading(true)
-      const token = localStorage.getItem('token')
-      const params = new URLSearchParams()
+            const params = new URLSearchParams()
       
       if (search) params.append('search', search)
 
       const response = await fetch(`/api/admin/announcements?${params}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
 
       if (response.ok) {
@@ -50,17 +47,16 @@ export default function AnnouncementManagementPage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const token = localStorage.getItem('token')
-      const url = editingAnnouncement 
+            const url = editingAnnouncement 
         ? `/api/admin/announcements/${editingAnnouncement.id}`
         : '/api/admin/announcements'
       
       const response = await fetch(url, {
         method: editingAnnouncement ? 'PUT' : 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify(formData)
       })
 
@@ -91,10 +87,9 @@ export default function AnnouncementManagementPage() {
     if (!confirm('Are you sure you want to delete this announcement?')) return
 
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch(`/api/admin/announcements/${id}`, {
+            const response = await fetch(`/api/admin/announcements/${id}`, {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
 
       if (response.ok) {
@@ -334,12 +329,6 @@ export default function AnnouncementManagementPage() {
                     placeholder="Announcement content..."
                   />
                 </div>
-
-                <ImageUpload
-                  label="Featured Image"
-                  value={formData.featured_image}
-                  onChange={(url) => setFormData({ ...formData, featured_image: url })}
-                />
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>

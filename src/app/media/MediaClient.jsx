@@ -5,6 +5,8 @@ import { useState } from 'react'
 export default function MediaClient({ galleries }) {
   const [selectedCategory, setSelectedCategory] = useState('all')
 
+
+
   const categories = [
     { id: 'all', name: 'All Photos', color: 'purple' },
     { id: 'worship', name: 'Worship', color: 'teal' },
@@ -85,18 +87,19 @@ export default function MediaClient({ galleries }) {
                 onClick={() => handleGalleryClick(gallery)}
               >
                 <div className="relative aspect-square">
-                  {gallery.thumbnail_url ? (
+                  {gallery.thumbnail_url && gallery.thumbnail_url.includes('unsplash.com') ? (
                     <img 
                       src={gallery.thumbnail_url} 
                       alt={gallery.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      onError={(e) => {
+                        e.target.src = '/logo.png'
+                        e.target.className = 'w-20 h-20 object-contain mx-auto'
+                      }}
                     />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-purple-100 to-teal-100 flex items-center justify-center">
-                      <div className="text-center">
-                        <i className="fas fa-images text-4xl text-gray-400 mb-2"></i>
-                        <p className="text-xs text-gray-500 font-medium">Gallery</p>
-                      </div>
+                      <img src="/logo.png" alt="KarUCU" className="w-20 h-20 object-contain" />
                     </div>
                   )}
                   

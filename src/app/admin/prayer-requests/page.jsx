@@ -17,8 +17,7 @@ export default function AdminPrayerRequestsPage() {
   }, [])
 
   const checkAuth = () => {
-    const token = localStorage.getItem('token')
-    const user = JSON.parse(localStorage.getItem('user') || '{}')
+        const user = JSON.parse(localStorage.getItem('user') || '{}')
     
     if (!token || user.role !== 'admin') {
       router.push('/login')
@@ -27,10 +26,9 @@ export default function AdminPrayerRequestsPage() {
 
   const fetchRequests = async () => {
     try {
-      const token = localStorage.getItem('token')
-      // Use admin endpoint to get all prayers
+            // Use admin endpoint to get all prayers
       const response = await fetch('/api/admin/prayers', {
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
       
       if (response.ok) {
@@ -49,13 +47,10 @@ export default function AdminPrayerRequestsPage() {
 
   const updateStatus = async (id, status, testimony = null) => {
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch(`/api/prayer-requests/${id}`, {
+            const response = await fetch(`/api/prayer-requests/${id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ 
           status,
           testimony,
@@ -77,10 +72,9 @@ export default function AdminPrayerRequestsPage() {
     if (!confirm('Delete this prayer request? This action cannot be undone.')) return
 
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch(`/api/prayer-requests/${id}`, {
+            const response = await fetch(`/api/prayer-requests/${id}`, {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
 
       if (response.ok) {

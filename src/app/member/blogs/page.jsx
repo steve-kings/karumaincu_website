@@ -32,25 +32,24 @@ export default function MemberBlogsPage() {
   const fetchData = async () => {
     try {
       setLoading(true)
-      const token = localStorage.getItem('token')
-      
-      if (!token) {
-        router.push('/login')
-        return
-      }
 
       // Fetch blogs
       const blogsResponse = await fetch(`/api/member/blogs?status=${filter}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
       const blogsData = await blogsResponse.json()
       
       if (blogsData.success) {
         setBlogs(blogsData.blogs)
+      } else if (blogsResponse.status === 401) {
+        router.push('/login')
+        return
       }
 
       // Fetch categories
-      const categoriesResponse = await fetch('/api/member/blogs/categories')
+      const categoriesResponse = await fetch('/api/member/blogs/categories', {
+        credentials: 'include'
+      })
       const categoriesData = await categoriesResponse.json()
       
       if (categoriesData.success) {
@@ -59,7 +58,7 @@ export default function MemberBlogsPage() {
 
       // Fetch stats
       const statsResponse = await fetch('/api/member/blogs/stats', {
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
       const statsData = await statsResponse.json()
       
@@ -90,7 +89,6 @@ export default function MemberBlogsPage() {
     }
 
     try {
-      const token = localStorage.getItem('token')
       const tags = formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
 
       const url = editingBlog 
@@ -102,9 +100,9 @@ export default function MemberBlogsPage() {
       const response = await fetch(url, {
         method,
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({
           title: formData.title,
           content: formData.content,
@@ -162,10 +160,9 @@ export default function MemberBlogsPage() {
     if (!confirm('Are you sure you want to delete this blog?')) return
 
     try {
-      const token = localStorage.getItem('token')
       const response = await fetch(`/api/member/blogs/${id}`, {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
 
       const data = await response.json()

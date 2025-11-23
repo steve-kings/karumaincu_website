@@ -36,29 +36,22 @@ export default function MemberDashboard() {
 
   const fetchUserData = async () => {
     try {
-      const token = localStorage.getItem('token')
-      if (!token) {
-        router.push('/login')
-        return
-      }
-
       const profileResponse = await fetch('/api/auth/profile', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+        cache: 'no-store',
+        credentials: 'include'
       })
 
       if (profileResponse.ok) {
         const profileData = await profileResponse.json()
         setUser(profileData.user)
       } else {
-        localStorage.removeItem('token')
         router.push('/login')
         return
       }
 
     } catch (error) {
       console.error('Error fetching user data:', error)
+      router.push('/login')
     } finally {
       setLoading(false)
     }
@@ -66,32 +59,32 @@ export default function MemberDashboard() {
 
   const checkOpenSessions = async () => {
     try {
-      const token = localStorage.getItem('token')
-      
       // Check for open sessions
-      const sessionsResponse = await fetch('/api/member/bible-study/sessions')
+      const sessionsResponse = await fetch('/api/member/bible-study/sessions', {
+        credentials: 'include'
+      })
       if (sessionsResponse.ok) {
         const sessionsData = await sessionsResponse.json()
         if (sessionsData.data && sessionsData.data.length > 0) {
           setOpenSession(sessionsData.data[0])
           
           // Get locations
-          const locationsResponse = await fetch('/api/member/bible-study/locations')
+          const locationsResponse = await fetch('/api/member/bible-study/locations', {
+            credentials: 'include'
+          })
           if (locationsResponse.ok) {
             const locationsData = await locationsResponse.json()
             setLocations(locationsData.data || [])
           }
           
           // Check if user already registered
-          if (token) {
-            const myRegsResponse = await fetch('/api/member/bible-study/my-registrations', {
-              headers: { 'Authorization': `Bearer ${token}` }
-            })
-            if (myRegsResponse.ok) {
-              const myRegsData = await myRegsResponse.json()
-              const registered = myRegsData.data?.some(r => r.session_id === sessionsData.data[0].id)
-              setHasRegistered(registered)
-            }
+          const myRegsResponse = await fetch('/api/member/bible-study/my-registrations', {
+            credentials: 'include'
+          })
+          if (myRegsResponse.ok) {
+            const myRegsData = await myRegsResponse.json()
+            const registered = myRegsData.data?.some(r => r.session_id === sessionsData.data[0].id)
+            setHasRegistered(registered)
           }
         }
       }

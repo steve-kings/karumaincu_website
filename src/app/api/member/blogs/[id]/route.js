@@ -1,26 +1,22 @@
 import { NextResponse } from 'next/server'
 import { query } from '@/lib/db'
-import jwt from 'jsonwebtoken'
+import { verifyToken } from '@/lib/auth'
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production'
-
-function verifyToken(request) {
+// Helper to extract token from request and verify
+function verifyRequest(request) {
   const authHeader = request.headers.get('authorization')
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return null
   }
 
   const token = authHeader.substring(7)
-  try {
-    return jwt.verify(token, JWT_SECRET)
-  } catch (error) {
-    return null
-  }
+  return verifyToken(token)
 }
 
 // GET - Get single blog
 export async function GET(request, { params }) {
   try {
+    const { id } = await params
     const decoded = verifyToken(request)
     if (!decoded) {
       return NextResponse.json(
@@ -74,7 +70,8 @@ export async function GET(request, { params }) {
 // PUT - Update blog
 export async function PUT(request, { params }) {
   try {
-    const decoded = verifyToken(request)
+    const { id } = await params
+    const decoded = verifyRequest(request)
     if (!decoded) {
       return NextResponse.json(
         { success: false, message: 'Unauthorized' },
@@ -142,7 +139,8 @@ export async function PUT(request, { params }) {
 // DELETE - Delete blog
 export async function DELETE(request, { params }) {
   try {
-    const decoded = verifyToken(request)
+    const { id } = await params
+    const decoded = verifyRequest(request)
     if (!decoded) {
       return NextResponse.json(
         { success: false, message: 'Unauthorized' },

@@ -28,13 +28,12 @@ export default function SermonManagementPage() {
   const fetchSermons = async () => {
     try {
       setLoading(true)
-      const token = localStorage.getItem('token')
-      const params = new URLSearchParams()
+            const params = new URLSearchParams()
       
       if (search) params.append('search', search)
 
       const response = await fetch(`/api/admin/sermons?${params}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
 
       if (response.ok) {
@@ -51,17 +50,16 @@ export default function SermonManagementPage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const token = localStorage.getItem('token')
-      const url = editingSermon 
+            const url = editingSermon 
         ? `/api/admin/sermons/${editingSermon.id}`
         : '/api/admin/sermons'
       
       const response = await fetch(url, {
         method: editingSermon ? 'PUT' : 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify(formData)
       })
 
@@ -96,10 +94,9 @@ export default function SermonManagementPage() {
     if (!confirm('Are you sure you want to delete this sermon?')) return
 
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch(`/api/admin/sermons/${id}`, {
+            const response = await fetch(`/api/admin/sermons/${id}`, {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
 
       if (response.ok) {

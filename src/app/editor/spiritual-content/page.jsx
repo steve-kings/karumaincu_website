@@ -2,8 +2,11 @@
 
 import { useState } from 'react';
 import EditorLayout from '@/components/EditorLayout';
+import { useSocket } from '@/contexts/SocketContext';
+import { emitNewReadingCalendar } from '@/hooks/useRealtime';
 
 export default function EditorSpiritualContentPage() {
+  const { socket } = useSocket();
   const [activeTab, setActiveTab] = useState('verse');
   const [verseData, setVerseData] = useState({
     verse_reference: '',
@@ -25,13 +28,10 @@ export default function EditorSpiritualContentPage() {
     e.preventDefault();
 
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('/api/admin/spiritual/verse-of-day', {
+            const response = await fetch('/api/admin/spiritual/verse-of-day', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
-        },
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(verseData)
       });
 
@@ -57,18 +57,22 @@ export default function EditorSpiritualContentPage() {
     e.preventDefault();
 
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('/api/admin/spiritual/reading-calendar', {
+            const response = await fetch('/api/admin/spiritual/reading-calendar', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
-        },
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(readingData)
       });
 
       if (response.ok) {
+        const result = await response.json();
         alert('Reading calendar entry added successfully!');
+        
+        // Emit real-time update
+        if (socket && result.data) {
+          emitNewReadingCalendar(socket, result.data);
+        }
+        
         setReadingData({
           month: new Date().getMonth() + 1,
           year: new Date().getFullYear(),

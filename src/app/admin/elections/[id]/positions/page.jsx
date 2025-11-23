@@ -23,9 +23,8 @@ export default function ManagePositionsPage() {
 
   const fetchPositions = async () => {
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch(`/api/admin/elections/${params.id}/positions`, {
-        headers: { 'Authorization': `Bearer ${token}` }
+            const response = await fetch(`/api/admin/elections/${params.id}/positions`, {
+        credentials: 'include'
       })
       
       if (response.ok) {
@@ -43,16 +42,12 @@ export default function ManagePositionsPage() {
     e.preventDefault()
     
     try {
-      const token = localStorage.getItem('token')
-      
-      if (editingPosition) {
+            if (editingPosition) {
         // Update
         const response = await fetch(`/api/admin/elections/${params.id}/positions`, {
           method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
+          headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
           body: JSON.stringify({
             position_id: editingPosition.id,
             ...formData
@@ -66,10 +61,8 @@ export default function ManagePositionsPage() {
         // Create
         const response = await fetch(`/api/admin/elections/${params.id}/positions`, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
+          headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
           body: JSON.stringify(formData)
         })
 
@@ -92,10 +85,9 @@ export default function ManagePositionsPage() {
     if (!confirm('Delete this position?')) return
 
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch(`/api/admin/elections/${params.id}/positions?position_id=${positionId}`, {
+            const response = await fetch(`/api/admin/elections/${params.id}/positions?position_id=${positionId}`, {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
 
       if (response.ok) {

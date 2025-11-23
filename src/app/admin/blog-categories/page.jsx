@@ -19,8 +19,7 @@ export default function BlogCategoriesPage() {
   }, [])
 
   const checkAuth = async () => {
-    const token = localStorage.getItem('token')
-    if (!token) {
+        if (!token) {
       router.push('/login')
     }
   }
@@ -28,9 +27,8 @@ export default function BlogCategoriesPage() {
   const fetchCategories = async () => {
     try {
       setLoading(true)
-      const token = localStorage.getItem('token')
-      const response = await fetch('/api/admin/blog-categories', {
-        headers: { 'Authorization': `Bearer ${token}` }
+            const response = await fetch('/api/admin/blog-categories', {
+        credentials: 'include'
       })
 
       if (response.ok) {
@@ -48,17 +46,16 @@ export default function BlogCategoriesPage() {
     e.preventDefault()
     
     try {
-      const token = localStorage.getItem('token')
-      const url = editingCategory 
+            const url = editingCategory 
         ? `/api/admin/blog-categories/${editingCategory.id}`
         : '/api/admin/blog-categories'
       
       const response = await fetch(url, {
         method: editingCategory ? 'PUT' : 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify(formData)
       })
 
@@ -83,10 +80,9 @@ export default function BlogCategoriesPage() {
     }
 
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch(`/api/admin/blog-categories/${id}`, {
+            const response = await fetch(`/api/admin/blog-categories/${id}`, {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
 
       if (response.ok) {

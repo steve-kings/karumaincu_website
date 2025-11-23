@@ -10,7 +10,7 @@ export async function PUT(request, { params }) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { id } = params
+    const { id } = await params
     const body = await request.json()
     const { title, description, start_date, end_date, status, max_nominations_per_member } = body
 
@@ -73,7 +73,7 @@ export async function DELETE(request, { params }) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { id } = params
+    const { id } = await params
 
     await query('DELETE FROM leader_elections WHERE id = ?', [id])
 

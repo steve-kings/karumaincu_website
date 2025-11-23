@@ -4,7 +4,7 @@ import SermonService from '@/services/SermonService'
 // GET /api/sermons/[id] - Get single sermon (public)
 export async function GET(request, { params }) {
   try {
-    const { id } = params
+    const { id } = await params
     const sermon = await SermonService.getById(id)
 
     if (!sermon) {

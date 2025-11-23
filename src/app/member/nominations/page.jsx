@@ -23,9 +23,8 @@ export default function MemberNominationsPage() {
 
   const fetchElections = async () => {
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch('/api/member/elections', {
-        headers: { 'Authorization': `Bearer ${token}` }
+            const response = await fetch('/api/member/elections', {
+        credentials: 'include'
       })
       
       if (response.ok) {
@@ -44,9 +43,8 @@ export default function MemberNominationsPage() {
 
   const fetchMyNominations = async () => {
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch('/api/member/nominations', {
-        headers: { 'Authorization': `Bearer ${token}` }
+            const response = await fetch('/api/member/nominations', {
+        credentials: 'include'
       })
       
       if (response.ok) {
@@ -74,15 +72,14 @@ export default function MemberNominationsPage() {
 
     setSearching(true)
     try {
-      const token = localStorage.getItem('token')
-      const params = new URLSearchParams({
+            const params = new URLSearchParams({
         search: searchTerm,
         ...(filters.year && { year: filters.year }),
         ...(filters.course && { course: filters.course })
       })
 
       const response = await fetch(`/api/member/search-members?${params}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
       
       if (response.ok) {
@@ -120,9 +117,8 @@ export default function MemberNominationsPage() {
 
   const fetchPositions = async (electionId) => {
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch(`/api/member/elections/${electionId}/positions`, {
-        headers: { 'Authorization': `Bearer ${token}` }
+            const response = await fetch(`/api/member/elections/${electionId}/positions`, {
+        credentials: 'include'
       })
       
       if (response.ok) {
@@ -157,13 +153,10 @@ export default function MemberNominationsPage() {
 
   const submitNomination = async () => {
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch('/api/member/nominations', {
+            const response = await fetch('/api/member/nominations', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({
           election_id: selectedElection,
           nominee_id: selectedNominee.id,
@@ -221,13 +214,10 @@ export default function MemberNominationsPage() {
     }
 
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch('/api/member/nominations/complete', {
+            const response = await fetch('/api/member/nominations/complete', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({
           election_id: selectedElection
         })
@@ -288,7 +278,7 @@ export default function MemberNominationsPage() {
           </div>
         ) : elections.length === 0 ? (
           <div className="text-center py-16 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800">
-            <span className="text-6xl mb-4 block">🗳️</span>
+            <i className="fas fa-vote-yea text-6xl mb-4 block text-gray-400 dark:text-neutral-600"></i>
             <h3 className="text-xl font-semibold text-gray-600 dark:text-gray-400 mb-2">
               No active elections
             </h3>

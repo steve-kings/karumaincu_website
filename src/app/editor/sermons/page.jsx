@@ -24,13 +24,16 @@ export default function EditorSermonsPage() {
   const fetchSermons = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/sermons');
+      const response = await fetch('/api/sermons', {
+        credentials: 'include'
+      });
       if (response.ok) {
         const data = await response.json();
-        setSermons(data);
+        setSermons(Array.isArray(data) ? data : (data.data || []));
       }
     } catch (error) {
       console.error('Error fetching sermons:', error);
+      setSermons([]);
     } finally {
       setLoading(false);
     }
@@ -40,13 +43,10 @@ export default function EditorSermonsPage() {
     e.preventDefault();
 
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('/api/admin/sermons', {
+            const response = await fetch('/api/admin/sermons', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
-        },
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(formData)
       });
 

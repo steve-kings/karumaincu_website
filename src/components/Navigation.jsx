@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
 import ThemeToggle from './ThemeToggle'
+import RoleSwitcher from './RoleSwitcher'
 
 export default function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -17,19 +18,34 @@ export default function Navigation() {
 
   const checkAuth = async () => {
     try {
-      const token = localStorage.getItem('token')
-      if (!token) return
-
+      // Use cookies instead of localStorage
       const response = await fetch('/api/auth/profile', {
-        headers: { 'Authorization': 'Bearer ' + token }
+        cache: 'no-store',
+        credentials: 'include'
       })
 
       if (response.ok) {
         const data = await response.json()
-        setUser(data)
+        setUser(data.user)
       }
     } catch (error) {
       console.error('Auth check error:', error)
+    }
+  }
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include'
+      })
+
+      if (response.ok) {
+        setUser(null)
+        window.location.href = '/login'
+      }
+    } catch (error) {
+      console.error('Logout error:', error)
     }
   }
 
@@ -116,6 +132,9 @@ export default function Navigation() {
 
             {/* Right Side Actions */}
             <div className="flex items-center space-x-4">
+              {/* Role Switcher (for admins) */}
+              <RoleSwitcher />
+              
               {/* Theme Toggle */}
               <ThemeToggle />
 
@@ -133,11 +152,18 @@ export default function Navigation() {
                 {user ? (
                   <>
                     <Link
-                      href={user.role === 'admin' ? '/admin' : user.role === 'editor' ? '/editor' : '/member'}
+                      href={user.role?.trim().toLowerCase() === 'admin' ? '/admin' : user.role?.trim().toLowerCase() === 'editor' ? '/editor' : '/member'}
                       className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium"
                     >
-                      {user.role === 'admin' ? 'Admin' : user.role === 'editor' ? 'Editor' : 'Dashboard'}
+                      {user.role?.trim().toLowerCase() === 'admin' ? 'Admin' : user.role?.trim().toLowerCase() === 'editor' ? 'Editor' : 'Dashboard'}
                     </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium flex items-center space-x-2"
+                    >
+                      <i className="fas fa-sign-out-alt"></i>
+                      <span>Logout</span>
+                    </button>
                   </>
                 ) : (
                   <>
@@ -224,13 +250,25 @@ export default function Navigation() {
 
                 <div className="space-y-2">
                   {user ? (
-                    <Link
-                      href={user.role === 'admin' ? '/admin' : user.role === 'editor' ? '/editor' : '/member'}
-                      className="block w-full text-center py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      {user.role === 'admin' ? 'Admin Dashboard' : user.role === 'editor' ? 'Editor Dashboard' : 'My Dashboard'}
-                    </Link>
+                    <>
+                      <Link
+                        href={user.role?.trim().toLowerCase() === 'admin' ? '/admin' : user.role?.trim().toLowerCase() === 'editor' ? '/editor' : '/member'}
+                        className="block w-full text-center py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {user.role?.trim().toLowerCase() === 'admin' ? 'Admin Dashboard' : user.role?.trim().toLowerCase() === 'editor' ? 'Editor Dashboard' : 'My Dashboard'}
+                      </Link>
+                      <button
+                        onClick={() => {
+                          setIsMobileMenuOpen(false)
+                          handleLogout()
+                        }}
+                        className="flex items-center justify-center space-x-2 w-full py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all"
+                      >
+                        <i className="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                      </button>
+                    </>
                   ) : (
                     <>
                       <Link

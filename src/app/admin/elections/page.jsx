@@ -24,9 +24,8 @@ export default function AdminElectionsPage() {
 
   const fetchElections = async () => {
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch('/api/admin/elections', {
-        headers: { 'Authorization': `Bearer ${token}` }
+            const response = await fetch('/api/admin/elections', {
+        credentials: 'include'
       })
       
       if (response.ok) {
@@ -44,17 +43,14 @@ export default function AdminElectionsPage() {
     e.preventDefault()
     
     try {
-      const token = localStorage.getItem('token')
-      const url = editingElection 
+            const url = editingElection 
         ? `/api/admin/elections/${editingElection.id}`
         : '/api/admin/elections'
       
       const response = await fetch(url, {
         method: editingElection ? 'PUT' : 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(formData)
       })
 
@@ -108,13 +104,10 @@ export default function AdminElectionsPage() {
     if (!confirm(`Are you sure you want to ${status} this election?`)) return
 
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch(`/api/admin/elections/${id}`, {
+            const response = await fetch(`/api/admin/elections/${id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ status })
       })
 
@@ -131,10 +124,9 @@ export default function AdminElectionsPage() {
     if (!confirm('Are you sure? This will delete all nominations!')) return
 
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch(`/api/admin/elections/${id}`, {
+            const response = await fetch(`/api/admin/elections/${id}`, {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
 
       if (response.ok) {

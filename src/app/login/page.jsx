@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import GoogleLoginButton from '@/components/GoogleLoginButton'
 
 export default function LoginPage() {
@@ -13,7 +12,6 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const router = useRouter()
 
   const handleChange = (e) => {
     setFormData({
@@ -29,34 +27,38 @@ export default function LoginPage() {
     setError('')
 
     try {
+      console.log('Submitting login form...', { email: formData.email })
+
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify(formData),
       })
 
       const data = await response.json()
 
       if (data.success) {
-        // Store token and user data in localStorage
-        localStorage.setItem('token', data.data.token)
-        localStorage.setItem('user', JSON.stringify(data.data.user))
-        
-        // Redirect based on user role
         const user = data.data.user
-        if (user.role === 'admin') {
-          router.push('/admin')
+        const role = user.role ? user.role.trim().toLowerCase() : 'member'
+
+        // Redirect based on role
+        if (role === 'admin') {
+          window.location.href = '/admin'
+        } else if (role === 'editor') {
+          window.location.href = '/editor'
         } else {
-          router.push('/member')
+          window.location.href = '/member'
         }
       } else {
         setError(data.message || 'Login failed')
+        setLoading(false)
       }
     } catch (error) {
+      console.error('Login exception:', error)
       setError('Network error. Please try again.')
-    } finally {
       setLoading(false)
     }
   }
@@ -78,10 +80,10 @@ export default function LoginPage() {
             </div>
           </Link>
           <h2 className="text-3xl font-bold text-white mb-2">
-            Welcome Back
+            Member Login
           </h2>
           <p className="text-gray-400">
-            Sign in to your account to continue
+            Sign in to your member account
           </p>
         </div>
 
@@ -93,7 +95,7 @@ export default function LoginPage() {
             </div>
           )}
 
-          {/* Google Login Button - At Top */}
+          {/* Google Login Button */}
           <div className="mb-6">
             <GoogleLoginButton />
           </div>
@@ -191,6 +193,8 @@ export default function LoginPage() {
               )}
             </button>
           </form>
+
+
 
           {/* Divider */}
           <div className="mt-6">

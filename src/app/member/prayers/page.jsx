@@ -18,14 +18,14 @@ export default function MemberPrayersPage() {
   });
 
   const categories = [
-    { value: 'personal', label: 'Personal', icon: '🙏' },
-    { value: 'health', label: 'Health', icon: '❤️' },
-    { value: 'family', label: 'Family', icon: '👨‍👩‍👧‍👦' },
-    { value: 'work', label: 'Work/Studies', icon: '📚' },
-    { value: 'spiritual', label: 'Spiritual Growth', icon: '✨' },
-    { value: 'financial', label: 'Financial', icon: '💰' },
-    { value: 'relationships', label: 'Relationships', icon: '💑' },
-    { value: 'other', label: 'Other', icon: '📝' }
+    { value: 'personal', label: 'Personal', icon: 'fa-praying-hands' },
+    { value: 'health', label: 'Health', icon: 'fa-heartbeat' },
+    { value: 'family', label: 'Family', icon: 'fa-users' },
+    { value: 'work', label: 'Work/Studies', icon: 'fa-briefcase' },
+    { value: 'spiritual', label: 'Spiritual Growth', icon: 'fa-cross' },
+    { value: 'financial', label: 'Financial', icon: 'fa-dollar-sign' },
+    { value: 'relationships', label: 'Relationships', icon: 'fa-heart' },
+    { value: 'other', label: 'Other', icon: 'fa-list' }
   ];
 
   useEffect(() => {
@@ -36,11 +36,10 @@ export default function MemberPrayersPage() {
   const fetchPrayers = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
       const url = filter === 'all' ? '/api/member/prayers' : '/api/member/prayers?status=' + filter;
       
       const response = await fetch(url, {
-        headers: { 'Authorization': 'Bearer ' + token }
+        credentials: 'include'
       });
       
       if (response.ok) {
@@ -56,9 +55,8 @@ export default function MemberPrayersPage() {
 
   const fetchStats = async () => {
     try {
-      const token = localStorage.getItem('token');
       const response = await fetch('/api/member/prayers/stats', {
-        headers: { 'Authorization': 'Bearer ' + token }
+        credentials: 'include'
       });
       
       if (response.ok) {
@@ -74,13 +72,12 @@ export default function MemberPrayersPage() {
     e.preventDefault();
     
     try {
-      const token = localStorage.getItem('token');
       const response = await fetch('/api/member/prayers', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
+          'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify(formData)
       });
 
@@ -128,7 +125,7 @@ export default function MemberPrayersPage() {
                 <p className="text-sm text-gray-600 dark:text-neutral-400 mb-1">Total</p>
                 <p className="text-3xl font-bold text-pink-600 dark:text-pink-400">{stats.total}</p>
               </div>
-              <span className="text-2xl">🙏</span>
+              <i className="fas fa-praying-hands text-2xl text-pink-600 dark:text-pink-400"></i>
             </div>
           </div>
 
@@ -299,7 +296,7 @@ export default function MemberPrayersPage() {
           </div>
         ) : prayers.length === 0 ? (
           <div className="text-center py-16 bg-white dark:bg-neutral-950 rounded-2xl shadow-lg border border-gray-100 dark:border-neutral-900">
-            <span className="text-6xl mb-4 block">🙏</span>
+            <i className="fas fa-praying-hands text-6xl mb-4 block text-gray-400 dark:text-neutral-600"></i>
             <h3 className="text-xl font-semibold text-gray-600 dark:text-neutral-400 mb-2">No prayer requests yet</h3>
             <p className="text-gray-500 dark:text-neutral-500 mb-6">Submit your first prayer request</p>
             <button

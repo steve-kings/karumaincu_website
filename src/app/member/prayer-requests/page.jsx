@@ -48,13 +48,10 @@ export default function PrayerRequestsPage() {
     e.preventDefault()
     
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch('/api/prayer-requests', {
+            const response = await fetch('/api/prayer-requests', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(formData)
       })
 
@@ -85,13 +82,10 @@ export default function PrayerRequestsPage() {
     if (!testimony) return
 
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch(`/api/prayer-requests/${id}`, {
+            const response = await fetch(`/api/prayer-requests/${id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ status: 'answered', testimony })
       })
 
@@ -111,12 +105,9 @@ export default function PrayerRequestsPage() {
     if (!confirm('Are you sure you want to delete this prayer request?')) return
 
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch(`/api/prayer-requests/${id}`, {
+            const response = await fetch(`/api/prayer-requests/${id}`, {
         method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+        credentials: 'include'
       })
 
       if (response.ok) {

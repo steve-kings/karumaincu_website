@@ -16,23 +16,27 @@ export function SocketProvider({ children }) {
       transports: ['websocket', 'polling']
     })
 
-    socketInstance.on('connect', () => {
+    socketInstance.on('connect', async () => {
       console.log('WebSocket connected')
       setIsConnected(true)
 
-      // Authenticate user if logged in
-      const token = localStorage.getItem('token')
-      if (token) {
-        try {
-          const payload = JSON.parse(atob(token.split('.')[1]))
+      // Authenticate user if logged in (using cookie-based auth)
+      try {
+        const response = await fetch('/api/auth/profile', {
+          credentials: 'include',
+          cache: 'no-store'
+        })
+        
+        if (response.ok) {
+          const data = await response.json()
           socketInstance.emit('authenticate', {
-            userId: payload.id,
-            email: payload.email,
-            role: payload.role
+            userId: data.user.id,
+            email: data.user.email,
+            role: data.user.role
           })
-        } catch (error) {
-          console.error('Error parsing token:', error)
         }
+      } catch (error) {
+        console.error('Error authenticating socket:', error)
       }
     })
 

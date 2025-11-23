@@ -24,16 +24,9 @@ export default function ProfilePage() {
 
   const fetchProfile = async () => {
     try {
-      const token = localStorage.getItem('token')
-      if (!token) {
-        router.push('/login')
-        return
-      }
-
       const response = await fetch('/api/auth/profile', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+        cache: 'no-store',
+        credentials: 'include'
       })
 
       if (response.ok) {
@@ -51,6 +44,7 @@ export default function ProfilePage() {
       }
     } catch (error) {
       console.error('Error fetching profile:', error)
+      router.push('/login')
     } finally {
       setLoading(false)
     }
@@ -69,13 +63,12 @@ export default function ProfilePage() {
     setMessage({ type: '', text: '' })
 
     try {
-      const token = localStorage.getItem('token')
       const response = await fetch('/api/auth/profile', {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify(formData)
       })
 

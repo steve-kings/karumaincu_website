@@ -18,9 +18,8 @@ export default function EditorDashboard() {
 
   const fetchStats = async () => {
     try {
-      const token = localStorage.getItem('token');
       const response = await fetch('/api/editor/stats', {
-        headers: { 'Authorization': 'Bearer ' + token }
+        credentials: 'include'
       });
 
       if (response.ok) {
@@ -50,35 +49,41 @@ export default function EditorDashboard() {
           <>
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <div className="bg-white dark:bg-neutral-900 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-neutral-800">
+              <div className="bg-white dark:bg-neutral-900 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-neutral-800 hover:shadow-xl transition-shadow">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-gray-600 dark:text-neutral-400 mb-1">Pending Blogs</p>
                     <p className="text-3xl font-bold text-purple-600 dark:text-purple-400">{stats.pendingBlogs}</p>
                   </div>
-                  <span className="text-4xl">📝</span>
+                  <div className="w-14 h-14 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
+                    <i className="fas fa-clock text-purple-600 dark:text-purple-400 text-2xl"></i>
+                  </div>
                 </div>
                 <p className="text-xs text-gray-500 dark:text-neutral-500 mt-2">Awaiting review</p>
               </div>
 
-              <div className="bg-white dark:bg-neutral-900 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-neutral-800">
+              <div className="bg-white dark:bg-neutral-900 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-neutral-800 hover:shadow-xl transition-shadow">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-gray-600 dark:text-neutral-400 mb-1">Prayer Requests</p>
                     <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">{stats.prayerRequests}</p>
                   </div>
-                  <span className="text-4xl">🙏</span>
+                  <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                    <i className="fas fa-praying-hands text-blue-600 dark:text-blue-400 text-2xl"></i>
+                  </div>
                 </div>
                 <p className="text-xs text-gray-500 dark:text-neutral-500 mt-2">Active requests</p>
               </div>
 
-              <div className="bg-white dark:bg-neutral-900 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-neutral-800">
+              <div className="bg-white dark:bg-neutral-900 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-neutral-800 hover:shadow-xl transition-shadow">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-gray-600 dark:text-neutral-400 mb-1">Bible Study</p>
                     <p className="text-3xl font-bold text-green-600 dark:text-green-400">{stats.bibleStudyRegistrations}</p>
                   </div>
-                  <span className="text-4xl">📖</span>
+                  <div className="w-14 h-14 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
+                    <i className="fas fa-book-bible text-green-600 dark:text-green-400 text-2xl"></i>
+                  </div>
                 </div>
                 <p className="text-xs text-gray-500 dark:text-neutral-500 mt-2">Registrations</p>
               </div>
@@ -86,34 +91,45 @@ export default function EditorDashboard() {
 
             {/* Quick Actions */}
             <div className="bg-white dark:bg-neutral-900 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-neutral-800 mb-8">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Quick Actions</h2>
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                <i className="fas fa-bolt text-yellow-500 mr-2"></i>
+                Quick Actions
+              </h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <a
                   href="/editor/blogs"
-                  className="p-4 rounded-lg bg-purple-50 dark:bg-purple-950/30 hover:bg-purple-100 dark:hover:bg-purple-950/50 transition text-center"
+                  className="p-4 rounded-lg bg-purple-50 dark:bg-purple-950/30 hover:bg-purple-100 dark:hover:bg-purple-950/50 transition-all hover:scale-105 text-center group"
                 >
-                  <span className="text-3xl block mb-2">📝</span>
+                  <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/50 rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                    <i className="fas fa-blog text-purple-600 dark:text-purple-400 text-xl"></i>
+                  </div>
                   <span className="text-sm font-medium text-gray-900 dark:text-white">Review Blogs</span>
                 </a>
                 <a
                   href="/editor/sermons"
-                  className="p-4 rounded-lg bg-blue-50 dark:bg-blue-950/30 hover:bg-blue-100 dark:hover:bg-blue-950/50 transition text-center"
+                  className="p-4 rounded-lg bg-blue-50 dark:bg-blue-950/30 hover:bg-blue-100 dark:hover:bg-blue-950/50 transition-all hover:scale-105 text-center group"
                 >
-                  <span className="text-3xl block mb-2">🎥</span>
+                  <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                    <i className="fas fa-video text-blue-600 dark:text-blue-400 text-xl"></i>
+                  </div>
                   <span className="text-sm font-medium text-gray-900 dark:text-white">Add Sermon</span>
                 </a>
                 <a
                   href="/editor/gallery"
-                  className="p-4 rounded-lg bg-green-50 dark:bg-green-950/30 hover:bg-green-100 dark:hover:bg-green-950/50 transition text-center"
+                  className="p-4 rounded-lg bg-green-50 dark:bg-green-950/30 hover:bg-green-100 dark:hover:bg-green-950/50 transition-all hover:scale-105 text-center group"
                 >
-                  <span className="text-3xl block mb-2">📷</span>
+                  <div className="w-12 h-12 bg-green-100 dark:bg-green-900/50 rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                    <i className="fas fa-images text-green-600 dark:text-green-400 text-xl"></i>
+                  </div>
                   <span className="text-sm font-medium text-gray-900 dark:text-white">Add Gallery</span>
                 </a>
                 <a
                   href="/editor/spiritual-content"
-                  className="p-4 rounded-lg bg-yellow-50 dark:bg-yellow-950/30 hover:bg-yellow-100 dark:hover:bg-yellow-950/50 transition text-center"
+                  className="p-4 rounded-lg bg-yellow-50 dark:bg-yellow-950/30 hover:bg-yellow-100 dark:hover:bg-yellow-950/50 transition-all hover:scale-105 text-center group"
                 >
-                  <span className="text-3xl block mb-2">✨</span>
+                  <div className="w-12 h-12 bg-yellow-100 dark:bg-yellow-900/50 rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                    <i className="fas fa-cross text-yellow-600 dark:text-yellow-400 text-xl"></i>
+                  </div>
                   <span className="text-sm font-medium text-gray-900 dark:text-white">Add Content</span>
                 </a>
               </div>

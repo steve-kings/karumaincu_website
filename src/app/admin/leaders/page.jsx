@@ -28,13 +28,12 @@ export default function LeaderManagementPage() {
   const fetchLeaders = async () => {
     try {
       setLoading(true)
-      const token = localStorage.getItem('token')
-      const params = new URLSearchParams()
+            const params = new URLSearchParams()
       
       if (search) params.append('search', search)
 
       const response = await fetch(`/api/admin/leaders?${params}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
 
       if (response.ok) {
@@ -51,17 +50,16 @@ export default function LeaderManagementPage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const token = localStorage.getItem('token')
-      const url = editingLeader 
+            const url = editingLeader 
         ? `/api/admin/leaders/${editingLeader.id}`
         : '/api/admin/leaders'
       
       const response = await fetch(url, {
         method: editingLeader ? 'PUT' : 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify(formData)
       })
 
@@ -95,10 +93,9 @@ export default function LeaderManagementPage() {
     if (!confirm('Are you sure you want to delete this leader?')) return
 
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch(`/api/admin/leaders/${id}`, {
+            const response = await fetch(`/api/admin/leaders/${id}`, {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
 
       if (response.ok) {

@@ -19,15 +19,14 @@ export default function UserManagementPage() {
   const fetchUsers = async () => {
     try {
       setLoading(true)
-      const token = localStorage.getItem('token')
-      const params = new URLSearchParams()
+            const params = new URLSearchParams()
       
       if (filterStatus !== 'all') params.append('status', filterStatus)
       if (filterRole !== 'all') params.append('role', filterRole)
       if (search) params.append('search', search)
 
       const response = await fetch(`/api/admin/users?${params}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
 
       if (response.ok) {
@@ -47,13 +46,12 @@ export default function UserManagementPage() {
     }
 
     try {
-      const token = localStorage.getItem('token')
       const response = await fetch(`/api/admin/users/${userId}`, {
         method: 'PUT',
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({ status: newStatus })
       })
 
@@ -75,13 +73,12 @@ export default function UserManagementPage() {
     }
 
     try {
-      const token = localStorage.getItem('token')
       const response = await fetch(`/api/admin/users/${userId}`, {
         method: 'PUT',
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({ role: newRole })
       })
 
@@ -103,10 +100,9 @@ export default function UserManagementPage() {
     }
 
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch(`/api/admin/users/${userId}`, {
+            const response = await fetch(`/api/admin/users/${userId}`, {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
+        credentials: 'include'
       })
 
       if (response.ok) {

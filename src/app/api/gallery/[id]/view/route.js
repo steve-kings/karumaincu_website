@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 
 export async function POST(request, { params }) {
   try {
-    const { id } = params
+    const { id } = await params
 
     // Increment view count
     const query = `

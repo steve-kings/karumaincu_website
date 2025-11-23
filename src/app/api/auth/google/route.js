@@ -2,10 +2,12 @@ import { NextResponse } from 'next/server'
 import { query } from '@/lib/db'
 import jwt from 'jsonwebtoken'
 import { cookies } from 'next/headers'
+import { generateToken } from '@/lib/auth'
 
 export async function POST(request) {
   try {
     const { credential } = await request.json()
+
 
     if (!credential) {
       return NextResponse.json(
@@ -16,7 +18,7 @@ export async function POST(request) {
 
     // Decode the Google JWT token
     const decoded = jwt.decode(credential)
-    
+
     if (!decoded || !decoded.email) {
       return NextResponse.json(
         { success: false, message: 'Invalid Google token' },
@@ -38,7 +40,7 @@ export async function POST(request) {
       // Create new user with Google account
       // Generate a registration number for Google users
       const regNumber = `GOOGLE-${Date.now()}`
-      
+
       const result = await query(
         `INSERT INTO users (
           registration_number,
@@ -90,15 +92,11 @@ export async function POST(request) {
     }
 
     // Generate JWT token
-    const token = jwt.sign(
-      {
-        id: user.id,
-        email: user.email,
-        role: user.role,
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
-    )
+    const token = generateToken({
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    })
 
     // Set cookie
     const cookieStore = cookies()

@@ -6,7 +6,8 @@ export async function GET(request) {
   try {
     const user = await verifyAuth(request)
     
-    if (!user || user.role !== 'admin') {
+    // Allow both admin and editor
+    if (!user || (user.role !== 'admin' && user.role !== 'editor')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -37,7 +38,8 @@ export async function POST(request) {
   try {
     const user = await verifyAuth(request)
     
-    if (!user || user.role !== 'admin') {
+    // Allow both admin and editor
+    if (!user || (user.role !== 'admin' && user.role !== 'editor')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 

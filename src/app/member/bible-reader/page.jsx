@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import MemberLayout from '@/components/MemberLayout'
+import { fetchChapterFromAPI } from '@/lib/bibleApi'
 
 export default function BibleReaderPage() {
   const [selectedBook, setSelectedBook] = useState('Genesis')
@@ -11,6 +12,10 @@ export default function BibleReaderPage() {
   const [notes, setNotes] = useState({})
   const [highlights, setHighlights] = useState({})
   const [bookmarks, setBookmarks] = useState([])
+  const [verses, setVerses] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const [translation, setTranslation] = useState('kjv')
 
   const bibleBooks = {
     'Old Testament': [
@@ -24,8 +29,35 @@ export default function BibleReaderPage() {
       { name: 'Ruth', chapters: 4 },
       { name: '1 Samuel', chapters: 31 },
       { name: '2 Samuel', chapters: 24 },
+      { name: '1 Kings', chapters: 22 },
+      { name: '2 Kings', chapters: 25 },
+      { name: '1 Chronicles', chapters: 29 },
+      { name: '2 Chronicles', chapters: 36 },
+      { name: 'Ezra', chapters: 10 },
+      { name: 'Nehemiah', chapters: 13 },
+      { name: 'Esther', chapters: 10 },
+      { name: 'Job', chapters: 42 },
       { name: 'Psalms', chapters: 150 },
-      { name: 'Proverbs', chapters: 31 }
+      { name: 'Proverbs', chapters: 31 },
+      { name: 'Ecclesiastes', chapters: 12 },
+      { name: 'Song of Solomon', chapters: 8 },
+      { name: 'Isaiah', chapters: 66 },
+      { name: 'Jeremiah', chapters: 52 },
+      { name: 'Lamentations', chapters: 5 },
+      { name: 'Ezekiel', chapters: 48 },
+      { name: 'Daniel', chapters: 12 },
+      { name: 'Hosea', chapters: 14 },
+      { name: 'Joel', chapters: 3 },
+      { name: 'Amos', chapters: 9 },
+      { name: 'Obadiah', chapters: 1 },
+      { name: 'Jonah', chapters: 4 },
+      { name: 'Micah', chapters: 7 },
+      { name: 'Nahum', chapters: 3 },
+      { name: 'Habakkuk', chapters: 3 },
+      { name: 'Zephaniah', chapters: 3 },
+      { name: 'Haggai', chapters: 2 },
+      { name: 'Zechariah', chapters: 14 },
+      { name: 'Malachi', chapters: 4 }
     ],
     'New Testament': [
       { name: 'Matthew', chapters: 28 },
@@ -42,22 +74,45 @@ export default function BibleReaderPage() {
       { name: 'Colossians', chapters: 4 },
       { name: '1 Thessalonians', chapters: 5 },
       { name: '2 Thessalonians', chapters: 3 },
+      { name: '1 Timothy', chapters: 6 },
+      { name: '2 Timothy', chapters: 4 },
+      { name: 'Titus', chapters: 3 },
+      { name: 'Philemon', chapters: 1 },
+      { name: 'Hebrews', chapters: 13 },
+      { name: 'James', chapters: 5 },
+      { name: '1 Peter', chapters: 5 },
+      { name: '2 Peter', chapters: 3 },
+      { name: '1 John', chapters: 5 },
+      { name: '2 John', chapters: 1 },
+      { name: '3 John', chapters: 1 },
+      { name: 'Jude', chapters: 1 },
       { name: 'Revelation', chapters: 22 }
     ]
   }
 
-  // Sample Bible text (in production, this would come from an API)
-  const sampleVerses = [
-    { verse: 1, text: "In the beginning God created the heavens and the earth." },
-    { verse: 2, text: "Now the earth was formless and empty, darkness was over the surface of the deep, and the Spirit of God was hovering over the waters." },
-    { verse: 3, text: "And God said, 'Let there be light,' and there was light." },
-    { verse: 4, text: "God saw that the light was good, and he separated the light from the darkness." },
-    { verse: 5, text: "God called the light 'day,' and the darkness he called 'night.' And there was evening, and there was morning—the first day." }
-  ]
-
   useEffect(() => {
     loadUserData()
   }, [])
+
+  useEffect(() => {
+    loadChapter()
+  }, [selectedBook, selectedChapter, translation])
+
+  const loadChapter = async () => {
+    setLoading(true)
+    setError(null)
+    
+    try {
+      const chapterData = await fetchChapterFromAPI(selectedBook, selectedChapter, translation)
+      setVerses(chapterData.verses || [])
+    } catch (err) {
+      console.error('Error loading chapter:', err)
+      setError('Failed to load chapter. Please try again.')
+      setVerses([])
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const loadUserData = () => {
     const savedNotes = JSON.parse(localStorage.getItem('bible-notes') || '{}')
@@ -236,6 +291,19 @@ export default function BibleReaderPage() {
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-neutral-300 mb-2">
+                    Translation
+                  </label>
+                  <select
+                    value={translation}
+                    onChange={(e) => setTranslation(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-neutral-800 rounded-lg bg-white dark:bg-neutral-900 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="kjv">King James (KJV)</option>
+                    <option value="web">World English (WEB)</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-neutral-300 mb-2">
                     Font Size: {fontSize}px
                   </label>
                   <input
@@ -268,9 +336,14 @@ export default function BibleReaderPage() {
               {/* Chapter Navigation */}
               <div className="p-6 border-b border-gray-200 dark:border-neutral-900">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-2xl font-heading font-bold text-black dark:text-white">
-                    {selectedBook} {selectedChapter}
-                  </h2>
+                  <div>
+                    <h2 className="text-2xl font-heading font-bold text-black dark:text-white">
+                      {selectedBook} {selectedChapter}
+                    </h2>
+                    <p className="text-sm text-gray-500 dark:text-neutral-500 mt-1">
+                      {translation.toUpperCase()}
+                    </p>
+                  </div>
                   <div className="flex items-center space-x-2">
                     <button
                       onClick={previousChapter}
@@ -303,35 +376,57 @@ export default function BibleReaderPage() {
 
               {/* Bible Text */}
               <div className="p-8">
-                <div className="space-y-4" style={{ fontSize: `${fontSize}px` }}>
-                  {sampleVerses.map((verseData) => {
+                {loading ? (
+                  <div className="flex items-center justify-center py-12">
+                    <div className="text-center">
+                      <i className="fas fa-spinner fa-spin text-4xl text-blue-600 dark:text-blue-400 mb-4"></i>
+                      <p className="text-gray-600 dark:text-neutral-400">Loading chapter...</p>
+                    </div>
+                  </div>
+                ) : error ? (
+                  <div className="p-6 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900 rounded-lg">
+                    <p className="text-red-800 dark:text-red-300">
+                      <i className="fas fa-exclamation-triangle mr-2"></i>
+                      {error}
+                    </p>
+                  </div>
+                ) : verses.length === 0 ? (
+                  <div className="p-6 bg-yellow-50 dark:bg-yellow-950/20 border border-yellow-200 dark:border-yellow-900 rounded-lg">
+                    <p className="text-yellow-800 dark:text-yellow-300">
+                      <i className="fas fa-info-circle mr-2"></i>
+                      No verses found for this chapter.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-4" style={{ fontSize: `${fontSize}px` }}>
+                    {verses.map((verseData) => {
                     const key = `${selectedBook}-${selectedChapter}-${verseData.verse}`
                     const highlightColor = highlights[key]
                     const hasNote = notes[key]
 
-                    return (
-                      <div key={verseData.verse} className="group">
-                        <div
-                          className={`p-4 rounded-lg transition-all ${
-                            highlightColor === 'yellow'
-                              ? 'bg-yellow-100 dark:bg-yellow-950/30'
-                              : highlightColor === 'green'
-                              ? 'bg-green-100 dark:bg-green-950/30'
-                              : highlightColor === 'blue'
-                              ? 'bg-blue-100 dark:bg-blue-950/30'
-                              : highlightColor === 'pink'
-                              ? 'bg-pink-100 dark:bg-pink-950/30'
-                              : 'hover:bg-gray-50 dark:hover:bg-neutral-900'
-                          }`}
-                        >
-                          <div className="flex items-start">
-                            <span className="text-sm font-bold text-gray-500 dark:text-neutral-500 mr-3 mt-1">
-                              {verseData.verse}
-                            </span>
-                            <p className="flex-1 text-gray-800 dark:text-neutral-200 leading-relaxed">
-                              {verseData.text}
-                            </p>
-                          </div>
+                      return (
+                        <div key={verseData.verse} className="group">
+                          <div
+                            className={`p-4 rounded-lg transition-all ${
+                              highlightColor === 'yellow'
+                                ? 'bg-yellow-100 dark:bg-yellow-950/30'
+                                : highlightColor === 'green'
+                                ? 'bg-green-100 dark:bg-green-950/30'
+                                : highlightColor === 'blue'
+                                ? 'bg-blue-100 dark:bg-blue-950/30'
+                                : highlightColor === 'pink'
+                                ? 'bg-pink-100 dark:bg-pink-950/30'
+                                : 'hover:bg-gray-50 dark:hover:bg-neutral-900'
+                            }`}
+                          >
+                            <div className="flex items-start">
+                              <span className="text-sm font-bold text-gray-500 dark:text-neutral-500 mr-3 mt-1">
+                                {verseData.verse}
+                              </span>
+                              <p className="flex-1 text-gray-800 dark:text-neutral-200 leading-relaxed">
+                                {verseData.text}
+                              </p>
+                            </div>
 
                           {/* Verse Actions */}
                           <div className="flex items-center space-x-2 mt-3 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -380,20 +475,13 @@ export default function BibleReaderPage() {
                                 {notes[key]}
                               </p>
                             </div>
-                          )}
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    )
-                  })}
-                </div>
-
-                {/* Info Box */}
-                <div className="mt-8 p-4 bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900 rounded-lg">
-                  <p className="text-sm text-blue-800 dark:text-blue-300">
-                    <i className="fas fa-info-circle mr-2"></i>
-                    <strong>Note:</strong> This is a demo with sample verses. In production, this would connect to a complete Bible API to display all chapters and verses.
-                  </p>
-                </div>
+                      )
+                    })}
+                  </div>
+                )}
               </div>
             </div>
           </div>
