@@ -2,6 +2,9 @@ const { createServer } = require('http')
 const { parse } = require('url')
 const next = require('next')
 
+// Load environment variables from .env.local
+require('dotenv').config({ path: '.env.local' })
+
 // Validate required environment variables
 const requiredEnvVars = ['DB_HOST', 'DB_NAME', 'JWT_SECRET']
 const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName])
