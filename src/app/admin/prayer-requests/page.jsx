@@ -126,13 +126,8 @@ export default function AdminPrayerRequestsPage() {
             </div>
           </div>
         </div>
-              ← Back to Admin
-            </button>
-          </div>
-        </div>
-      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-gray-900 p-6 rounded-xl border border-gray-800">
@@ -374,6 +369,7 @@ export default function AdminPrayerRequestsPage() {
             ))}
           </div>
         )}
+      </div>
       </div>
     </AdminLayout>
   )
