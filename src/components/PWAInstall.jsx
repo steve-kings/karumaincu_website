@@ -6,10 +6,17 @@ import { Download, X } from 'lucide-react'
 export default function PWAInstall() {
   const [deferredPrompt, setDeferredPrompt] = useState(null)
   const [showInstallPrompt, setShowInstallPrompt] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
-    // Register service worker with network-first strategy
-    if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
+    // Check if mobile device
+    const checkMobile = () => {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    }
+    setIsMobile(checkMobile())
+
+    // Register service worker
+    if ('serviceWorker' in navigator) {
       navigator.serviceWorker
         .register('/sw.js')
         .then((registration) => {
@@ -25,10 +32,14 @@ export default function PWAInstall() {
       e.preventDefault()
       setDeferredPrompt(e)
       
-      // Check if user has dismissed the prompt before
+      // Check if user has seen the prompt before
+      const hasSeenPrompt = localStorage.getItem('pwa-install-seen')
       const dismissed = localStorage.getItem('pwa-install-dismissed')
-      if (!dismissed) {
+      
+      // Show on first visit for mobile, or if not dismissed
+      if (!hasSeenPrompt || (!dismissed && checkMobile())) {
         setShowInstallPrompt(true)
+        localStorage.setItem('pwa-install-seen', 'true')
       }
     }
 
@@ -76,7 +87,7 @@ export default function PWAInstall() {
   if (!showInstallPrompt) return null
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-96 bg-white dark:bg-neutral-900 rounded-lg shadow-2xl border border-gray-200 dark:border-neutral-800 p-4 z-50 animate-slide-in-right">
+    <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-96 bg-white dark:bg-neutral-900 rounded-lg shadow-2xl border border-gray-200 dark:border-neutral-800 p-4 z-50 animate-fade-in">
       <button
         onClick={handleDismiss}
         className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"

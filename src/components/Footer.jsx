@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Heart } from 'lucide-react'
+import InstallButton from './InstallButton'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -175,7 +176,7 @@ export default function Footer() {
             Experience spiritual growth, fellowship, and service opportunities 
             with fellow believers at Karatina University.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link
               href="/register"
               className="bg-white text-purple-600 hover:bg-gray-100 px-8 py-3 rounded-lg font-semibold transition-colors"
@@ -189,6 +190,7 @@ export default function Footer() {
               <Heart className="w-5 h-5" />
               <span>Support Our Ministry</span>
             </Link>
+            <InstallButton />
           </div>
         </div>
       </div>
