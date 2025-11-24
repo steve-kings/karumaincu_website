@@ -1,10 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import AdminLayout from '@/components/AdminLayout'
 
 export default function AdminPrayerRequestsPage() {
-  const router = useRouter()
   const [requests, setRequests] = useState([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState('all')
@@ -12,18 +11,8 @@ export default function AdminPrayerRequestsPage() {
   const [sourceFilter, setSourceFilter] = useState('all') // 'all', 'journal', 'public'
 
   useEffect(() => {
-    checkAuth()
     fetchRequests()
   }, [])
-
-  const checkAuth = () => {
-    const token = localStorage.getItem('token')
-    const user = JSON.parse(localStorage.getItem('user') || '{}')
-    
-    if (!token || user.role !== 'admin') {
-      router.push('/login')
-    }
-  }
 
   const fetchRequests = async () => {
     try {
@@ -126,19 +115,17 @@ export default function AdminPrayerRequestsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-purple-900/30 to-blue-900/30 border-b border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex items-center justify-between">
+    <AdminLayout>
+      <div className="min-h-screen bg-gray-50 dark:bg-black text-gray-900 dark:text-white">
+        {/* Header */}
+        <div className="bg-white dark:bg-gradient-to-r dark:from-purple-900/30 dark:to-blue-900/30 border-b border-gray-200 dark:border-gray-800">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div>
               <h1 className="text-3xl font-bold mb-2">Prayer Requests Management</h1>
-              <p className="text-gray-400">Review and manage community prayer requests</p>
+              <p className="text-gray-600 dark:text-gray-400">Review and manage community prayer requests</p>
             </div>
-            <button
-              onClick={() => router.push('/admin')}
-              className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition"
-            >
+          </div>
+        </div>
               ← Back to Admin
             </button>
           </div>
@@ -388,6 +375,6 @@ export default function AdminPrayerRequestsPage() {
           </div>
         )}
       </div>
-    </div>
+    </AdminLayout>
   )
 }
