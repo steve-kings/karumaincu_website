@@ -22,14 +22,33 @@ export default function CompleteProfilePage() {
   const [showPassword, setShowPassword] = useState(false)
 
   useEffect(() => {
-    // Get user data from localStorage
-    const userData = localStorage.getItem('user')
-    if (userData) {
-      setUser(JSON.parse(userData))
-    } else {
+    // Fetch user data from API
+    fetchUser()
+  }, [])
+
+  const fetchUser = async () => {
+    try {
+      const response = await fetch('/api/auth/profile', {
+        credentials: 'include',
+        cache: 'no-store'
+      })
+      
+      if (response.ok) {
+        const data = await response.json()
+        setUser(data.user)
+        
+        // If profile is already complete, redirect to dashboard
+        if (data.user.profile_complete) {
+          router.push('/member')
+        }
+      } else {
+        router.push('/login')
+      }
+    } catch (error) {
+      console.error('Error fetching user:', error)
       router.push('/login')
     }
-  }, [router])
+  }
 
   const handleChange = (e) => {
     setFormData({
@@ -68,13 +87,11 @@ export default function CompleteProfilePage() {
       if (data.success) {
         toast.success('Profile completed successfully! Redirecting...')
         
-        // Update user data in localStorage
-        const updatedUser = { ...user, profileComplete: true, ...data.user }
-        localStorage.setItem('user', JSON.stringify(updatedUser))
-        
-        // Hard redirect to dashboard
+        // Redirect to dashboard based on role
         setTimeout(() => {
-          window.location.href = '/member'
+          const redirectPath = data.user.role === 'admin' ? '/admin' : 
+                              data.user.role === 'editor' ? '/editor' : '/member'
+          window.location.href = redirectPath
         }, 1000)
       } else {
         toast.error(data.message || 'Failed to update profile')
