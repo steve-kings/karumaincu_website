@@ -6,6 +6,7 @@ import toast from 'react-hot-toast'
 
 export default function PrayerRequestsPage() {
   const [prayers, setPrayers] = useState([])
+  const [currentUser, setCurrentUser] = useState(null)
   const [filter, setFilter] = useState('active')
   const [showForm, setShowForm] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -27,8 +28,24 @@ export default function PrayerRequestsPage() {
   ]
 
   useEffect(() => {
+    fetchCurrentUser()
     fetchPrayers()
   }, [filter])
+
+  const fetchCurrentUser = async () => {
+    try {
+      const response = await fetch('/api/auth/profile', {
+        credentials: 'include',
+        cache: 'no-store'
+      })
+      if (response.ok) {
+        const data = await response.json()
+        setCurrentUser(data.user)
+      }
+    } catch (error) {
+      console.error('Error fetching current user:', error)
+    }
+  }
 
   const fetchPrayers = async () => {
     try {
@@ -342,8 +359,7 @@ export default function PrayerRequestsPage() {
           ) : (
             prayers.map((prayer) => {
               const categoryInfo = getCategoryInfo(prayer.category)
-              const currentUser = JSON.parse(localStorage.getItem('user') || '{}')
-              const isOwner = currentUser.id === prayer.requester_id
+              const isOwner = currentUser && currentUser.id === prayer.requester_id
 
               return (
                 <div
