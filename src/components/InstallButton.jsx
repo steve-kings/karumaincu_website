@@ -27,8 +27,7 @@ export default function InstallButton() {
 
   const handleInstallClick = async () => {
     if (!deferredPrompt) {
-      // If no prompt available, show instructions
-      alert('To install this app:\n\n• On Chrome/Edge: Click the menu (⋮) and select "Install app"\n• On Safari (iOS): Tap Share button and select "Add to Home Screen"\n• On Firefox: Look for the install icon in the address bar')
+      // Silently return if prompt not available
       return
     }
 
