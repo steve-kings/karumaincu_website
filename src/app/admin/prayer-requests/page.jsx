@@ -17,7 +17,8 @@ export default function AdminPrayerRequestsPage() {
   }, [])
 
   const checkAuth = () => {
-        const user = JSON.parse(localStorage.getItem('user') || '{}')
+    const token = localStorage.getItem('token')
+    const user = JSON.parse(localStorage.getItem('user') || '{}')
     
     if (!token || user.role !== 'admin') {
       router.push('/login')
