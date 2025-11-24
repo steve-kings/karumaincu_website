@@ -35,7 +35,7 @@ export default function ElectionResultsPage() {
     if (!data || !data.results) return
 
     try {
-      const XLSX = await import('xlsx')
+      const ExcelJS = (await import('exceljs')).default
       
       // Create position breakdown map for each nominee
       const nomineePositionVotes = {}
@@ -107,67 +107,51 @@ export default function ElectionResultsPage() {
         worksheetData.push(row)
       })
 
-      // Create worksheet
-      const worksheet = XLSX.utils.aoa_to_sheet(worksheetData)
-      const workbook = XLSX.utils.book_new()
+      // Create workbook and worksheet using ExcelJS
+      const workbook = new ExcelJS.Workbook()
+      const worksheet = workbook.addWorksheet('Overall Results')
       
-      // Set column widths for better readability
-      const totalColumns = 8 + positionColumns.length + 2 // base + position columns + all positions + nominators
-      const colWidths = [
-        { wch: 6 },   // Rank
-        { wch: 25 },  // Full Name
-        { wch: 30 },  // Email
-        { wch: 18 },  // Reg Number
-        { wch: 30 },  // Course
-        { wch: 12 },  // Year
-        { wch: 15 },  // Phone
-        { wch: 12 }   // Total Votes
-      ]
-      
-      // Add width for each position column
-      positionColumns.forEach(() => {
-        colWidths.push({ wch: 15 })
+      // Add all rows
+      worksheetData.forEach((row, index) => {
+        worksheet.addRow(row)
+        
+        // Style title row
+        if (index === 0) {
+          const titleRow = worksheet.getRow(1)
+          titleRow.font = { bold: true, size: 14 }
+          titleRow.alignment = { horizontal: 'center', vertical: 'middle' }
+        }
+        
+        // Style header row (row 19)
+        if (index === 18) {
+          const headerRow = worksheet.getRow(19)
+          headerRow.font = { bold: true, size: 12 }
+          headerRow.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FFE0E0E0' }
+          }
+        }
       })
       
-      // Add width for all positions and nominators
-      colWidths.push({ wch: 30 })  // All Positions
-      colWidths.push({ wch: 40 })  // Nominated By
-      
-      worksheet['!cols'] = colWidths
-
-      // Merge cells for title
-      worksheet['!merges'] = [
-        { s: { r: 0, c: 0 }, e: { r: 0, c: totalColumns - 1 } }, // Title row
-        { s: { r: 9, c: 0 }, e: { r: 9, c: 1 } }, // Summary Statistics header
-        { s: { r: 17, c: 0 }, e: { r: 17, c: totalColumns - 1 } } // Results header
+      // Set column widths
+      const totalColumns = 8 + positionColumns.length + 2
+      worksheet.columns = [
+        { width: 6 },   // Rank
+        { width: 25 },  // Full Name
+        { width: 30 },  // Email
+        { width: 18 },  // Reg Number
+        { width: 30 },  // Course
+        { width: 12 },  // Year
+        { width: 15 },  // Phone
+        { width: 12 },  // Total Votes
+        ...positionColumns.map(() => ({ width: 15 })),
+        { width: 30 },  // All Positions
+        { width: 40 }   // Nominated By
       ]
-
-      // Style the header cells (title, headers)
-      const headerStyle = {
-        font: { bold: true, sz: 14 },
-        alignment: { horizontal: 'center', vertical: 'center' }
-      }
-
-      const subHeaderStyle = {
-        font: { bold: true, sz: 12 },
-        fill: { fgColor: { rgb: 'E0E0E0' } }
-      }
-
-      // Apply styles to title
-      if (worksheet['A1']) {
-        worksheet['A1'].s = headerStyle
-      }
-
-      // Apply styles to column headers (row 18)
-      const headerRowIndex = 18
-      for (let col = 0; col < totalColumns; col++) {
-        const cellRef = XLSX.utils.encode_cell({ r: headerRowIndex, c: col })
-        if (worksheet[cellRef]) {
-          worksheet[cellRef].s = subHeaderStyle
-        }
-      }
-
-      XLSX.utils.book_append_sheet(workbook, worksheet, 'Overall Results')
+      
+      // Merge title cell
+      worksheet.mergeCells('A1:' + String.fromCharCode(64 + totalColumns) + '1')
 
       // Create position-specific sheets with detailed nominee info
       if (data.positionBreakdown && data.positions) {
@@ -175,24 +159,40 @@ export default function ElectionResultsPage() {
           const positionData = data.positionBreakdown.filter(p => p.position === position)
           
           if (positionData.length > 0) {
-            const positionSheet = [
-              [`RESULTS FOR: ${position.toUpperCase()}`],
-              [],
-              ['Position:', position],
-              ['Total Votes Cast:', positionData.reduce((sum, p) => sum + p.votes, 0)],
-              ['Total Nominees:', positionData.length],
-              [],
-              ['Rank', 'Nominee Name', 'Email', 'Registration Number', 'Course', 'Year', 'Votes', 'Percentage']
-            ]
-
+            // Sanitize sheet name (Excel has 31 char limit)
+            const sheetName = position.substring(0, 31).replace(/[:\\/?*\[\]]/g, '-')
+            const ws = workbook.addWorksheet(sheetName)
+            
             const totalVotes = positionData.reduce((sum, p) => sum + p.votes, 0)
-
+            
+            // Add header rows
+            ws.addRow([`RESULTS FOR: ${position.toUpperCase()}`])
+            ws.addRow([])
+            ws.addRow(['Position:', position])
+            ws.addRow(['Total Votes Cast:', totalVotes])
+            ws.addRow(['Total Nominees:', positionData.length])
+            ws.addRow([])
+            ws.addRow(['Rank', 'Nominee Name', 'Email', 'Registration Number', 'Course', 'Year', 'Votes', 'Percentage'])
+            
+            // Style title
+            ws.getRow(1).font = { bold: true, size: 14 }
+            ws.getRow(1).alignment = { horizontal: 'center' }
+            ws.mergeCells('A1:H1')
+            
+            // Style header row
+            ws.getRow(7).font = { bold: true }
+            ws.getRow(7).fill = {
+              type: 'pattern',
+              pattern: 'solid',
+              fgColor: { argb: 'FFE0E0E0' }
+            }
+            
+            // Add data rows
             positionData.forEach((nominee, index) => {
-              // Find full nominee details from results
               const fullDetails = data.results.find(r => r.nominee_id === nominee.nominee_id)
               const percentage = totalVotes > 0 ? ((nominee.votes / totalVotes) * 100).toFixed(1) : '0.0'
               
-              positionSheet.push([
+              ws.addRow([
                 index + 1,
                 nominee.nominee_name,
                 fullDetails?.nominee_email || 'N/A',
@@ -203,37 +203,32 @@ export default function ElectionResultsPage() {
                 `${percentage}%`
               ])
             })
-
-            const ws = XLSX.utils.aoa_to_sheet(positionSheet)
             
             // Set column widths
-            ws['!cols'] = [
-              { wch: 6 },   // Rank
-              { wch: 25 },  // Name
-              { wch: 30 },  // Email
-              { wch: 18 },  // Reg Number
-              { wch: 30 },  // Course
-              { wch: 10 },  // Year
-              { wch: 10 },  // Votes
-              { wch: 12 }   // Percentage
+            ws.columns = [
+              { width: 6 },   // Rank
+              { width: 25 },  // Name
+              { width: 30 },  // Email
+              { width: 18 },  // Reg Number
+              { width: 30 },  // Course
+              { width: 10 },  // Year
+              { width: 10 },  // Votes
+              { width: 12 }   // Percentage
             ]
-
-            // Merge title cell
-            ws['!merges'] = [
-              { s: { r: 0, c: 0 }, e: { r: 0, c: 7 } }
-            ]
-
-            // Sanitize sheet name (Excel has 31 char limit and special char restrictions)
-            const sheetName = position.substring(0, 31).replace(/[:\\/?*\[\]]/g, '-')
-            XLSX.utils.book_append_sheet(workbook, ws, sheetName)
           }
         })
       }
 
-      // Generate filename
+      // Generate and download file
       const filename = `Election-Results-${data.election.title.replace(/[^a-z0-9]/gi, '-')}-${new Date().toISOString().split('T')[0]}.xlsx`
-      
-      XLSX.writeFile(workbook, filename)
+      const buffer = await workbook.xlsx.writeBuffer()
+      const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = filename
+      link.click()
+      window.URL.revokeObjectURL(url)
       
       alert('Excel file exported successfully!')
     } catch (error) {

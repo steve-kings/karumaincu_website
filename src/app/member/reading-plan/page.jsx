@@ -2,12 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import MemberLayout from '@/components/MemberLayout'
-import { useSocket } from '@/contexts/SocketContext'
-import { useRealtimeReadingCalendar } from '@/hooks/useRealtime'
 
 export default function ReadingPlanPage() {
-  const { socket } = useSocket()
-  const newReading = useRealtimeReadingCalendar()
   const [currentDate, setCurrentDate] = useState(new Date())
   const [readings, setReadings] = useState([])
   const [loading, setLoading] = useState(false)
@@ -20,19 +16,6 @@ export default function ReadingPlanPage() {
   useEffect(() => {
     fetchReadings()
   }, [currentDate])
-
-  // Listen for real-time reading calendar updates
-  useEffect(() => {
-    if (newReading) {
-      setReadings(prev => {
-        const exists = prev.some(r => r.id === newReading.id)
-        if (exists) {
-          return prev.map(r => r.id === newReading.id ? newReading : r)
-        }
-        return [...prev, newReading].sort((a, b) => a.day - b.day)
-      })
-    }
-  }, [newReading])
 
   const fetchReadings = async () => {
     try {

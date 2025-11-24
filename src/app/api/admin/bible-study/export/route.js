@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { verifyAuth } from '@/lib/auth'
 import BibleStudyService from '@/services/BibleStudyService'
-import * as XLSX from 'xlsx'
+import ExcelJS from 'exceljs'
 
 export async function GET(request) {
   try {
@@ -19,25 +19,52 @@ export async function GET(request) {
 
     const registrations = await BibleStudyService.getAllRegistrations(filters)
 
-    const excelData = registrations.map(r => ({
-      'ID': r.id,
-      'Full Name': r.full_name,
-      'Email': r.email,
-      'Phone': r.phone || '',
-      'Location': r.location_name,
-      'Year of Study': r.year_of_study,
-      'School': r.school,
-      'Registration Number': r.registration_number || '',
-      'Group Number': r.group_number || 'Not Assigned',
-      'Status': r.status,
-      'Registered At': new Date(r.registered_at).toLocaleString()
-    }))
+    // Create workbook and worksheet
+    const workbook = new ExcelJS.Workbook()
+    const worksheet = workbook.addWorksheet('Registrations')
 
-    const wb = XLSX.utils.book_new()
-    const ws = XLSX.utils.json_to_sheet(excelData)
-    XLSX.utils.book_append_sheet(wb, ws, 'Registrations')
+    // Define columns
+    worksheet.columns = [
+      { header: 'ID', key: 'id', width: 10 },
+      { header: 'Full Name', key: 'full_name', width: 25 },
+      { header: 'Email', key: 'email', width: 30 },
+      { header: 'Phone', key: 'phone', width: 15 },
+      { header: 'Location', key: 'location_name', width: 20 },
+      { header: 'Year of Study', key: 'year_of_study', width: 15 },
+      { header: 'School', key: 'school', width: 30 },
+      { header: 'Registration Number', key: 'registration_number', width: 20 },
+      { header: 'Group Number', key: 'group_number', width: 15 },
+      { header: 'Status', key: 'status', width: 12 },
+      { header: 'Registered At', key: 'registered_at', width: 20 }
+    ]
 
-    const buffer = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' })
+    // Style header row
+    worksheet.getRow(1).font = { bold: true }
+    worksheet.getRow(1).fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: 'FFE0E0E0' }
+    }
+
+    // Add data rows
+    registrations.forEach(r => {
+      worksheet.addRow({
+        id: r.id,
+        full_name: r.full_name,
+        email: r.email,
+        phone: r.phone || '',
+        location_name: r.location_name,
+        year_of_study: r.year_of_study,
+        school: r.school,
+        registration_number: r.registration_number || '',
+        group_number: r.group_number || 'Not Assigned',
+        status: r.status,
+        registered_at: new Date(r.registered_at).toLocaleString()
+      })
+    })
+
+    // Generate buffer
+    const buffer = await workbook.xlsx.writeBuffer()
 
     return new NextResponse(buffer, {
       headers: {

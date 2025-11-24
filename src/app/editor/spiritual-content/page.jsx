@@ -2,11 +2,8 @@
 
 import { useState } from 'react';
 import EditorLayout from '@/components/EditorLayout';
-import { useSocket } from '@/contexts/SocketContext';
-import { emitNewReadingCalendar } from '@/hooks/useRealtime';
 
 export default function EditorSpiritualContentPage() {
-  const { socket } = useSocket();
   const [activeTab, setActiveTab] = useState('verse');
   const [verseData, setVerseData] = useState({
     verse_reference: '',
@@ -67,11 +64,6 @@ export default function EditorSpiritualContentPage() {
       if (response.ok) {
         const result = await response.json();
         alert('Reading calendar entry added successfully!');
-        
-        // Emit real-time update
-        if (socket && result.data) {
-          emitNewReadingCalendar(socket, result.data);
-        }
         
         setReadingData({
           month: new Date().getMonth() + 1,

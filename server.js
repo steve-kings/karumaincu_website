@@ -2,6 +2,19 @@ const { createServer } = require('http')
 const { parse } = require('url')
 const next = require('next')
 
+// Validate required environment variables
+const requiredEnvVars = ['DB_HOST', 'DB_NAME', 'JWT_SECRET']
+const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName])
+
+if (missingEnvVars.length > 0) {
+  console.error('❌ Missing required environment variables:')
+  missingEnvVars.forEach(varName => {
+    console.error(`   - ${varName}`)
+  })
+  console.error('\nPlease set these variables in your .env.local file')
+  process.exit(1)
+}
+
 const dev = process.env.NODE_ENV !== 'production'
 const hostname = 'localhost'
 const port = process.env.PORT || 3000
