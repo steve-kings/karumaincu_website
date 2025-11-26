@@ -15,49 +15,35 @@ export default function DebugTokenPage() {
 
   const checkToken = async () => {
     try {
-      const token = localStorage.getItem('token');
-      
-      if (!token) {
-        setTokenData({ error: 'No token found in localStorage' });
-        setLoading(false);
-        return;
-      }
-
-      // Decode JWT (without verification - just to see what's inside)
-      try {
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
-        
-        setTokenData(JSON.parse(jsonPayload));
-      } catch (e) {
-        setTokenData({ error: 'Failed to decode token', details: e.message });
-      }
-
-      // Fetch current profile from API
-      const response = await fetch('/api/auth/profile', {
-        credentials: 'include'
+      // Fetch current profile from API (uses cookies automatically)
+      const profileResponse = await fetch('/api/auth/profile', {
+        credentials: 'include',
+        cache: 'no-store'
       });
 
-      if (response.ok) {
-        const data = await response.json();
+      if (profileResponse.ok) {
+        const data = await profileResponse.json();
         setProfileData(data);
+        setTokenData({ message: 'Token stored in httpOnly cookie (secure)', authenticated: true });
       } else {
-        setProfileData({ error: 'Failed to fetch profile', status: response.status });
+        setTokenData({ error: 'No valid token found in cookies', authenticated: false });
+        setProfileData({ error: 'Failed to fetch profile', status: profileResponse.status });
       }
     } catch (error) {
+      setTokenData({ error: 'Authentication check failed', authenticated: false });
       setProfileData({ error: error.message });
     } finally {
       setLoading(false);
     }
   };
 
-  const handleForceLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    alert('Token cleared! Please log in again.');
+  const handleForceLogout = async () => {
+    // Call logout API to clear cookie
+    await fetch('/api/auth/logout', {
+      method: 'POST',
+      credentials: 'include'
+    });
+    alert('Logged out! Please log in again.');
     router.push('/login');
   };
 

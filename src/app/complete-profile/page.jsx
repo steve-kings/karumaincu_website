@@ -28,25 +28,41 @@ export default function CompleteProfilePage() {
 
   const fetchUser = async () => {
     try {
+      console.log('Complete-profile: Fetching user profile...')
       const response = await fetch('/api/auth/profile', {
         credentials: 'include',
         cache: 'no-store'
       })
       
+      console.log('Complete-profile: Response status:', response.status)
+      
       if (response.ok) {
         const data = await response.json()
+        console.log('Complete-profile: User data received:', data.user?.email)
         setUser(data.user)
         
         // If profile is already complete, redirect to dashboard
         if (data.user.profile_complete) {
+          console.log('Complete-profile: Profile already complete, redirecting to member')
           router.push('/member')
+        } else {
+          console.log('Complete-profile: Profile incomplete, showing form')
         }
       } else {
-        router.push('/login')
+        console.error('Complete-profile: Authentication failed, status:', response.status)
+        const errorData = await response.json().catch(() => ({}))
+        console.error('Complete-profile: Error details:', errorData)
+        
+        // Wait a bit before redirecting to allow cookie to be set
+        setTimeout(() => {
+          router.push('/login')
+        }, 1000)
       }
     } catch (error) {
-      console.error('Error fetching user:', error)
-      router.push('/login')
+      console.error('Complete-profile: Error fetching user:', error)
+      setTimeout(() => {
+        router.push('/login')
+      }, 1000)
     }
   }
 
@@ -75,7 +91,8 @@ export default function CompleteProfilePage() {
     setLoading(true)
 
     try {
-            const response = await fetch('/api/auth/complete-profile', {
+      console.log('Complete-profile: Submitting profile data...')
+      const response = await fetch('/api/auth/complete-profile', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -83,16 +100,16 @@ export default function CompleteProfilePage() {
       })
 
       const data = await response.json()
+      console.log('Complete-profile: Submit response:', data)
 
       if (data.success) {
-        toast.success('Profile completed successfully! Redirecting...')
+        toast.success('Profile completed successfully! Please login with your credentials.')
         
-        // Redirect to dashboard based on role
+        // Redirect to login page
         setTimeout(() => {
-          const redirectPath = data.user.role === 'admin' ? '/admin' : 
-                              data.user.role === 'editor' ? '/editor' : '/member'
-          window.location.href = redirectPath
-        }, 1000)
+          console.log('Complete-profile: Redirecting to login')
+          window.location.href = '/login'
+        }, 1500)
       } else {
         toast.error(data.message || 'Failed to update profile')
       }

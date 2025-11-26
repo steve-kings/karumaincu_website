@@ -1,27 +1,26 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Users, UserPlus, Search, Filter, X, Check, Ban, Shield, User as UserIcon } from 'lucide-react'
+import { Users, Search, X, Shield, User as UserIcon, Download } from 'lucide-react'
 
 export default function UserManagementPage() {
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
-  const [filterStatus, setFilterStatus] = useState('all')
   const [filterRole, setFilterRole] = useState('all')
   const [selectedUser, setSelectedUser] = useState(null)
   const [showModal, setShowModal] = useState(false)
+  const [exporting, setExporting] = useState(false)
 
   useEffect(() => {
     fetchUsers()
-  }, [filterStatus, filterRole, search])
+  }, [filterRole, search])
 
   const fetchUsers = async () => {
     try {
       setLoading(true)
-            const params = new URLSearchParams()
+      const params = new URLSearchParams()
       
-      if (filterStatus !== 'all') params.append('status', filterStatus)
       if (filterRole !== 'all') params.append('role', filterRole)
       if (search) params.append('search', search)
 
@@ -40,30 +39,43 @@ export default function UserManagementPage() {
     }
   }
 
-  const handleStatusChange = async (userId, newStatus) => {
-    if (!confirm(`Change user status to ${newStatus}?`)) {
-      return
-    }
-
+  const handleExportUsers = async () => {
     try {
-      const response = await fetch(`/api/admin/users/${userId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        credentials: 'include',
-        body: JSON.stringify({ status: newStatus })
+      setExporting(true)
+      
+      const response = await fetch('/api/admin/users/export', {
+        credentials: 'include'
       })
 
       if (response.ok) {
-        alert(`User status updated to ${newStatus} successfully!`)
-        fetchUsers()
+        // Get filename from response headers
+        const contentDisposition = response.headers.get('Content-Disposition')
+        const filename = contentDisposition 
+          ? contentDisposition.split('filename=')[1].replace(/"/g, '')
+          : `users_export_${new Date().toISOString().split('T')[0]}.xlsx`
+
+        // Download file
+        const blob = await response.blob()
+        const url = window.URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = filename
+        document.body.appendChild(a)
+        a.click()
+        window.URL.revokeObjectURL(url)
+        document.body.removeChild(a)
+
+        alert('Users exported successfully!')
       } else {
-        alert('Failed to update user status')
+        const errorData = await response.json().catch(() => ({}))
+        console.error('Export failed:', errorData)
+        alert(`Failed to export users: ${errorData.message || 'Unknown error'}`)
       }
     } catch (error) {
-      console.error('Error updating user status:', error)
-      alert('Failed to update user status')
+      console.error('Export error:', error)
+      alert(`Failed to export users: ${error.message}`)
+    } finally {
+      setExporting(false)
     }
   }
 
@@ -142,8 +154,8 @@ export default function UserManagementPage() {
 
   const stats = {
     total: users.length,
-    active: users.filter(u => u.status === 'active').length,
-    pending: users.filter(u => u.status === 'pending').length,
+    members: users.filter(u => u.role === 'member').length,
+    editors: users.filter(u => u.role === 'editor').length,
     admins: users.filter(u => u.role === 'admin').length
   }
 
@@ -155,6 +167,23 @@ export default function UserManagementPage() {
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">User Management</h1>
           <p className="text-gray-600 dark:text-gray-400 mt-1">Manage members, roles, and permissions</p>
         </div>
+        <button
+          onClick={handleExportUsers}
+          disabled={exporting}
+          className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          {exporting ? (
+            <>
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+              Exporting...
+            </>
+          ) : (
+            <>
+              <Download className="w-4 h-4" />
+              Export to Excel
+            </>
+          )}
+        </button>
       </div>
 
       {/* Stats Cards */}
@@ -172,20 +201,20 @@ export default function UserManagementPage() {
         <div className="bg-white dark:bg-neutral-950 rounded-lg shadow-lg border border-gray-100 dark:border-neutral-900 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Active</p>
-              <p className="text-2xl font-bold text-green-600">{stats.active}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Members</p>
+              <p className="text-2xl font-bold text-green-600">{stats.members}</p>
             </div>
-            <Check className="w-10 h-10 text-green-600" />
+            <UserIcon className="w-10 h-10 text-green-600" />
           </div>
         </div>
 
         <div className="bg-white dark:bg-neutral-950 rounded-lg shadow-lg border border-gray-100 dark:border-neutral-900 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Pending</p>
-              <p className="text-2xl font-bold text-yellow-600">{stats.pending}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Editors</p>
+              <p className="text-2xl font-bold text-purple-600">{stats.editors}</p>
             </div>
-            <UserIcon className="w-10 h-10 text-yellow-600" />
+            <UserIcon className="w-10 h-10 text-purple-600" />
           </div>
         </div>
 
@@ -193,9 +222,9 @@ export default function UserManagementPage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600 dark:text-gray-400">Admins</p>
-              <p className="text-2xl font-bold text-purple-600">{stats.admins}</p>
+              <p className="text-2xl font-bold text-red-600">{stats.admins}</p>
             </div>
-            <Shield className="w-10 h-10 text-purple-600" />
+            <Shield className="w-10 h-10 text-red-600" />
           </div>
         </div>
       </div>
@@ -213,18 +242,6 @@ export default function UserManagementPage() {
               className="w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-black border border-gray-300 dark:border-neutral-800 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
           </div>
-
-          <select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            className="px-4 py-2 bg-gray-50 dark:bg-black border border-gray-300 dark:border-neutral-800 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-          >
-            <option value="all">All Status</option>
-            <option value="active">Active</option>
-            <option value="pending">Pending</option>
-            <option value="suspended">Suspended</option>
-            <option value="inactive">Inactive</option>
-          </select>
 
           <select
             value={filterRole}
@@ -261,7 +278,6 @@ export default function UserManagementPage() {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Registration</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Type</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Role</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Joined</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
                 </tr>
@@ -290,18 +306,6 @@ export default function UserManagementPage() {
                         <option value="member">Member</option>
                         <option value="editor">Editor</option>
                         <option value="admin">Admin</option>
-                      </select>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <select
-                        value={user.status}
-                        onChange={(e) => handleStatusChange(user.id, e.target.value)}
-                        className={`text-xs font-semibold px-2 py-1 rounded-full ${getStatusBadge(user.status)}`}
-                      >
-                        <option value="active">Active</option>
-                        <option value="pending">Pending</option>
-                        <option value="suspended">Suspended</option>
-                        <option value="inactive">Inactive</option>
                       </select>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
@@ -373,11 +377,6 @@ export default function UserManagementPage() {
                     <label className="text-sm font-medium text-gray-500 dark:text-gray-400">Role</label>
                     <p className="text-lg text-gray-900 dark:text-white capitalize">{selectedUser.role}</p>
                   </div>
-                </div>
-
-                <div>
-                  <label className="text-sm font-medium text-gray-500 dark:text-gray-400">Status</label>
-                  <p className="text-lg text-gray-900 dark:text-white capitalize">{selectedUser.status}</p>
                 </div>
 
                 <div>

@@ -46,15 +46,10 @@ export default function ImageUpload({ value, onChange, label = "Upload Image", a
       formData.append('file', file)
       formData.append('type', type) // Pass type for folder organization
 
-      // Get auth token from localStorage
-            const headers = {}
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`
-      }
-
+      // Use cookies for authentication (no localStorage)
       const response = await fetch('/api/upload', {
         method: 'POST',
-        headers: headers,
+        credentials: 'include', // Send cookies with request
         body: formData
       })
 

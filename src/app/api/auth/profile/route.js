@@ -54,14 +54,7 @@ export async function GET(request) {
     const user = users[0]
     console.log(`Profile: Returning user ${user.email} with role: ${user.role}`)
 
-    // Check if account is still active
-    if (user.status !== 'active') {
-      return NextResponse.json(
-        { success: false, message: 'Account is not active' },
-        { status: 403 }
-      )
-    }
-
+    // All users are active - no status check needed
     // Return user profile data (using snake_case for consistency with frontend)
     return NextResponse.json({
       success: true,

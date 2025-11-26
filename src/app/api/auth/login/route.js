@@ -40,14 +40,8 @@ export async function POST(request) {
 
     const user = users[0]
 
-    // Check if account is active
-    if (user.status !== 'active') {
-      return NextResponse.json(
-        { success: false, message: 'Account is not active. Please contact admin.' },
-        { status: 403 }
-      )
-    }
-
+    // All users are active - no status check needed
+    
     // Verify password
     console.log('Verifying password...')
     const isPasswordValid = await comparePassword(password, user.password_hash)

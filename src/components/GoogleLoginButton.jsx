@@ -31,6 +31,7 @@ export default function GoogleLoginButton({ onSuccess }) {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include', // Ensure cookies are sent/received
         body: JSON.stringify({
           credential: credentialResponse.credential,
         }),
@@ -91,7 +92,6 @@ export default function GoogleLoginButton({ onSuccess }) {
         text="continue_with"
         shape="rectangular"
         logo_alignment="left"
-        width="100%"
       />
     </div>
   )

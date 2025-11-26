@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import GoogleLoginButton from '@/components/GoogleLoginButton'
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -33,6 +34,25 @@ export default function RegisterPage() {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }))
+    setError('')
+  }
+
+  const fillSampleData = () => {
+    setFormData({
+      fullName: 'John Doe',
+      email: 'john.doe@student.ku.ac.ke',
+      phone: '+254712345678',
+      registrationNumber: 'CS22/2024/001',
+      memberType: 'student',
+      course: 'Bachelor of Computer Science',
+      yearOfStudy: '2',
+      staffId: '',
+      alumniYear: '',
+      password: 'SecurePass123!',
+      confirmPassword: 'SecurePass123!',
+      doctrinialAgreement: true,
+      subscribeNewsletter: true
+    })
     setError('')
   }
 
@@ -108,7 +128,10 @@ export default function RegisterPage() {
 
       if (data.success) {
         alert('Registration successful! Welcome to KarUCU!')
-        router.push('/login')
+        // Redirect to member dashboard since profile is complete
+        setTimeout(() => {
+          window.location.href = '/member'
+        }, 500)
       } else {
         setError(data.message || 'Registration failed')
       }
@@ -147,6 +170,11 @@ export default function RegisterPage() {
 
         {/* Registration Form */}
         <div className="bg-white rounded-2xl shadow-xl p-8">
+          {/* Google Sign-In */}
+          <div className="mb-6">
+            <GoogleLoginButton />
+          </div>
+
           {error && (
             <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
               <p className="text-sm text-red-700">{error}</p>
@@ -170,7 +198,7 @@ export default function RegisterPage() {
                     value={formData.fullName}
                     onChange={handleInputChange}
                     className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                    placeholder="John Doe"
+                    placeholder="Enter your full name"
                   />
                 </div>
 
@@ -185,7 +213,7 @@ export default function RegisterPage() {
                     value={formData.email}
                     onChange={handleInputChange}
                     className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                    placeholder="john.doe@student.ku.ac.ke"
+                    placeholder="your.email@student.ku.ac.ke"
                   />
                 </div>
 
@@ -222,7 +250,7 @@ export default function RegisterPage() {
                     value={formData.registrationNumber}
                     onChange={handleInputChange}
                     className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                    placeholder="CS22/2024/001"
+                    placeholder="B103/0732G/2024"
                   />
                 </div>
 
@@ -391,15 +419,27 @@ export default function RegisterPage() {
           <h3 className="font-semibold text-lg mb-4 text-center text-gray-900">Why Join KarUCU?</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-700">
             <div className="text-center">
-              <div className="text-2xl mb-2">👥</div>
+              <div className="flex justify-center mb-2">
+                <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+              </div>
               <p>Connect with fellow believers</p>
             </div>
             <div className="text-center">
-              <div className="text-2xl mb-2">🌱</div>
+              <div className="flex justify-center mb-2">
+                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
               <p>Grow spiritually through discipleship</p>
             </div>
             <div className="text-center">
-              <div className="text-2xl mb-2">🤝</div>
+              <div className="flex justify-center mb-2">
+                <svg className="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              </div>
               <p>Serve others and make impact</p>
             </div>
           </div>

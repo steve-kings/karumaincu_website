@@ -39,7 +39,7 @@ export default function HomePage() {
   const heroSlides = [
     {
       id: 1,
-      title: "Welcome to KarUCU Main",
+      title: "Welcome to Karatina University Christian Union",
       subtitle: "Committed to serve the Lord",
       description: "To be agents of change in and out of campus as Christ's ambassadors during our generation",
       image: imageUrls.hero.slide1,

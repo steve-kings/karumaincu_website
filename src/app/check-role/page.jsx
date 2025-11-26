@@ -12,22 +12,17 @@ export default function CheckRolePage() {
 
   const checkUser = async () => {
     try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        setUser({ error: 'No token found' });
-        setLoading(false);
-        return;
-      }
-
+      // Check authentication via API (uses cookies)
       const response = await fetch('/api/auth/profile', {
-        credentials: 'include'
+        credentials: 'include',
+        cache: 'no-store'
       });
-
+      
       if (response.ok) {
         const data = await response.json();
         setUser(data);
       } else {
-        setUser({ error: 'Failed to fetch profile' });
+        setUser({ error: 'No valid authentication found' });
       }
     } catch (error) {
       setUser({ error: error.message });

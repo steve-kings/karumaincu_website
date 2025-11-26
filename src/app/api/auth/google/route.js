@@ -54,8 +54,8 @@ export async function POST(request) {
           profile_image,
           doctrinal_agreement,
           created_at
-        ) VALUES (?, ?, ?, ?, NULL, 'associate', 'member', 'pending', ?, TRUE, NOW())`,
-        [regNumber, email, name, '', picture] // Empty password for OAuth users, NULL phone, pending status
+        ) VALUES (?, ?, ?, ?, NULL, 'associate', 'member', 'active', ?, TRUE, NOW())`,
+        [regNumber, email, name, '', picture] // Empty password for OAuth users, NULL phone, active status
       )
 
       // Fetch the newly created user
@@ -71,7 +71,7 @@ export async function POST(request) {
       user = users[0]
 
       // Check if profile is incomplete (no phone number means incomplete)
-      if (!user.phone || user.status === 'pending') {
+      if (!user.phone) {
         user.needsProfileCompletion = true
       }
 
