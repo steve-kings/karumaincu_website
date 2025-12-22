@@ -41,7 +41,7 @@ export default function MediaClient({ galleries }) {
   }
 
   return (
-    <section className="py-20 bg-gradient-to-br from-gray-50 to-purple-50">
+    <section className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="font-heading font-bold text-4xl md:text-5xl text-gray-800 mb-6">
@@ -61,7 +61,7 @@ export default function MediaClient({ galleries }) {
               onClick={() => setSelectedCategory(category.id)}
               className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
                 selectedCategory === category.id
-                  ? 'bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg'
+                  ? 'bg-purple-600 text-white shadow-lg'
                   : 'bg-white text-gray-700 hover:bg-gray-100 shadow-md'
               }`}
             >
@@ -98,7 +98,7 @@ export default function MediaClient({ galleries }) {
                       }}
                     />
                   ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-purple-100 to-teal-100 flex items-center justify-center">
+                    <div className="w-full h-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
                       <img src="/logo.png" alt="KarUCU" className="w-20 h-20 object-contain" />
                     </div>
                   )}

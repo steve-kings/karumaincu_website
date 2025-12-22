@@ -51,21 +51,27 @@ export default function Footer() {
             </p>
             <div className="flex space-x-4">
               <a
-                href="#"
+                href="https://www.facebook.com/karumain.cu.3"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center hover:bg-purple-700 transition-colors"
               >
                 <span className="sr-only">Facebook</span>
                 <i className="fab fa-facebook text-white"></i>
               </a>
               <a
-                href="#"
+                href="https://x.com/karumaincu"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center hover:bg-purple-700 transition-colors"
               >
-                <span className="sr-only">Twitter</span>
+                <span className="sr-only">Twitter/X</span>
                 <i className="fab fa-twitter text-white"></i>
               </a>
               <a
-                href="#"
+                href="https://www.instagram.com/karucu_maincampus"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center hover:bg-purple-700 transition-colors"
               >
                 <span className="sr-only">Instagram</span>
@@ -167,7 +173,7 @@ export default function Footer() {
       </div>
 
       {/* Call to Action Section */}
-      <div className="bg-gradient-to-r from-purple-600 to-teal-600 py-8">
+      <div className="bg-purple-600 py-8">
         <div className="container mx-auto px-4 text-center">
           <h3 className="font-heading font-bold text-2xl mb-4">
             Join Our Community of Faith

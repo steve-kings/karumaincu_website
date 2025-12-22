@@ -78,7 +78,7 @@ export default function AboutClient() {
   return (
     <>
       {/* Ministry Image Slider */}
-      <section className="py-20 bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 text-white relative overflow-hidden">
+      <section className="py-20 bg-gray-900 text-white relative overflow-hidden">
         {/* Animated Background Elements */}
         <div className="absolute inset-0">
           <div className="absolute top-10 left-10 w-32 h-32 bg-white/5 rounded-full blur-xl animate-pulse"></div>
@@ -193,7 +193,7 @@ export default function AboutClient() {
 
             <Link
               href="/register"
-              className="relative inline-block bg-gradient-to-r from-purple-600 via-pink-600 to-purple-700 hover:from-purple-700 hover:via-pink-700 hover:to-purple-800 text-white px-10 py-5 rounded-full font-bold text-lg transition-all duration-300 shadow-2xl hover:shadow-purple-500/25 group"
+              className="relative inline-block bg-purple-600 hover:bg-purple-700 text-white px-10 py-5 rounded-full font-bold text-lg transition-all duration-300 shadow-2xl hover:shadow-purple-500/25 group"
             >
               <span className="relative z-10 flex items-center">
                 <i className="fas fa-user-plus mr-3 group-hover:animate-bounce"></i>

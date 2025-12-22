@@ -129,7 +129,7 @@ export default function ProfilePage() {
         {/* Profile Card */}
         <div className="bg-white dark:bg-neutral-950 rounded-2xl shadow-lg border border-gray-100 dark:border-neutral-900 overflow-hidden">
           {/* Header Section */}
-          <div className="bg-gradient-to-r from-purple-600 to-teal-600 dark:from-purple-700 dark:to-teal-700 p-8 text-white">
+          <div className="bg-purple-600 dark:bg-purple-700 p-8 text-white">
             <div className="flex items-center space-x-4">
               <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-3xl font-bold">
                 {user?.full_name?.charAt(0) || 'M'}

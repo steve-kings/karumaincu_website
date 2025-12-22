@@ -112,7 +112,7 @@ export default function EditorGalleryPage() {
                     }}
                   />
                 ) : (
-                  <div className="w-full h-48 flex items-center justify-center bg-gradient-to-br from-purple-100 to-teal-100">
+                  <div className="w-full h-48 flex items-center justify-center bg-purple-100 dark:bg-purple-900/30">
                     <img src="/logo.png" alt="KarUCU" className="w-24 h-24 object-contain" />
                   </div>
                 )}

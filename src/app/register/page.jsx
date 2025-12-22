@@ -39,8 +39,8 @@ export default function RegisterPage() {
 
   const fillSampleData = () => {
     setFormData({
-      fullName: 'John Doe',
-      email: 'john.doe@student.ku.ac.ke',
+      fullName: 'Wanjiku Mwangi',
+      email: 'wanjiku.mwangi@student.karu.ac.ke',
       phone: '+254712345678',
       registrationNumber: 'CS22/2024/001',
       memberType: 'student',
@@ -145,7 +145,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-teal-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
@@ -283,8 +283,6 @@ export default function RegisterPage() {
                     <option value="2">Second Year</option>
                     <option value="3">Third Year</option>
                     <option value="4">Fourth Year</option>
-                    <option value="5">Fifth Year</option>
-                    <option value="6">Sixth Year</option>
                   </select>
                 </div>
               </div>

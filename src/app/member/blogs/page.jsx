@@ -297,7 +297,7 @@ export default function MemberBlogsPage() {
                 status: 'draft'
               })
             }}
-            className="bg-gradient-to-r from-purple-600 to-teal-600 dark:from-purple-700 dark:to-teal-700 text-white px-6 py-3 rounded-lg hover:from-purple-700 hover:to-teal-700 transition-all font-medium shadow-lg hover:shadow-xl"
+            className="bg-purple-600 dark:bg-purple-700 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-all font-medium shadow-lg hover:shadow-xl"
           >
             <i className="fas fa-plus-circle mr-2"></i>
             Create New Blog
@@ -442,7 +442,7 @@ export default function MemberBlogsPage() {
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 px-6 py-3 bg-gradient-to-r from-purple-600 to-teal-600 dark:from-purple-700 dark:to-teal-700 text-white rounded-lg hover:from-purple-700 hover:to-teal-700 transition-all"
+                    className="flex-1 px-6 py-3 bg-purple-600 dark:bg-purple-700 text-white rounded-lg hover:bg-purple-700 transition-all"
                   >
                     {editingBlog ? 'Update Blog' : 'Create Blog'}
                   </button>

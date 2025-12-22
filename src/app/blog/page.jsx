@@ -59,8 +59,17 @@ export default function BlogPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-purple-800 via-teal-700 to-emerald-700 text-white">
-        <div className="container mx-auto px-4">
+      <section className="relative py-20 text-white">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img 
+            src="/biblestudy1.jpg" 
+            alt="Blog Background" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-purple-900/80"></div>
+        </div>
+        <div className="container mx-auto px-4 relative z-10">
           <motion.div 
             className="text-center max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 30 }}

@@ -103,26 +103,25 @@ export default function CompleteProfilePage() {
       console.log('Complete-profile: Submit response:', data)
 
       if (data.success) {
-        toast.success('Profile completed successfully! Please login with your credentials.')
+        toast.success('Profile completed successfully!')
         
-        // Redirect to login page
-        setTimeout(() => {
-          console.log('Complete-profile: Redirecting to login')
-          window.location.href = '/login'
-        }, 1500)
+        // Redirect to member dashboard (user is already authenticated via Google)
+        console.log('Complete-profile: Redirecting to member dashboard')
+        window.location.href = '/member'
+        return // Don't set loading to false, we're redirecting
       } else {
         toast.error(data.message || 'Failed to update profile')
+        setLoading(false)
       }
     } catch (error) {
       console.error('Profile completion error:', error)
       toast.error('An error occurred')
-    } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-teal-50 dark:from-neutral-950 dark:via-neutral-900 dark:to-neutral-950 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-neutral-950 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl w-full space-y-8">
         {/* Header */}
         <div className="text-center">
@@ -225,7 +224,6 @@ export default function CompleteProfilePage() {
                     <option value="2">Year 2</option>
                     <option value="3">Year 3</option>
                     <option value="4">Year 4</option>
-                    <option value="5">Year 5</option>
                   </select>
                 </div>
               </>
@@ -314,7 +312,7 @@ export default function CompleteProfilePage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-teal-600 hover:from-purple-700 hover:to-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             >
               {loading ? (
                 <>

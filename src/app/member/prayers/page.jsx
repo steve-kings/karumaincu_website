@@ -111,7 +111,7 @@ export default function MemberPrayersPage() {
             </div>
             <button
               onClick={() => setShowForm(true)}
-              className="bg-gradient-to-r from-pink-600 to-purple-600 text-white px-6 py-3 rounded-lg hover:from-pink-700 hover:to-purple-700 transition-all"
+              className="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-all"
             >
               + New Prayer Request
             </button>
@@ -272,7 +272,7 @@ export default function MemberPrayersPage() {
                 <div className="flex gap-4">
                   <button
                     type="submit"
-                    className="flex-1 px-6 py-3 bg-gradient-to-r from-pink-600 to-purple-600 text-white rounded-lg hover:from-pink-700 hover:to-purple-700 transition-all"
+                    className="flex-1 px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all"
                   >
                     Submit Prayer Request
                   </button>

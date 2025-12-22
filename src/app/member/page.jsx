@@ -114,7 +114,8 @@ export default function MemberDashboard() {
       description: 'Read and study Scripture',
       gradient: 'from-purple-500 to-purple-600',
       bgGradient: 'from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20',
-      borderColor: 'border-purple-200 dark:border-purple-800 hover:border-purple-400 dark:hover:border-purple-600'
+      borderColor: 'border-purple-200 dark:border-purple-800 hover:border-purple-400 dark:hover:border-purple-600',
+      bgColor: 'bg-purple-50 dark:bg-purple-900/20'
     },
     {
       href: '/member/verse-of-day',
@@ -123,7 +124,8 @@ export default function MemberDashboard() {
       description: 'Daily Scripture inspiration',
       gradient: 'from-teal-500 to-teal-600',
       bgGradient: 'from-teal-50 to-teal-100 dark:from-teal-900/20 dark:to-teal-800/20',
-      borderColor: 'border-teal-200 dark:border-teal-800 hover:border-teal-400 dark:hover:border-teal-600'
+      borderColor: 'border-teal-200 dark:border-teal-800 hover:border-teal-400 dark:hover:border-teal-600',
+      bgColor: 'bg-teal-50 dark:bg-teal-900/20'
     },
     {
       href: '/member/reading-plan',
@@ -132,7 +134,8 @@ export default function MemberDashboard() {
       description: 'Track your Bible reading',
       gradient: 'from-emerald-500 to-emerald-600',
       bgGradient: 'from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20',
-      borderColor: 'border-emerald-200 dark:border-emerald-800 hover:border-emerald-400 dark:hover:border-emerald-600'
+      borderColor: 'border-emerald-200 dark:border-emerald-800 hover:border-emerald-400 dark:hover:border-emerald-600',
+      bgColor: 'bg-emerald-50 dark:bg-emerald-900/20'
     },
     {
       href: '/member/prayer-journal',
@@ -141,7 +144,8 @@ export default function MemberDashboard() {
       description: 'Track your prayer life',
       gradient: 'from-amber-500 to-amber-600',
       bgGradient: 'from-amber-50 to-amber-100 dark:from-amber-900/20 dark:to-amber-800/20',
-      borderColor: 'border-amber-200 dark:border-amber-800 hover:border-amber-400 dark:hover:border-amber-600'
+      borderColor: 'border-amber-200 dark:border-amber-800 hover:border-amber-400 dark:hover:border-amber-600',
+      bgColor: 'bg-amber-50 dark:bg-amber-900/20'
     },
     {
       href: '/member/profile',
@@ -150,7 +154,8 @@ export default function MemberDashboard() {
       description: 'Manage your account',
       gradient: 'from-indigo-500 to-indigo-600',
       bgGradient: 'from-indigo-50 to-indigo-100 dark:from-indigo-900/20 dark:to-indigo-800/20',
-      borderColor: 'border-indigo-200 dark:border-indigo-800 hover:border-indigo-400 dark:hover:border-indigo-600'
+      borderColor: 'border-indigo-200 dark:border-indigo-800 hover:border-indigo-400 dark:hover:border-indigo-600',
+      bgColor: 'bg-indigo-50 dark:bg-indigo-900/20'
     },
     {
       href: '/member/blogs',
@@ -159,7 +164,8 @@ export default function MemberDashboard() {
       description: 'Share your testimony',
       gradient: 'from-rose-500 to-rose-600',
       bgGradient: 'from-rose-50 to-rose-100 dark:from-rose-900/20 dark:to-rose-800/20',
-      borderColor: 'border-rose-200 dark:border-rose-800 hover:border-rose-400 dark:hover:border-rose-600'
+      borderColor: 'border-rose-200 dark:border-rose-800 hover:border-rose-400 dark:hover:border-rose-600',
+      bgColor: 'bg-rose-50 dark:bg-rose-900/20'
     }
   ]
 
@@ -168,7 +174,7 @@ export default function MemberDashboard() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Bible Study Registration Banner */}
         {openSession && !hasRegistered && (
-          <div className="mb-6 bg-gradient-to-r from-red-600 to-red-700 dark:from-red-700 dark:to-red-800 rounded-xl shadow-2xl overflow-hidden border-2 border-red-500 dark:border-red-600 animate-pulse">
+          <div className="mb-6 bg-red-600 dark:bg-red-700 rounded-xl shadow-2xl overflow-hidden border-2 border-red-500 dark:border-red-600 animate-pulse">
             <div className="p-6">
               <div className="flex items-start justify-between">
                 <div className="flex items-start space-x-4 flex-1">
@@ -226,7 +232,7 @@ export default function MemberDashboard() {
 
         {/* Registration Success Message */}
         {openSession && hasRegistered && (
-          <div className="mb-6 bg-gradient-to-r from-green-600 to-green-700 dark:from-green-700 dark:to-green-800 rounded-xl shadow-lg overflow-hidden border-2 border-green-500 dark:border-green-600">
+          <div className="mb-6 bg-green-600 dark:bg-green-700 rounded-xl shadow-lg overflow-hidden border-2 border-green-500 dark:border-green-600">
             <div className="p-6">
               <div className="flex items-center space-x-4">
                 <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
@@ -246,7 +252,7 @@ export default function MemberDashboard() {
         )}
 
         {/* Welcome Banner */}
-        <div className="bg-gradient-to-r from-purple-600 to-teal-600 dark:from-purple-700 dark:to-teal-700 rounded-2xl p-8 text-white mb-8 shadow-xl">
+        <div className="bg-purple-600 dark:bg-purple-700 rounded-2xl p-8 text-white mb-8 shadow-xl">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold mb-2 flex items-center">
@@ -336,9 +342,9 @@ export default function MemberDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {tools.map((tool, index) => (
               <Link key={index} href={tool.href} className="group">
-                <div className={`bg-gradient-to-br ${tool.bgGradient} p-6 rounded-xl border-2 ${tool.borderColor} transition-all duration-200 group-hover:shadow-lg`}>
+                <div className={`${tool.bgColor} p-6 rounded-xl border-2 ${tool.borderColor} transition-all duration-200 group-hover:shadow-lg`}>
                   <div className="flex items-center mb-4">
-                    <div className={`w-12 h-12 bg-gradient-to-br ${tool.gradient} rounded-lg flex items-center justify-center mr-4 shadow-md`}>
+                    <div className={`w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mr-4 shadow-md`}>
                       <i className={`fas ${tool.icon} text-white text-xl`}></i>
                     </div>
                     <div>

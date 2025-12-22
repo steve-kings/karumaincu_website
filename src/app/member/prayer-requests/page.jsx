@@ -164,7 +164,7 @@ export default function PrayerRequestsPage() {
             </div>
             <button
               onClick={() => setShowForm(true)}
-              className="bg-gradient-to-r from-purple-600 to-teal-600 text-white px-6 py-3 rounded-lg hover:from-purple-700 hover:to-teal-700 transition-all font-medium shadow-lg inline-flex items-center"
+              className="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-all font-medium shadow-lg inline-flex items-center"
             >
               <i className="fas fa-plus-circle mr-2"></i>
               Submit Prayer
@@ -318,7 +318,7 @@ export default function PrayerRequestsPage() {
                 <div className="flex space-x-4">
                   <button
                     type="submit"
-                    className="flex-1 px-6 py-3 bg-gradient-to-r from-purple-600 to-teal-600 text-white rounded-lg hover:from-purple-700 hover:to-teal-700 transition-all font-medium"
+                    className="flex-1 px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all font-medium"
                   >
                     <i className="fas fa-paper-plane mr-2"></i>Submit Prayer
                   </button>

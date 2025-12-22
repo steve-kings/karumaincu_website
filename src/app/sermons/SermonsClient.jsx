@@ -63,7 +63,7 @@ export default function SermonsClient() {
   }
 
   return (
-    <section className="py-16 bg-gradient-to-br from-gray-50 to-purple-50">
+    <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         {/* Search and Filter */}
         <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
@@ -110,7 +110,7 @@ export default function SermonsClient() {
                 className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
               >
                 {/* Thumbnail */}
-                <div className="relative h-48 bg-gradient-to-br from-purple-500 to-indigo-600">
+                <div className="relative h-48 bg-purple-600">
                   {sermon.thumbnail_url && sermon.thumbnail_url.includes('unsplash.com') ? (
                     <img 
                       src={sermon.thumbnail_url} 

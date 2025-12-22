@@ -88,14 +88,14 @@ export default function VerseOfDayPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Today's Verse */}
         {loading ? (
-          <div className="bg-gradient-to-r from-purple-600 to-teal-600 rounded-2xl p-8 text-white mb-8">
+          <div className="bg-purple-600 rounded-2xl p-8 text-white mb-8">
             <div className="text-center">
               <Loader2 className="w-12 h-12 animate-spin mx-auto mb-4" />
               <p className="text-lg">Loading today's verse...</p>
             </div>
           </div>
         ) : verse ? (
-          <div className="bg-gradient-to-r from-purple-600 to-teal-600 dark:from-purple-700 dark:to-teal-700 rounded-2xl p-8 text-white mb-8 shadow-xl">
+          <div className="bg-purple-600 dark:bg-purple-700 rounded-2xl p-8 text-white mb-8 shadow-xl">
             <div className="text-center">
               <div className="flex items-center justify-center gap-2 mb-4">
                 <BookOpen className="w-6 h-6" />

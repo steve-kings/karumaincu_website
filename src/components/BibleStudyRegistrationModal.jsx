@@ -31,12 +31,12 @@ export default function BibleStudyRegistrationModal({ isOpen, onClose, session, 
     setError('')
 
     try {
-            const response = await fetch('/api/member/bible-study/register', {
+      const response = await fetch('/api/member/bible-study/register', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify(formData)
       })
 
@@ -155,7 +155,7 @@ export default function BibleStudyRegistrationModal({ isOpen, onClose, session, 
                     value={formData.full_name}
                     onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
                     className="w-full px-4 py-2 bg-gray-50 dark:bg-black border border-gray-300 dark:border-neutral-800 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
-                    placeholder="John Doe"
+                    placeholder="Wanjiku Mwangi"
                   />
                 </div>
 
@@ -169,7 +169,7 @@ export default function BibleStudyRegistrationModal({ isOpen, onClose, session, 
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="w-full px-4 py-2 bg-gray-50 dark:bg-black border border-gray-300 dark:border-neutral-800 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
-                    placeholder="john@example.com"
+                    placeholder="wanjiku@student.karu.ac.ke"
                   />
                 </div>
               </div>

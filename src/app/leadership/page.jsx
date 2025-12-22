@@ -53,8 +53,17 @@ export default function LeadershipPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-purple-800 via-teal-700 to-emerald-700 text-white">
-        <div className="container mx-auto px-4">
+      <section className="relative py-20 text-white">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img 
+            src="/hero-1.jpg" 
+            alt="Leadership Background" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-purple-900/80"></div>
+        </div>
+        <div className="container mx-auto px-4 relative z-10">
           <motion.div 
             className="text-center max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 30 }}
@@ -201,7 +210,7 @@ export default function LeadershipPage() {
                 {selectedLeader.email && (
                   <a 
                     href={`mailto:${selectedLeader.email}`}
-                    className="flex items-center justify-center space-x-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white px-6 py-3 rounded-lg hover:opacity-90 transition-opacity"
+                    className="flex items-center justify-center space-x-2 bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors"
                   >
                     <i className="fas fa-envelope"></i>
                     <span>Send Email</span>

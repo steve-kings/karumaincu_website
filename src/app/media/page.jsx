@@ -57,7 +57,7 @@ export default async function MediaPage() {
     <div className="min-h-screen">
       {/* Announcements Scrolling Banner */}
       {announcements.length > 0 && (
-        <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white py-3 overflow-hidden relative">
+        <div className="bg-amber-500 text-white py-3 overflow-hidden relative">
           <div className="flex items-center">
             <div className="flex-shrink-0 px-4 font-bold flex items-center">
               <i className="fas fa-bullhorn mr-2 text-xl"></i>
@@ -91,8 +91,17 @@ export default async function MediaPage() {
       )}
 
       {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-purple-800 via-teal-700 to-emerald-700 text-white">
-        <div className="container mx-auto px-4">
+      <section className="relative py-20 text-white">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img 
+            src="/hero-2.jpg" 
+            alt="Media Background" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-purple-900/80"></div>
+        </div>
+        <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="font-heading font-bold text-5xl md:text-6xl mb-6">
               Media & Gallery
@@ -109,7 +118,7 @@ export default async function MediaPage() {
       </section>
 
       {/* YouTube Section */}
-      <section className="py-16 bg-gradient-to-br from-purple-50 to-teal-50">
+      <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="font-heading font-bold text-4xl md:text-5xl text-gray-800 mb-6">
@@ -123,7 +132,7 @@ export default async function MediaPage() {
           <div className="max-w-4xl mx-auto">
             <div className="bg-white rounded-2xl shadow-lg p-8 text-center">
               <div className="mb-6">
-                <div className="w-20 h-20 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <div className="w-20 h-20 bg-red-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <i className="fab fa-youtube text-white text-3xl"></i>
                 </div>
                 <h3 className="font-heading font-bold text-2xl text-gray-800 mb-2">
@@ -155,14 +164,14 @@ export default async function MediaPage() {
                   href="https://www.youtube.com/@karucumain" 
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-gradient-to-r from-red-500 to-red-600 text-white px-8 py-4 rounded-lg font-semibold hover:from-red-600 hover:to-red-700 transition-all inline-flex items-center justify-center text-lg shadow-lg hover:shadow-xl"
+                  className="bg-red-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-red-700 transition-all inline-flex items-center justify-center text-lg shadow-lg hover:shadow-xl"
                 >
                   <i className="fab fa-youtube mr-3 text-xl"></i>
                   Visit Our YouTube Channel
                 </a>
                 <a 
                   href="/sermons" 
-                  className="bg-gradient-to-r from-purple-500 to-purple-600 text-white px-8 py-4 rounded-lg font-semibold hover:from-purple-600 hover:to-purple-700 transition-all inline-flex items-center justify-center text-lg shadow-lg hover:shadow-xl"
+                  className="bg-purple-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-purple-700 transition-all inline-flex items-center justify-center text-lg shadow-lg hover:shadow-xl"
                 >
                   <i className="fas fa-book-bible mr-3 text-xl"></i>
                   Browse Sermons
