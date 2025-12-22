@@ -25,10 +25,12 @@ export function getPool() {
 }
 
 // Execute query helper
+// Using pool.query() instead of pool.execute() to avoid MySQL2 prepared statement bugs
+// with LIMIT/OFFSET parameters
 export async function executeQuery(query, params = []) {
   try {
     const pool = getPool()
-    const [results] = await pool.execute(query, params)
+    const [results] = await pool.query(query, params)
     return results
   } catch (error) {
     console.error('Database query error:', error)
@@ -46,7 +48,7 @@ export async function executeTransaction(queries) {
     
     const results = []
     for (const { query, params } of queries) {
-      const [result] = await connection.execute(query, params)
+      const [result] = await connection.query(query, params)
       results.push(result)
     }
     
