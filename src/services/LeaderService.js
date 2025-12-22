@@ -27,14 +27,12 @@ class LeaderService {
 
     query += ' ORDER BY display_order ASC, created_at DESC'
 
+    // LIMIT and OFFSET must be integers embedded directly (not as prepared statement params)
+    // to avoid MySQL "Incorrect arguments to mysqld_stmt_execute" error
     if (limit) {
-      query += ' LIMIT ?'
-      params.push(parseInt(limit))
-      
-      if (offset) {
-        query += ' OFFSET ?'
-        params.push(parseInt(offset))
-      }
+      const limitInt = parseInt(limit, 10) || 50
+      const offsetInt = parseInt(offset, 10) || 0
+      query += ` LIMIT ${limitInt} OFFSET ${offsetInt}`
     }
 
     const leaders = await executeQuery(query, params)

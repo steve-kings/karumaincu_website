@@ -30,13 +30,9 @@ class EventService {
     query += ' ORDER BY event_date DESC, created_at DESC'
 
     if (limit) {
-      query += ' LIMIT ?'
-      params.push(parseInt(limit))
-      
-      if (offset) {
-        query += ' OFFSET ?'
-        params.push(parseInt(offset))
-      }
+      const limitInt = parseInt(limit, 10) || 50
+      const offsetInt = parseInt(offset, 10) || 0
+      query += ` LIMIT ${limitInt} OFFSET ${offsetInt}`
     }
 
     return await executeQuery(query, params)

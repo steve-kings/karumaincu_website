@@ -16,13 +16,9 @@ class BibleStudyService {
     query += ' ORDER BY registration_deadline DESC'
 
     if (limit) {
-      query += ' LIMIT ?'
-      params.push(parseInt(limit))
-      
-      if (offset) {
-        query += ' OFFSET ?'
-        params.push(parseInt(offset))
-      }
+      const limitInt = parseInt(limit, 10) || 50
+      const offsetInt = parseInt(offset, 10) || 0
+      query += ` LIMIT ${limitInt} OFFSET ${offsetInt}`
     }
 
     console.log('[Service] Executing query:', query)
@@ -202,13 +198,9 @@ class BibleStudyService {
     query += ' ORDER BY r.registered_at DESC'
 
     if (limit) {
-      query += ' LIMIT ?'
-      params.push(parseInt(limit))
-      
-      if (offset) {
-        query += ' OFFSET ?'
-        params.push(parseInt(offset))
-      }
+      const limitInt = parseInt(limit, 10) || 50
+      const offsetInt = parseInt(offset, 10) || 0
+      query += ` LIMIT ${limitInt} OFFSET ${offsetInt}`
     }
 
     return await executeQuery(query, params)

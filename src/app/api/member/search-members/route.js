@@ -54,8 +54,9 @@ export async function GET(request) {
       params.push(`%${course}%`)
     }
 
-    sql += ` ORDER BY full_name ASC LIMIT ?`
-    params.push(limit)
+    // LIMIT must be embedded directly (not as prepared statement param)
+    const limitInt = parseInt(limit, 10) || 20
+    sql += ` ORDER BY full_name ASC LIMIT ${limitInt}`
 
     const members = await query(sql, params)
 
