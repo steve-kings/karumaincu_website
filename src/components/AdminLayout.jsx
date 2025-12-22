@@ -113,7 +113,7 @@ export default function AdminLayout({ children }) {
     }
   }
 
-  if (loading) {
+  if (loading || !user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-black">
         <div className="text-center">
@@ -145,7 +145,7 @@ export default function AdminLayout({ children }) {
             <div className="flex items-center gap-2">
               <div className="hidden md:flex items-center gap-2 text-white text-xs">
                 <i className="fas fa-user-circle text-lg"></i>
-                <span>{user.full_name || 'Admin'}</span>
+                <span>{user?.full_name || 'Admin'}</span>
               </div>
 
               <button
