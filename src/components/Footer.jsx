@@ -146,12 +146,8 @@ export default function Footer() {
                 </div>
               </div>
               <div className="flex items-center space-x-3">
-                <i className="fas fa-phone text-purple-400 flex-shrink-0"></i>
-                <p className="text-gray-300 text-sm">+254 712 345 678</p>
-              </div>
-              <div className="flex items-center space-x-3">
                 <i className="fas fa-envelope text-purple-400 flex-shrink-0"></i>
-                <p className="text-gray-300 text-sm">info@karucu.ac.ke</p>
+                <p className="text-gray-300 text-sm">info@karumaincu.org</p>
               </div>
             </div>
 

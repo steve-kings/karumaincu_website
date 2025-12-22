@@ -104,13 +104,6 @@ export default function VerseOfDayPage() {
                 </h3>
               </div>
               
-              {verse.auto_generated && (
-                <div className="mb-4 inline-block px-3 py-1 bg-white/20 rounded-full text-sm">
-                  <i className="fas fa-magic mr-2"></i>
-                  Auto-generated
-                </div>
-              )}
-              
               <blockquote className="text-xl md:text-2xl italic mb-6 leading-relaxed">
                 "{verse.verse_text}"
               </blockquote>

@@ -168,35 +168,22 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-semibold text-lg text-gray-800 mb-1">Email</h3>
                     <p className="text-gray-600">
-                      info@karucu.ac.ke<br />
-                      karucumain@gmail.com
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start">
-                  <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
-                    <i className="fas fa-phone text-emerald-600 text-xl"></i>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-lg text-gray-800 mb-1">Phone</h3>
-                    <p className="text-gray-600">
-                      +254 700 000 000<br />
-                      +254 711 111 111
+                      info@karumaincu.org
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-start">
                   <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
-                    <i className="fas fa-clock text-amber-600 text-xl"></i>
+                    <i className="fas fa-calendar-alt text-amber-600 text-xl"></i>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-lg text-gray-800 mb-1">Service Times</h3>
+                    <h3 className="font-semibold text-lg text-gray-800 mb-1">Weekly Activities</h3>
                     <p className="text-gray-600">
-                      Sunday Service: 10:00 AM<br />
-                      Wednesday Fellowship: 6:00 PM<br />
-                      Thursday Bible Study: 7:00 PM
+                      Sunday Service<br />
+                      Monday Bible Study<br />
+                      Thursday Fellowship<br />
+                      Weekly Prayers
                     </p>
                   </div>
                 </div>
