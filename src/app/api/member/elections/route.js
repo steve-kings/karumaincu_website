@@ -21,8 +21,8 @@ export async function GET(request) {
     const elections = await query(
       `SELECT * FROM leader_elections 
        WHERE status = 'open' 
-       AND start_date <= NOW() 
-       AND end_date >= NOW()
+       AND DATE(start_date) <= CURDATE() 
+       AND DATE(end_date) >= CURDATE()
        ORDER BY end_date ASC`
     )
 
