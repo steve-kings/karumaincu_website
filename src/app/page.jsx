@@ -154,7 +154,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-screen overflow-hidden">
+      <section className="relative h-[70vh] md:h-screen overflow-hidden">
         {heroSlides.map((slide, index) => (
           <div
             key={slide.id}
@@ -170,28 +170,28 @@ export default function HomePage() {
             
             <div className="relative z-10 h-full flex items-center justify-center">
               <div className="text-center max-w-4xl mx-auto px-4">
-                <h1 className="font-heading font-bold text-5xl md:text-7xl mb-6 text-white drop-shadow-2xl"
+                <h1 className="font-heading font-bold text-3xl sm:text-4xl md:text-7xl mb-4 md:mb-6 text-white drop-shadow-2xl"
                     style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
                   {slide.title}
                 </h1>
-                <p className="text-xl md:text-2xl mb-4 font-medium text-white drop-shadow-xl"
+                <p className="text-base sm:text-lg md:text-2xl mb-3 md:mb-4 font-medium text-white drop-shadow-xl"
                    style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.8)' }}>
                   {slide.subtitle}
                 </p>
-                <p className="text-lg mb-8 max-w-2xl mx-auto leading-relaxed text-white drop-shadow-lg"
+                <p className="text-sm sm:text-base md:text-lg mb-6 md:mb-8 max-w-2xl mx-auto leading-relaxed text-white drop-shadow-lg"
                    style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.7)' }}>
                   {slide.description}
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
                   <Link
                     href="/register"
-                    className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all hover:shadow-lg"
+                    className="bg-purple-600 hover:bg-purple-700 text-white px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold text-base md:text-lg transition-all hover:shadow-lg"
                   >
                     {slide.cta1}
                   </Link>
                   <Link
                     href="/about"
-                    className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-purple-700 px-8 py-4 rounded-lg font-semibold text-lg transition-all"
+                    className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-purple-700 px-6 md:px-8 py-3 md:py-4 rounded-lg font-semibold text-base md:text-lg transition-all"
                   >
                     {slide.cta2}
                   </Link>
@@ -245,7 +245,7 @@ export default function HomePage() {
                 title: "Prayer Ministry",
                 description: "KarUCU is an interdenominational, non profit making and non political organization dedicated to intercession and spiritual warfare",
                 image: imageUrls.ministries.prayer,
-                link: "/prayer"
+                link: "/prayer-requests"
               },
               {
                 title: "Music & Worship",

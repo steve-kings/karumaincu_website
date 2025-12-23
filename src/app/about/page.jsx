@@ -5,7 +5,7 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section with Background Image */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative h-[60vh] md:h-screen flex items-center justify-center overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: "url('/fellowship.jpg')" }}
@@ -15,7 +15,7 @@ export default function AboutPage() {
 
         <div className="relative z-10 container mx-auto px-4 max-w-4xl text-center text-white">
           <h1
-            className="font-heading font-bold text-4xl md:text-6xl lg:text-7xl mb-6 text-white drop-shadow-2xl"
+            className="font-heading font-bold text-3xl sm:text-4xl md:text-6xl lg:text-7xl mb-4 md:mb-6 text-white drop-shadow-2xl"
             style={{
               textShadow: '3px 3px 6px rgba(0,0,0,0.9), 0px 0px 20px rgba(0,0,0,0.7)'
             }}
@@ -23,7 +23,7 @@ export default function AboutPage() {
             About KarUCU
           </h1>
           <p
-            className="text-xl md:text-2xl mb-6 text-white drop-shadow-xl font-semibold"
+            className="text-lg sm:text-xl md:text-2xl mb-4 md:mb-6 text-white drop-shadow-xl font-semibold"
             style={{
               textShadow: '2px 2px 4px rgba(0,0,0,0.9), 0px 0px 15px rgba(0,0,0,0.6)'
             }}
@@ -31,7 +31,7 @@ export default function AboutPage() {
             Karatina University Christian Union - Main Campus
           </p>
           <p
-            className="text-lg md:text-xl max-w-3xl mx-auto leading-relaxed text-white drop-shadow-lg font-medium"
+            className="text-sm sm:text-base md:text-xl max-w-3xl mx-auto leading-relaxed text-white drop-shadow-lg font-medium"
             style={{
               textShadow: '1px 1px 3px rgba(0,0,0,0.8), 0px 0px 10px rgba(0,0,0,0.5)'
             }}
@@ -40,9 +40,9 @@ export default function AboutPage() {
             uniting students in Christ and fostering spiritual growth alongside academic excellence.
           </p>
 
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-            <div className="animate-bounce bg-white/20 backdrop-blur-sm rounded-full p-3 border border-white/30">
-              <i className="fas fa-chevron-down text-2xl text-white drop-shadow-lg"></i>
+          <div className="absolute bottom-6 md:bottom-8 left-1/2 transform -translate-x-1/2">
+            <div className="animate-bounce bg-white/20 backdrop-blur-sm rounded-full p-2 md:p-3 border border-white/30">
+              <i className="fas fa-chevron-down text-xl md:text-2xl text-white drop-shadow-lg"></i>
             </div>
           </div>
         </div>
