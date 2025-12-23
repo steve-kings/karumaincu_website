@@ -7,7 +7,7 @@ export async function GET(request) {
     const query = `
       SELECT * FROM bible_study_sessions 
       WHERE is_open = 1 
-      AND registration_deadline >= CURDATE()
+      AND DATE(registration_deadline) >= CURDATE()
       ORDER BY registration_deadline ASC
     `
     
