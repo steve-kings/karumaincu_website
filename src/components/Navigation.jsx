@@ -78,15 +78,15 @@ export default function Navigation() {
               </span>
             </div>
             <div className="flex items-center space-x-3">
-              <a href="#" className="hover:text-purple-200 transition-colors">
+              <a href="https://www.facebook.com/karumain.cu.3" target="_blank" rel="noopener noreferrer" className="hover:text-purple-200 transition-colors">
                 <span className="sr-only">Facebook</span>
                 <i className="fab fa-facebook text-lg"></i>
               </a>
-              <a href="#" className="hover:text-purple-200 transition-colors">
-                <span className="sr-only">Twitter</span>
+              <a href="https://x.com/karumaincu" target="_blank" rel="noopener noreferrer" className="hover:text-purple-200 transition-colors">
+                <span className="sr-only">Twitter/X</span>
                 <i className="fab fa-twitter text-lg"></i>
               </a>
-              <a href="#" className="hover:text-purple-200 transition-colors">
+              <a href="https://www.instagram.com/karucu_maincampus" target="_blank" rel="noopener noreferrer" className="hover:text-purple-200 transition-colors">
                 <span className="sr-only">Instagram</span>
                 <i className="fab fa-instagram text-lg"></i>
               </a>
