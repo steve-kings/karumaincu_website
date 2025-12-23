@@ -9,21 +9,21 @@ export default function Footer() {
     { name: 'About Us', href: '/about' },
     { name: 'Leadership', href: '/leadership' },
     { name: 'Events', href: '/events' },
-    { name: 'Resources', href: '/resources' },
+    { name: 'Gallery', href: '/media' },
   ]
 
   const spiritualLinks = [
-    { name: 'Prayer Requests', href: '/prayer' },
-    { name: 'Bible Study', href: '/resources' },
+    { name: 'Prayer Requests', href: '/prayer-requests' },
+    { name: 'Bible Study', href: '/login' },
     { name: 'Sermons', href: '/media' },
-    { name: 'Testimonies', href: '/blog' },
+    { name: 'Blog', href: '/blog' },
   ]
 
   const supportLinks = [
     { name: 'Give', href: '/give' },
     { name: 'Contact', href: '/contact' },
     { name: 'Join Us', href: '/register' },
-    { name: 'Privacy Policy', href: '/privacy' },
+    { name: 'Login', href: '/login' },
   ]
 
   return (
