@@ -36,6 +36,10 @@ export default function BlogPage() {
 
   const getFeaturedImage = (blog) => {
     if (blog.featured_image) {
+      // If it's a full URL (Cloudinary, etc.), use it directly
+      if (blog.featured_image.startsWith('http')) {
+        return blog.featured_image
+      }
       // If it's already a full path starting with /uploads, use it directly
       if (blog.featured_image.startsWith('/uploads')) {
         return blog.featured_image

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Video, Plus, Search, X, Star, Trash2, Play } from 'lucide-react'
+import AdminLayout from '@/components/AdminLayout'
 
 export default function SermonManagementPage() {
   const [sermons, setSermons] = useState([])
@@ -136,6 +137,7 @@ export default function SermonManagementPage() {
   }
 
   return (
+    <AdminLayout>
     <div className="p-8">
       <div className="flex items-center justify-between mb-8">
         <div>
@@ -449,5 +451,6 @@ export default function SermonManagementPage() {
         </div>
       )}
     </div>
+    </AdminLayout>
   )
 }

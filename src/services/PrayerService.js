@@ -94,16 +94,15 @@ class PrayerService {
     const isPub = isPublic !== undefined ? isPublic : (is_public !== undefined ? is_public : true)
 
     const result = await executeQuery(
-      `INSERT INTO prayer_requests (title, content, category, is_public, is_anonymous, requester_id, requester_name, status) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, 'pending')`,
+      `INSERT INTO prayer_requests (title, content, category, is_public, is_anonymous, requester_id, status) 
+       VALUES (?, ?, ?, ?, ?, ?, 'active')`,
       [
         title, 
         prayerContent, 
         category || 'personal', 
         isPub ? 1 : 0, 
         isAnon ? 1 : 0, 
-        userId || null,
-        isAnon ? null : requester_name
+        userId || null
       ]
     )
 
