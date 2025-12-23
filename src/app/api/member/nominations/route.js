@@ -233,7 +233,7 @@ export async function POST(request) {
     const election = await query(
       `SELECT * FROM leader_elections 
        WHERE id = ? AND status = 'open' 
-       AND start_date <= NOW() AND end_date >= NOW()`,
+       AND DATE(start_date) <= CURDATE() AND DATE(end_date) >= CURDATE()`,
       [election_id]
     )
 
