@@ -19,7 +19,7 @@ class AnnouncementService {
     }
 
     if (active_only === 'true') {
-      query += ' AND status = "active" AND (expires_at IS NULL OR expires_at > NOW())'
+      query += ' AND status = "published" AND (expires_at IS NULL OR expires_at > NOW())'
     }
 
     query += ' ORDER BY created_at DESC'
@@ -53,7 +53,7 @@ class AnnouncementService {
     const result = await executeQuery(
       `INSERT INTO announcements (title, content, priority, expires_at, status, created_by) 
        VALUES (?, ?, ?, ?, ?, ?)`,
-      [title, content, priority || 'normal', expires_at, status || 'active', createdBy]
+      [title, content, priority || 'medium', expires_at, status || 'published', createdBy]
     )
 
     return await this.getById(result.insertId)
@@ -87,7 +87,7 @@ class AnnouncementService {
     const [stats] = await executeQuery(`
       SELECT 
         COUNT(*) as total,
-        SUM(CASE WHEN status = 'active' AND (expires_at IS NULL OR expires_at > NOW()) THEN 1 ELSE 0 END) as active,
+        SUM(CASE WHEN status = 'published' AND (expires_at IS NULL OR expires_at > NOW()) THEN 1 ELSE 0 END) as active,
         SUM(CASE WHEN expires_at IS NOT NULL AND expires_at <= NOW() THEN 1 ELSE 0 END) as expired
       FROM announcements
     `)

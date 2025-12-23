@@ -116,7 +116,7 @@ class EventService {
         COUNT(*) as total,
         SUM(CASE WHEN event_date >= CURDATE() THEN 1 ELSE 0 END) as upcoming,
         SUM(CASE WHEN event_date < CURDATE() THEN 1 ELSE 0 END) as past
-      FROM events WHERE status = 'active'
+      FROM events WHERE status = 'published'
     `)
     
     return stats

@@ -30,7 +30,7 @@ async function getAnnouncements() {
     const query = `
       SELECT id, title, content, priority, status
       FROM announcements
-      WHERE status = 'active'
+      WHERE status = 'published'
       AND (expires_at IS NULL OR expires_at > NOW())
       ORDER BY priority DESC, created_at DESC
       LIMIT 5
