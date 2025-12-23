@@ -11,7 +11,7 @@ export default function HomePage() {
 
   const imageUrls = {
     hero: {
-      slide1: "/hero-1.jpg",
+      slide1: "/fellowship.jpg",
       slide2: "/hero-2.jpg",
       slide3: "/hero-3.jpg",
       slide4: "/hero-4.jpg"
@@ -25,7 +25,7 @@ export default function HomePage() {
       unity: "/hero-2.jpg"
     },
     ministries: {
-      prayer: "/hero-1.jpg",
+      prayer: "/fellowship-2.jpg",
       music: "/hero-2.jpg",
       creativeArts: "/hero-3.jpg",
       media: "/IMG_5527.JPG",
@@ -305,7 +305,7 @@ export default function HomePage() {
       </section>
 
       {/* Ministry Carousel */}
-      <section className="py-20 bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 text-white relative overflow-hidden">
+      <section className="py-20 bg-purple-900 text-white relative overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute top-10 left-10 w-32 h-32 bg-white/5 rounded-full blur-xl animate-pulse"></div>
           <div className="absolute top-40 right-20 w-24 h-24 bg-purple-400/10 rounded-full blur-lg animate-bounce"></div>
@@ -390,10 +390,9 @@ export default function HomePage() {
           <div className="text-center mt-16">
             <Link
               href="/about"
-              className="relative inline-block bg-gradient-to-r from-purple-600 via-pink-600 to-purple-700 hover:from-purple-700 hover:via-pink-700 hover:to-purple-800 text-white px-10 py-5 rounded-full font-bold text-lg transition-all duration-300 shadow-2xl hover:shadow-purple-500/25 group"
+              className="inline-block bg-purple-600 hover:bg-purple-700 text-white px-10 py-5 rounded-full font-bold text-lg transition-all duration-300 shadow-2xl hover:shadow-purple-500/25 group"
             >
-              <span className="relative z-10 flex items-center">
-                <i className="fas fa-rocket mr-3 group-hover:animate-bounce"></i>
+              <span className="flex items-center">
                 EXPLORE ALL MINISTRIES
                 <i className="fas fa-arrow-right ml-3 group-hover:translate-x-1 transition-transform duration-300"></i>
               </span>

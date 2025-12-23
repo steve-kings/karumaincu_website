@@ -30,48 +30,56 @@ export default function ImageUpload({ value, onChange, label = "Upload Image", a
   const handleFileChange = async (file) => {
     if (!file || !validateFile(file)) return
 
-    // Show preview immediately
+    // Convert file to base64
     const reader = new FileReader()
-    reader.onloadend = () => {
-      setPreview(reader.result)
+    
+    reader.onloadend = async () => {
+      const base64String = reader.result
+      setPreview(base64String)
+
+      // Upload to Cloudinary
+      setUploading(true)
+      setError(null)
+
+      try {
+        const response = await fetch('/api/upload/cloudinary', {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            image: base64String,
+            folder: type, // Use type as folder (leaders, events, blogs, gallery, etc.)
+          })
+        })
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}))
+          throw new Error(errorData.error || 'Upload failed')
+        }
+
+        const data = await response.json()
+        
+        if (data.success && data.data?.url) {
+          onChange(data.data.url)
+        } else {
+          throw new Error(data.error || 'Upload failed')
+        }
+      } catch (err) {
+        console.error('Upload error:', err)
+        setError(err.message || 'Failed to upload image. Please try again.')
+        setPreview(value || null) // Revert to original
+      } finally {
+        setUploading(false)
+      }
     }
+
+    reader.onerror = () => {
+      setError('Failed to read file')
+    }
+
     reader.readAsDataURL(file)
-
-    // Upload file
-    setUploading(true)
-    setError(null)
-
-    try {
-      const formData = new FormData()
-      formData.append('file', file)
-      formData.append('type', type) // Pass type for folder organization
-
-      // Use cookies for authentication (no localStorage)
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        credentials: 'include', // Send cookies with request
-        body: formData
-      })
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}))
-        throw new Error(errorData.error || 'Upload failed')
-      }
-
-      const data = await response.json()
-      
-      if (data.success && data.url) {
-        onChange(data.url)
-      } else {
-        throw new Error(data.error || 'Upload failed')
-      }
-    } catch (err) {
-      console.error('Upload error:', err)
-      setError(err.message || 'Failed to upload image. Please try again.')
-      setPreview(value || null) // Revert to original
-    } finally {
-      setUploading(false)
-    }
   }
 
   const handleInputChange = (e) => {
@@ -179,7 +187,7 @@ export default function ImageUpload({ value, onChange, label = "Upload Image", a
                   <span className="font-semibold text-purple-600 dark:text-purple-400">Click to upload</span> or drag and drop
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
-                  PNG, JPG, GIF up to 10MB (auto-compressed)
+                  PNG, JPG, GIF up to 10MB (stored on Cloudinary)
                 </p>
               </div>
             </>

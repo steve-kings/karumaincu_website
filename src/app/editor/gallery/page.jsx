@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import EditorLayout from '@/components/EditorLayout';
+import ImageUpload from '@/components/ImageUpload';
 
 export default function EditorGalleryPage() {
   const [galleries, setGalleries] = useState([]);
@@ -101,21 +102,20 @@ export default function EditorGalleryPage() {
                 key={gallery.id}
                 className="bg-white dark:bg-neutral-900 rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-neutral-800"
               >
-                {gallery.thumbnail_url && gallery.thumbnail_url.includes('unsplash.com') ? (
+                {gallery.thumbnail_url ? (
                   <img
                     src={gallery.thumbnail_url}
                     alt={gallery.title}
                     className="w-full h-48 object-cover"
                     onError={(e) => {
-                      e.target.src = '/logo.png'
-                      e.target.className = 'w-24 h-24 object-contain mx-auto mt-12'
+                      e.target.style.display = 'none'
+                      e.target.nextSibling.style.display = 'flex'
                     }}
                   />
-                ) : (
-                  <div className="w-full h-48 flex items-center justify-center bg-purple-100 dark:bg-purple-900/30">
-                    <img src="/logo.png" alt="KarUCU" className="w-24 h-24 object-contain" />
-                  </div>
-                )}
+                ) : null}
+                <div className={`w-full h-48 ${gallery.thumbnail_url ? 'hidden' : 'flex'} items-center justify-center bg-purple-100 dark:bg-purple-900/30`}>
+                  <img src="/logo.png" alt="KarUCU" className="w-24 h-24 object-contain" />
+                </div>
                 <div className="p-4">
                   <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{gallery.title}</h3>
                   <p className="text-sm text-gray-600 dark:text-neutral-400 mb-2 line-clamp-2">{gallery.description}</p>
@@ -180,15 +180,11 @@ export default function EditorGalleryPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-neutral-300 mb-2">
-                    Thumbnail URL (Optional)
-                  </label>
-                  <input
-                    type="url"
+                  <ImageUpload
+                    label="Thumbnail Image (Optional)"
                     value={formData.thumbnail_url}
-                    onChange={(e) => setFormData({...formData, thumbnail_url: e.target.value})}
-                    className="w-full p-3 border border-gray-300 dark:border-neutral-800 rounded-lg bg-white dark:bg-neutral-800 text-gray-900 dark:text-white"
-                    placeholder="https://..."
+                    onChange={(url) => setFormData({...formData, thumbnail_url: url})}
+                    type="gallery"
                   />
                 </div>
 

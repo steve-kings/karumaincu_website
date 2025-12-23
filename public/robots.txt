@@ -1,0 +1,22 @@
+# Robots.txt for karumaincu.org
+
+User-agent: *
+Allow: /
+
+# Disallow admin and member areas
+Disallow: /admin/
+Disallow: /member/
+Disallow: /editor/
+Disallow: /api/
+Disallow: /debug-token
+Disallow: /force-logout
+Disallow: /check-role
+Disallow: /set-password
+
+# Allow specific API endpoints for SEO
+Allow: /api/blogs
+Allow: /api/events
+Allow: /api/sermons
+
+# Sitemap location
+Sitemap: https://karumaincu.org/sitemap.xml

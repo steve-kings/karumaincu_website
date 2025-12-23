@@ -57,7 +57,7 @@ export default function LeadershipPage() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <img 
-            src="/hero-1.jpg" 
+            src="/fellowship.jpg" 
             alt="Leadership Background" 
             className="w-full h-full object-cover"
           />

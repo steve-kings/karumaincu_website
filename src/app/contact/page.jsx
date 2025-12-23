@@ -4,27 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 
 export default function ContactPage() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
-  })
   const [submitted, setSubmitted] = useState(false)
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    // Handle form submission
-    setSubmitted(true)
-    setTimeout(() => setSubmitted(false), 3000)
-  }
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
-  }
 
   return (
     <div className="min-h-screen">
@@ -70,7 +50,15 @@ export default function ContactPage() {
                 </div>
               )}
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form 
+                action="https://api.web3forms.com/submit" 
+                method="POST"
+                className="space-y-6"
+              >
+                <input type="hidden" name="access_key" value="af59fc56-4064-44a1-9717-cba502d87dcf" />
+                <input type="hidden" name="subject" value="New Contact Form Submission - KarUCU Website" />
+                <input type="hidden" name="from_name" value="KarUCU Contact Form" />
+                
                 <div>
                   <label className="block text-gray-700 font-semibold mb-2">
                     Your Name
@@ -78,8 +66,6 @@ export default function ContactPage() {
                   <input
                     type="text"
                     name="name"
-                    value={formData.name}
-                    onChange={handleChange}
                     required
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                     placeholder="Wanjiku Mwangi"
@@ -93,8 +79,6 @@ export default function ContactPage() {
                   <input
                     type="email"
                     name="email"
-                    value={formData.email}
-                    onChange={handleChange}
                     required
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                     placeholder="wanjiku@student.karu.ac.ke"
@@ -108,8 +92,6 @@ export default function ContactPage() {
                   <input
                     type="text"
                     name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
                     required
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                     placeholder="How can we help?"
@@ -122,14 +104,14 @@ export default function ContactPage() {
                   </label>
                   <textarea
                     name="message"
-                    value={formData.message}
-                    onChange={handleChange}
                     required
                     rows="6"
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                     placeholder="Your message..."
                   ></textarea>
                 </div>
+
+                <input type="checkbox" name="botcheck" className="hidden" />
 
                 <button
                   type="submit"

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Image, Plus, Search, X, Trash2, ExternalLink, Eye } from 'lucide-react'
+import ImageUpload from '@/components/ImageUpload'
 
 export default function GalleryManagementPage() {
   const [galleries, setGalleries] = useState([])
@@ -249,21 +250,20 @@ export default function GalleryManagementPage() {
           galleries.map((gallery) => (
             <div key={gallery.id} className="bg-white dark:bg-neutral-950 rounded-lg shadow-lg border border-gray-100 dark:border-neutral-900 overflow-hidden">
               <div className="relative h-48 bg-gradient-to-br from-pink-500 to-purple-600">
-                {gallery.thumbnail_url && gallery.thumbnail_url.includes('unsplash.com') ? (
+                {gallery.thumbnail_url ? (
                   <img 
                     src={gallery.thumbnail_url} 
                     alt={gallery.title} 
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                      e.target.src = '/logo.png'
-                      e.target.className = 'w-24 h-24 object-contain mx-auto'
+                      e.target.style.display = 'none'
+                      e.target.nextSibling.style.display = 'flex'
                     }}
                   />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <img src="/logo.png" alt="KarUCU" className="w-24 h-24 object-contain" />
-                  </div>
-                )}
+                ) : null}
+                <div className={`w-full h-full ${gallery.thumbnail_url ? 'hidden' : 'flex'} items-center justify-center`}>
+                  <img src="/logo.png" alt="KarUCU" className="w-24 h-24 object-contain" />
+                </div>
                 
                 <div className="absolute top-2 left-2 bg-pink-600 text-white px-2 py-1 rounded text-xs font-semibold capitalize">
                   {gallery.category}
@@ -426,19 +426,12 @@ export default function GalleryManagementPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Thumbnail Image URL (Optional)
-                  </label>
-                  <input
-                    type="url"
+                  <ImageUpload
+                    label="Thumbnail Image"
                     value={formData.thumbnail_url}
-                    onChange={(e) => setFormData({ ...formData, thumbnail_url: e.target.value })}
-                    className="w-full px-3 py-2 bg-gray-50 dark:bg-black border border-gray-300 dark:border-neutral-800 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
-                    placeholder="https://images.unsplash.com/photo-..."
+                    onChange={(url) => setFormData({ ...formData, thumbnail_url: url })}
+                    type="gallery"
                   />
-                  <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                    💡 Tip: Use Unsplash image URLs only. Other URLs will show the KarUCU logo as fallback.
-                  </p>
                 </div>
 
                 <div className="flex items-center">

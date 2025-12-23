@@ -110,7 +110,7 @@ export default function Navigation() {
                 alt="KarUCU Logo"
                 className="w-12 h-12 object-contain"
               />
-              <span className="font-heading font-bold text-xl text-purple-600 dark:text-purple-400">KarUCU</span>
+              <span className="font-heading font-bold text-xl text-purple-600 dark:text-purple-400">Karumaincu</span>
             </Link>
 
             {/* Desktop Navigation */}
