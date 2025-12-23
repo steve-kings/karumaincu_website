@@ -87,14 +87,15 @@ export default function MediaClient({ galleries }) {
                 onClick={() => handleGalleryClick(gallery)}
               >
                 <div className="relative aspect-square">
-                  {gallery.thumbnail_url && gallery.thumbnail_url.includes('unsplash.com') ? (
+                  {gallery.thumbnail_url ? (
                     <img 
                       src={gallery.thumbnail_url} 
                       alt={gallery.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       onError={(e) => {
+                        e.target.onerror = null
                         e.target.src = '/logo.png'
-                        e.target.className = 'w-20 h-20 object-contain mx-auto'
+                        e.target.className = 'w-20 h-20 object-contain mx-auto mt-8'
                       }}
                     />
                   ) : (

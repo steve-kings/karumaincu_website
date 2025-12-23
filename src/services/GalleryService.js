@@ -4,7 +4,7 @@ class GalleryService {
   async getAll(filters = {}) {
     const { search, category, limit, offset } = filters
     
-    let query = 'SELECT * FROM galleries WHERE 1=1'
+    let query = 'SELECT * FROM galleries WHERE is_active = 1'
     const params = []
 
     if (search) {
