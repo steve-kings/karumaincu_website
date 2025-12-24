@@ -20,8 +20,7 @@ export default function RegisterPage() {
     alumniYear: '',
     password: '',
     confirmPassword: '',
-    doctrinialAgreement: false,
-    subscribeNewsletter: true
+    doctrinialAgreement: false
   })
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
@@ -50,8 +49,7 @@ export default function RegisterPage() {
       alumniYear: '',
       password: 'SecurePass123!',
       confirmPassword: 'SecurePass123!',
-      doctrinialAgreement: true,
-      subscribeNewsletter: true
+      doctrinialAgreement: true
     })
     setError('')
   }
@@ -360,23 +358,9 @@ export default function RegisterPage() {
                 />
                 <label htmlFor="doctrinialAgreement" className="ml-2 block text-sm text-gray-700">
                   I agree to the KarUCU doctrinal statement and{' '}
-                  <Link href="/terms" className="text-purple-600 hover:text-purple-500">
-                    Terms of Service
+                  <Link href="/about" className="text-purple-600 hover:text-purple-500">
+                    Statement of Faith
                   </Link>
-                </label>
-              </div>
-
-              <div className="flex items-start">
-                <input
-                  id="subscribeNewsletter"
-                  name="subscribeNewsletter"
-                  type="checkbox"
-                  checked={formData.subscribeNewsletter}
-                  onChange={handleInputChange}
-                  className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded mt-1"
-                />
-                <label htmlFor="subscribeNewsletter" className="ml-2 block text-sm text-gray-700">
-                  Subscribe to KarUCU newsletter for updates and spiritual content
                 </label>
               </div>
             </div>

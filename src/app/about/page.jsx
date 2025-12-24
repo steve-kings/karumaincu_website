@@ -39,11 +39,12 @@ export default function AboutPage() {
             For over a decade, we have been a beacon of faith at Karatina University,
             uniting students in Christ and fostering spiritual growth alongside academic excellence.
           </p>
+        </div>
 
-          <div className="absolute bottom-6 md:bottom-8 left-1/2 transform -translate-x-1/2">
-            <div className="animate-bounce bg-white/20 backdrop-blur-sm rounded-full p-2 md:p-3 border border-white/30">
-              <i className="fas fa-chevron-down text-xl md:text-2xl text-white drop-shadow-lg"></i>
-            </div>
+        {/* Scroll Down Indicator - Positioned at bottom of hero */}
+        <div className="absolute bottom-6 md:bottom-8 left-1/2 transform -translate-x-1/2 z-20">
+          <div className="animate-bounce bg-white/20 backdrop-blur-sm rounded-full p-2 md:p-3 border border-white/30">
+            <i className="fas fa-chevron-down text-xl md:text-2xl text-white drop-shadow-lg"></i>
           </div>
         </div>
       </section>

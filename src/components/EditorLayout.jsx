@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Navigation from './Navigation';
-import Footer from './Footer';
 import Link from 'next/link';
 
 export default function EditorLayout({ children }) {
@@ -96,11 +94,9 @@ export default function EditorLayout({ children }) {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-neutral-950">
-      <Navigation />
-      
-      <div className="flex pt-16">
+      <div className="flex">
         {/* Sidebar */}
-        <aside className={'fixed left-0 top-16 h-[calc(100vh-4rem)] bg-white dark:bg-neutral-900 border-r border-gray-200 dark:border-neutral-800 transition-all duration-300 z-30 flex flex-col ' + (sidebarOpen ? 'w-64' : 'w-20')}>
+        <aside className={'fixed left-0 top-16 md:top-24 h-[calc(100vh-4rem)] md:h-[calc(100vh-6rem)] bg-white dark:bg-neutral-900 border-r border-gray-200 dark:border-neutral-800 transition-all duration-300 z-30 flex flex-col ' + (sidebarOpen ? 'w-64' : 'w-20')}>
           {/* Scrollable Content */}
           <div className="flex-1 overflow-y-auto overflow-x-hidden" style={{
             scrollbarWidth: 'thin',
@@ -177,8 +173,6 @@ export default function EditorLayout({ children }) {
           </div>
         </main>
       </div>
-
-      <Footer />
     </div>
   );
 }

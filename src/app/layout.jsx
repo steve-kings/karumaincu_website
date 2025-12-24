@@ -1,7 +1,6 @@
 import { Inter, Poppins } from 'next/font/google'
 import './globals.css'
-import Navigation from '@/components/Navigation'
-import Footer from '@/components/Footer'
+import LayoutWrapper from '@/components/LayoutWrapper'
 import { ThemeProvider } from '@/contexts/ThemeContext'
 import GoogleOAuthProvider from '@/components/GoogleOAuthProvider'
 import PWAInstall from '@/components/PWAInstall'
@@ -124,9 +123,7 @@ export default function RootLayout({ children }) {
         <GoogleOAuthProvider>
           <ThemeProvider>
             <PWAInstall />
-            <Navigation />
-            <main className="md:pt-24 pt-16">{children}</main>
-            <Footer />
+            <LayoutWrapper>{children}</LayoutWrapper>
           </ThemeProvider>
         </GoogleOAuthProvider>
       </body>

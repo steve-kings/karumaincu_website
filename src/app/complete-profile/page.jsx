@@ -17,7 +17,8 @@ export default function CompleteProfilePage() {
     staffId: '',
     alumniYear: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    doctrinialAgreement: false
   })
   const [showPassword, setShowPassword] = useState(false)
 
@@ -75,6 +76,12 @@ export default function CompleteProfilePage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    
+    // Validate doctrinal agreement
+    if (!formData.doctrinialAgreement) {
+      toast.error('You must agree to the doctrinal statement')
+      return
+    }
     
     // Validate password if provided
     if (formData.password) {
@@ -307,6 +314,28 @@ export default function CompleteProfilePage() {
                 />
               </div>
             )}
+
+            {/* Doctrinal Agreement */}
+            <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4">
+              <div className="flex items-start">
+                <input
+                  id="doctrinialAgreement"
+                  name="doctrinialAgreement"
+                  type="checkbox"
+                  required
+                  checked={formData.doctrinialAgreement}
+                  onChange={handleChange}
+                  className="h-5 w-5 text-purple-600 focus:ring-purple-500 border-gray-300 rounded mt-0.5"
+                />
+                <label htmlFor="doctrinialAgreement" className="ml-3 block text-sm text-gray-700 dark:text-neutral-300">
+                  <span className="font-medium">I agree to the KarUCU Doctrinal Statement</span>
+                  <p className="mt-1 text-xs text-gray-500 dark:text-neutral-400">
+                    By checking this box, I affirm that I believe in the core Christian doctrines as outlined in the 
+                    <a href="/about" className="text-purple-600 hover:text-purple-500 ml-1">Statement of Faith</a>.
+                  </p>
+                </label>
+              </div>
+            </div>
 
             {/* Submit Button */}
             <button
