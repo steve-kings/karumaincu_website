@@ -172,8 +172,8 @@ export default function MemberDashboard() {
   return (
     <MemberLayout>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Bible Study Registration Banner */}
-        {openSession && !hasRegistered && (
+        {/* Bible Study Registration Banner - Only show if deadline hasn't passed */}
+        {openSession && !hasRegistered && new Date(openSession.registration_deadline) >= new Date() && (
           <div className="mb-6 bg-red-600 dark:bg-red-700 rounded-xl shadow-2xl overflow-hidden border-2 border-red-500 dark:border-red-600 animate-pulse">
             <div className="p-6">
               <div className="flex items-start justify-between">
@@ -206,7 +206,7 @@ export default function MemberDashboard() {
                       <div className="flex items-center">
                         <i className="fas fa-clock mr-2"></i>
                         <span>
-                          {Math.ceil((new Date(openSession.registration_deadline) - new Date()) / (1000 * 60 * 60 * 24))} days left
+                          {Math.max(0, Math.ceil((new Date(openSession.registration_deadline) - new Date()) / (1000 * 60 * 60 * 24)))} days left
                         </span>
                       </div>
                     </div>
@@ -230,8 +230,8 @@ export default function MemberDashboard() {
           </div>
         )}
 
-        {/* Registration Success Message */}
-        {openSession && hasRegistered && (
+        {/* Registration Success Message - Only show if deadline hasn't passed */}
+        {openSession && hasRegistered && new Date(openSession.registration_deadline) >= new Date() && (
           <div className="mb-6 bg-green-600 dark:bg-green-700 rounded-xl shadow-lg overflow-hidden border-2 border-green-500 dark:border-green-600">
             <div className="p-6">
               <div className="flex items-center space-x-4">

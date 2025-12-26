@@ -71,14 +71,14 @@ export default function MemberLayout({ children }) {
   }
 
   const navigation = [
-    { name: 'Dashboard', href: '/member', icon: 'fa-home' },
-    { name: 'My Profile', href: '/member/profile', icon: 'fa-user' },
-    { name: 'Bible Reader', href: '/member/bible-reader', icon: 'fa-book-open' },
-    { name: 'Verse of Day', href: '/member/verse-of-day', icon: 'fa-star' },
-    { name: 'Reading Plan', href: '/member/reading-plan', icon: 'fa-calendar-alt' },
-    { name: 'Prayer Journal', href: '/member/prayer-journal', icon: 'fa-praying-hands' },
-    { name: 'Nominations', href: '/member/nominations', icon: 'fa-vote-yea' },
-    { name: 'My Blogs', href: '/member/blogs', icon: 'fa-pen-fancy' },
+    { name: 'Dashboard', href: '/member' },
+    { name: 'Profile', href: '/member/profile' },
+    { name: 'Bible', href: '/member/bible-reader' },
+    { name: 'Verse', href: '/member/verse-of-day' },
+    { name: 'Reading Plan', href: '/member/reading-plan' },
+    { name: 'Prayers', href: '/member/prayer-journal' },
+    { name: 'Nominations', href: '/member/nominations' },
+    { name: 'Blogs', href: '/member/blogs' },
   ]
 
   if (loading) {
@@ -118,12 +118,11 @@ export default function MemberLayout({ children }) {
                   <Link
                     key={item.name}
                     href={item.href}
-                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${isActive
-                        ? 'bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300'
-                        : 'text-gray-700 dark:text-neutral-300 hover:bg-gray-100 dark:hover:bg-neutral-900'
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${isActive
+                        ? 'bg-purple-600 text-white shadow-md'
+                        : 'text-gray-600 dark:text-neutral-400 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-950/30'
                       }`}
                   >
-                    <i className={`fas ${item.icon} mr-2`}></i>
                     {item.name}
                   </Link>
                 )
@@ -196,8 +195,8 @@ export default function MemberLayout({ children }) {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-gray-200 dark:border-neutral-900">
-            <div className="px-2 pt-2 pb-3 space-y-1">
+          <div className="md:hidden border-t border-gray-200 dark:border-neutral-900 bg-white dark:bg-black">
+            <div className="px-4 py-3 space-y-1">
               {navigation.map((item) => {
                 const isActive = pathname === item.href
                 return (
@@ -205,12 +204,11 @@ export default function MemberLayout({ children }) {
                     key={item.name}
                     href={item.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`block px-3 py-2 rounded-lg text-base font-medium ${isActive
-                        ? 'bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300'
+                    className={`block px-4 py-3 rounded-xl text-base font-medium transition-all ${isActive
+                        ? 'bg-purple-600 text-white'
                         : 'text-gray-700 dark:text-neutral-300 hover:bg-gray-100 dark:hover:bg-neutral-900'
                       }`}
                   >
-                    <i className={`fas ${item.icon} mr-3`}></i>
                     {item.name}
                   </Link>
                 )

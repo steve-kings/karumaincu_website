@@ -4,14 +4,14 @@ import EventsClient from './EventsClient'
 // Server-side data fetching for events and announcements
 async function getEventsData() {
   try {
-    // Fetch events
+    // Fetch events - include today's events and upcoming ones
     const eventsQuery = `
       SELECT 
         id, title, description, event_date, end_date, location, venue_details,
         category, featured_image, registration_required, capacity,
         registration_deadline, status, created_at, updated_at
       FROM events
-      WHERE status = 'published' AND event_date >= NOW()
+      WHERE status = 'published' AND event_date >= CURDATE()
       ORDER BY event_date ASC
       LIMIT 50
     `

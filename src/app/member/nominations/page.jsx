@@ -102,16 +102,35 @@ export default function MemberNominationsPage() {
   })
   const [votedPositions, setVotedPositions] = useState([])
   const [refreshing, setRefreshing] = useState(false)
+  const [allNominations, setAllNominations] = useState({})
+  const [totalVotes, setTotalVotes] = useState(0)
 
   const handleRefresh = async () => {
     setRefreshing(true)
     try {
       await Promise.all([
         fetchElections(),
-        fetchMyNominations()
+        fetchMyNominations(),
+        selectedElection && fetchAllNominations(selectedElection)
       ])
     } finally {
       setRefreshing(false)
+    }
+  }
+
+  const fetchAllNominations = async (electionId) => {
+    try {
+      const response = await fetch(`/api/member/elections/${electionId}/nominations`, {
+        credentials: 'include'
+      })
+      
+      if (response.ok) {
+        const data = await response.json()
+        setAllNominations(data.nominations || {})
+        setTotalVotes(data.total_votes || 0)
+      }
+    } catch (error) {
+      console.error('Error fetching all nominations:', error)
     }
   }
 
@@ -133,6 +152,7 @@ export default function MemberNominationsPage() {
   useEffect(() => {
     if (selectedElection) {
       fetchPositions(selectedElection)
+      fetchAllNominations(selectedElection)
       // Update voted positions when election changes
       const positions = myNominations
         .filter(nom => nom.election_id === selectedElection)
@@ -169,6 +189,7 @@ export default function MemberNominationsPage() {
         alert('Nomination submitted successfully!')
         fetchElections()
         fetchMyNominations()
+        fetchAllNominations(selectedElection)
         setSearchTerm('')
         setSearchResults([])
         setShowNominateModal(false)
@@ -463,9 +484,10 @@ export default function MemberNominationsPage() {
               </div>
             )}
 
-            {/* Right: My Nominations */}
-            <div className="lg:col-span-1">
-              <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-800 sticky top-4">
+            {/* Right: My Nominations + All Nominations */}
+            <div className="lg:col-span-1 space-y-6">
+              {/* My Nominations */}
+              <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-800">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-bold text-black dark:text-white">
                     My Nominations ({currentElectionNominations.length})
@@ -480,9 +502,9 @@ export default function MemberNominationsPage() {
                   </button>
                 </div>
                 
-                <div className="space-y-3 max-h-96 overflow-y-auto mb-4">
+                <div className="space-y-3 max-h-48 overflow-y-auto mb-4">
                   {currentElectionNominations.length === 0 ? (
-                    <p className="text-center py-8 text-gray-500 dark:text-gray-500 text-sm">
+                    <p className="text-center py-4 text-gray-500 dark:text-gray-500 text-sm">
                       No nominations yet
                     </p>
                   ) : (
@@ -494,12 +516,9 @@ export default function MemberNominationsPage() {
                         <p className="font-medium text-black dark:text-white text-sm">
                           {nom.nominee_name}
                         </p>
-                        <p className="text-xs text-gray-600 dark:text-gray-400">
-                          {nom.election_title}
-                        </p>
                         {nom.position && (
                           <p className="text-xs text-purple-600 dark:text-purple-400 mt-1">
-                            Position: {nom.position}
+                            {nom.position}
                           </p>
                         )}
                       </div>
@@ -510,11 +529,59 @@ export default function MemberNominationsPage() {
                 {currentElectionNominations.length > 0 && (
                   <button
                     onClick={completeNomination}
-                    className="w-full bg-green-600 text-white px-4 py-3 rounded-lg hover:bg-green-700 transition-all font-medium"
+                    className="w-full bg-green-600 text-white px-4 py-3 rounded-lg hover:bg-green-700 transition-all font-medium text-sm"
                   >
                     ✅ Complete & Get Summary
                   </button>
                 )}
+              </div>
+
+              {/* All Nominations for Active Election */}
+              <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-800">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-bold text-black dark:text-white">
+                    All Nominations
+                  </h3>
+                  <span className="text-xs bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 px-2 py-1 rounded-full">
+                    {totalVotes} votes
+                  </span>
+                </div>
+                
+                <div className="space-y-4 max-h-[400px] overflow-y-auto">
+                  {Object.keys(allNominations).length === 0 ? (
+                    <p className="text-center py-4 text-gray-500 dark:text-gray-500 text-sm">
+                      No nominations yet for this election
+                    </p>
+                  ) : (
+                    Object.entries(allNominations).map(([position, nominees]) => (
+                      <div key={position} className="border-b border-gray-100 dark:border-gray-800 pb-3 last:border-0">
+                        <h4 className="text-sm font-semibold text-purple-600 dark:text-purple-400 mb-2">
+                          {position}
+                        </h4>
+                        <div className="space-y-2">
+                          {nominees.map((nominee, idx) => (
+                            <div 
+                              key={`${position}-${nominee.nominee_id}`}
+                              className="flex items-center justify-between text-sm"
+                            >
+                              <div className="flex items-center gap-2">
+                                <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold ${
+                                  idx === 0 ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
+                                }`}>
+                                  {idx + 1}
+                                </span>
+                                <span className="text-gray-800 dark:text-gray-200">{nominee.nominee_name}</span>
+                              </div>
+                              <span className="text-xs bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 px-2 py-1 rounded">
+                                {nominee.vote_count} {nominee.vote_count === 1 ? 'vote' : 'votes'}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
               </div>
             </div>
           </div>
