@@ -17,12 +17,12 @@ export async function GET(request) {
     console.log('🔍 [MEMBER ELECTIONS DEBUG] All elections in database:', JSON.stringify(allElections, null, 2))
     console.log('🕐 [MEMBER ELECTIONS DEBUG] Current server time:', new Date().toISOString())
 
-    // Get open elections - more lenient date check
+    // Get open elections - use DATE() for date-only comparison to avoid timezone issues
     const elections = await query(
       `SELECT * FROM leader_elections 
        WHERE status = 'open' 
-       AND start_date <= NOW() 
-       AND end_date >= NOW()
+       AND DATE(start_date) <= CURDATE() 
+       AND DATE(end_date) >= CURDATE()
        ORDER BY end_date ASC`
     )
 
