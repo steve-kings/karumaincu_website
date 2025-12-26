@@ -1,6 +1,10 @@
 import { executeQuery } from '@/lib/db'
 import EventsClient from './EventsClient'
 
+// Disable caching - always fetch fresh data
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 // Server-side data fetching for events and announcements
 async function getEventsData() {
   try {

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { verifyAuth } from '@/lib/auth'
 import EventService from '@/services/EventService'
+import { revalidatePath } from 'next/cache'
 
 export async function GET(request) {
   try {
@@ -44,6 +45,9 @@ export async function POST(request) {
 
     const body = await request.json()
     const newEvent = await EventService.create(body, user.id)
+
+    // Revalidate the events page to show new event
+    revalidatePath('/events')
 
     return NextResponse.json({
       success: true,

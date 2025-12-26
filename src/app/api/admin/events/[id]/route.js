@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { verifyAuth } from '@/lib/auth'
 import EventService from '@/services/EventService'
+import { revalidatePath } from 'next/cache'
 
 export async function GET(request, { params }) {
   try {
@@ -41,6 +42,9 @@ export async function PUT(request, { params }) {
     
     const updatedEvent = await EventService.update(id, body)
 
+    // Revalidate the events page to show updated data
+    revalidatePath('/events')
+
     return NextResponse.json({
       success: true,
       data: updatedEvent
@@ -64,6 +68,9 @@ export async function DELETE(request, { params }) {
 
     const { id } = await params
     const result = await EventService.delete(id)
+
+    // Revalidate the events page
+    revalidatePath('/events')
 
     return NextResponse.json(result)
   } catch (error) {
