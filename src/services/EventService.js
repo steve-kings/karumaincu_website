@@ -95,9 +95,19 @@ class EventService {
         category = ?, status = ?, updated_at = CURRENT_TIMESTAMP 
        WHERE id = ?`,
       [
-        title, description, event_date, end_date, location, venue_details,
-        capacity, registration_required, registration_deadline, featured_image,
-        category, status, id
+        title, 
+        description || null, 
+        event_date, 
+        end_date || null, 
+        location || null, 
+        venue_details || null,
+        capacity || 0, 
+        registration_required || false, 
+        registration_deadline || null, 
+        featured_image || null,
+        category || null, 
+        status || 'draft', 
+        id
       ]
     )
 

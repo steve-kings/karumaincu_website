@@ -36,6 +36,9 @@ export async function PUT(request, { params }) {
 
     const { id } = await params
     const body = await request.json()
+    
+    console.log('Updating event:', id, 'with data:', JSON.stringify(body, null, 2))
+    
     const updatedEvent = await EventService.update(id, body)
 
     return NextResponse.json({
@@ -43,7 +46,7 @@ export async function PUT(request, { params }) {
       data: updatedEvent
     })
   } catch (error) {
-    console.error('Error updating event:', error)
+    console.error('Error updating event:', error.message, error.stack)
     return NextResponse.json({ 
       error: 'Failed to update event',
       message: error.message 
