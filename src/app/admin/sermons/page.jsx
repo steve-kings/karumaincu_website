@@ -51,7 +51,7 @@ export default function SermonManagementPage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-            const url = editingSermon 
+      const url = editingSermon 
         ? `/api/admin/sermons/${editingSermon.id}`
         : '/api/admin/sermons'
       
@@ -64,14 +64,20 @@ export default function SermonManagementPage() {
         body: JSON.stringify(formData)
       })
 
+      const data = await response.json()
+
       if (response.ok) {
         setShowModal(false)
         setEditingSermon(null)
         resetForm()
         fetchSermons()
+        alert(editingSermon ? 'Sermon updated successfully!' : 'Sermon uploaded successfully!')
+      } else {
+        alert(data.error || data.message || 'Failed to save sermon')
       }
     } catch (error) {
       console.error('Error saving sermon:', error)
+      alert('Failed to save sermon: ' + error.message)
     }
   }
 
@@ -81,10 +87,10 @@ export default function SermonManagementPage() {
       title: sermon.title,
       speaker: sermon.speaker || '',
       sermon_date: sermon.sermon_date?.split('T')[0] || '',
-      video_url: sermon.video_url || '',
+      video_url: sermon.youtube_url || '',
       audio_url: sermon.audio_url || '',
       description: sermon.description || '',
-      series: sermon.series || '',
+      series: sermon.series_name || '',
       featured: sermon.featured || false,
       status: sermon.status || 'published'
     })
@@ -241,36 +247,25 @@ export default function SermonManagementPage() {
                     <i className="fas fa-calendar w-5 mr-2"></i>
                     {formatDate(sermon.sermon_date)}
                   </div>
-                  {sermon.series && (
+                  {sermon.series_name && (
                     <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
                       <i className="fas fa-list w-5 mr-2"></i>
-                      {sermon.series}
+                      {sermon.series_name}
                     </div>
                   )}
                 </div>
 
                 <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-neutral-800">
                   <div className="flex space-x-2">
-                    {sermon.video_url && (
+                    {sermon.youtube_url && (
                       <a
-                        href={sermon.video_url}
+                        href={sermon.youtube_url}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-blue-600 hover:text-blue-800 dark:text-blue-400"
                         title="Watch Video"
                       >
                         <i className="fas fa-video"></i>
-                      </a>
-                    )}
-                    {sermon.audio_url && (
-                      <a
-                        href={sermon.audio_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-green-600 hover:text-green-800 dark:text-green-400"
-                        title="Listen Audio"
-                      >
-                        <i className="fas fa-headphones"></i>
                       </a>
                     )}
                   </div>
