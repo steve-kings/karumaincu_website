@@ -67,6 +67,14 @@ export default function EventsClient({ events, announcements }) {
     })
   }
 
+  const isPastEvent = (eventDate) => {
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    const eventDay = new Date(eventDate)
+    eventDay.setHours(0, 0, 0, 0)
+    return eventDay < today
+  }
+
   const copyEventLink = (eventId) => {
     const url = `${window.location.origin}/events?event=${eventId}`
     navigator.clipboard.writeText(url).then(() => {
@@ -218,7 +226,7 @@ export default function EventsClient({ events, announcements }) {
               <div className="text-gray-400 mb-4">
                 <i className="fas fa-calendar-alt text-4xl"></i>
               </div>
-              <p className="text-gray-600 dark:text-gray-400">No upcoming events in this category.</p>
+              <p className="text-gray-600 dark:text-gray-400">No events found in this category.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -232,13 +240,20 @@ export default function EventsClient({ events, announcements }) {
                     <img 
                       src={getEventImage(event)} 
                       alt={event.title}
-                      className="w-full h-48 object-cover"
+                      className={`w-full h-48 object-cover ${isPastEvent(event.event_date) ? 'opacity-70' : ''}`}
                     />
-                    {event.category && (
-                      <div className="absolute top-4 left-4 bg-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold capitalize">
-                        {event.category}
-                      </div>
-                    )}
+                    <div className="absolute top-4 left-4 flex gap-2">
+                      {event.category && (
+                        <div className="bg-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold capitalize">
+                          {event.category}
+                        </div>
+                      )}
+                      {isPastEvent(event.event_date) && (
+                        <div className="bg-gray-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                          Past Event
+                        </div>
+                      )}
+                    </div>
                   </div>
                   
                   <div className="p-6">

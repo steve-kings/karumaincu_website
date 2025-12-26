@@ -56,7 +56,7 @@ export default function EventManagementPage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-            const url = editingEvent 
+      const url = editingEvent 
         ? `/api/admin/events/${editingEvent.id}`
         : '/api/admin/events'
       
@@ -69,14 +69,20 @@ export default function EventManagementPage() {
         body: JSON.stringify(formData)
       })
 
+      const data = await response.json()
+
       if (response.ok) {
         setShowModal(false)
         setEditingEvent(null)
         resetForm()
         fetchEvents()
+        alert(editingEvent ? 'Event updated successfully!' : 'Event created successfully!')
+      } else {
+        alert(data.error || data.message || 'Failed to save event')
       }
     } catch (error) {
       console.error('Error saving event:', error)
+      alert('Failed to save event: ' + error.message)
     }
   }
 
