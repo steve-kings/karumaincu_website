@@ -14,41 +14,48 @@ export async function GET(request) {
     const allElections = await query(
       'SELECT id, title, status, start_date, end_date, created_at FROM leader_elections ORDER BY created_at DESC'
     )
-    console.log('🔍 [MEMBER ELECTIONS DEBUG] All elections in database:', allElections)
+    console.log('🔍 [MEMBER ELECTIONS DEBUG] All elections in database:', JSON.stringify(allElections, null, 2))
     console.log('🕐 [MEMBER ELECTIONS DEBUG] Current server time:', new Date().toISOString())
 
-    // Get open elections
+    // Get open elections - more lenient date check
     const elections = await query(
       `SELECT * FROM leader_elections 
        WHERE status = 'open' 
-       AND DATE(start_date) <= CURDATE() 
-       AND DATE(end_date) >= CURDATE()
+       AND start_date <= NOW() 
+       AND end_date >= NOW()
        ORDER BY end_date ASC`
     )
 
-    console.log('✅ [MEMBER ELECTIONS DEBUG] Filtered elections for members:', elections)
+    console.log('✅ [MEMBER ELECTIONS DEBUG] Filtered elections for members:', JSON.stringify(elections, null, 2))
 
     // DEBUG: Show why elections might be filtered out
     if (elections.length === 0 && allElections.length > 0) {
       console.log('❌ [MEMBER ELECTIONS DEBUG] No elections visible to members. Checking reasons:')
-      allElections.forEach(election => {
+      for (const election of allElections) {
         const reasons = []
-        const now = new Date()
-        const startDate = new Date(election.start_date)
-        const endDate = new Date(election.end_date)
         
         if (election.status !== 'open') {
           reasons.push(`Status is '${election.status}' (needs 'open')`)
         }
-        if (startDate > now) {
-          reasons.push(`Start date ${election.start_date} is in future (now: ${now.toISOString()})`)
+        
+        // Check dates using MySQL
+        const [dateCheck] = await query(
+          `SELECT 
+            ? <= NOW() as start_ok,
+            ? >= NOW() as end_ok,
+            NOW() as server_now`,
+          [election.start_date, election.end_date]
+        )
+        
+        if (!dateCheck.start_ok) {
+          reasons.push(`Start date ${election.start_date} is in future`)
         }
-        if (endDate < now) {
-          reasons.push(`End date ${election.end_date} is in past (now: ${now.toISOString()})`)
+        if (!dateCheck.end_ok) {
+          reasons.push(`End date ${election.end_date} is in past`)
         }
         
         console.log(`   📋 Election "${election.title}" (ID: ${election.id}):`, reasons.length > 0 ? reasons : ['✅ Should be visible'])
-      })
+      }
     }
 
     // For each election, get user's nomination count
