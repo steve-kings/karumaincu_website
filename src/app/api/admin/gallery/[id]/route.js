@@ -1,42 +1,23 @@
 import { NextResponse } from 'next/server'
 import { verifyAuth } from '@/lib/auth'
 import GalleryService from '@/services/GalleryService'
-
-export async function GET(request, { params }) {
-  try {
-    const user = await verifyAuth(request)
-    
-    if (!user || user.role !== 'admin') {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-
-    const { id } = await params
-    const gallery = await GalleryService.getById(id)
-
-    return NextResponse.json({
-      success: true,
-      data: gallery
-    })
-  } catch (error) {
-    console.error('Error fetching gallery:', error)
-    return NextResponse.json({ 
-      error: 'Failed to fetch gallery',
-      message: error.message 
-    }, { status: error.message === 'Gallery item not found' ? 404 : 500 })
-  }
-}
+import { revalidatePath } from 'next/cache'
 
 export async function PUT(request, { params }) {
   try {
     const user = await verifyAuth(request)
     
-    if (!user || user.role !== 'admin') {
+    // Allow both admin and editor
+    if (!user || (user.role !== 'admin' && user.role !== 'editor')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     const { id } = await params
     const body = await request.json()
     const updatedGallery = await GalleryService.update(id, body)
+
+    // Revalidate the media page to show updated gallery
+    revalidatePath('/media')
 
     return NextResponse.json({
       success: true,
@@ -47,7 +28,7 @@ export async function PUT(request, { params }) {
     return NextResponse.json({ 
       error: 'Failed to update gallery',
       message: error.message 
-    }, { status: error.message === 'Gallery item not found' ? 404 : 500 })
+    }, { status: 500 })
   }
 }
 
@@ -55,19 +36,26 @@ export async function DELETE(request, { params }) {
   try {
     const user = await verifyAuth(request)
     
-    if (!user || user.role !== 'admin') {
+    // Allow both admin and editor
+    if (!user || (user.role !== 'admin' && user.role !== 'editor')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     const { id } = await params
-    const result = await GalleryService.delete(id)
+    await GalleryService.delete(id)
 
-    return NextResponse.json(result)
+    // Revalidate the media page
+    revalidatePath('/media')
+
+    return NextResponse.json({
+      success: true,
+      message: 'Gallery deleted successfully'
+    })
   } catch (error) {
     console.error('Error deleting gallery:', error)
     return NextResponse.json({ 
       error: 'Failed to delete gallery',
       message: error.message 
-    }, { status: error.message === 'Gallery item not found' ? 404 : 500 })
+    }, { status: 500 })
   }
 }

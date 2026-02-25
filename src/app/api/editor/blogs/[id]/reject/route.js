@@ -1,17 +1,13 @@
 import { NextResponse } from 'next/server';
-import { verifyToken } from '@/lib/auth';
+import { verifyAuth } from '@/lib/auth';
 import pool from '@/lib/db';
 
 export async function POST(request, { params }) {
   try {
-    const token = request.headers.get('authorization')?.split(' ')[1];
-    if (!token) {
+    const user = await verifyAuth(request);
+    
+    if (!user || (user.role !== 'editor' && user.role !== 'admin')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const decoded = verifyToken(token);
-    if (!decoded || (decoded.role !== 'editor' && decoded.role !== 'admin')) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     const { id } = await params;

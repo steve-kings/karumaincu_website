@@ -170,6 +170,45 @@ export default function GivePage() {
           </p>
         </div>
 
+        {/* Alternative Payment Methods */}
+        <div className="mt-6 bg-white dark:bg-neutral-950 rounded-2xl shadow-xl p-6 border border-gray-200 dark:border-neutral-900">
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 text-center">
+            Alternative Payment Methods
+          </h3>
+          
+          <div className="space-y-4">
+            <div className="border border-gray-200 dark:border-neutral-800 rounded-lg p-4">
+              <h4 className="font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
+                <i className="fas fa-mobile-alt text-green-600 mr-2"></i>
+                M-Pesa Paybill
+              </h4>
+              <div className="text-sm text-gray-600 dark:text-neutral-400 space-y-1">
+                <p><strong>Paybill Number:</strong> <span className="font-mono">522533</span></p>
+                <p><strong>Account Number:</strong> <span className="font-mono">KarUCU</span></p>
+              </div>
+            </div>
+
+            <div className="border border-gray-200 dark:border-neutral-800 rounded-lg p-4">
+              <h4 className="font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
+                <i className="fas fa-university text-blue-600 mr-2"></i>
+                Bank Transfer
+              </h4>
+              <div className="text-sm text-gray-600 dark:text-neutral-400 space-y-1">
+                <p><strong>Bank:</strong> Equity Bank</p>
+                <p><strong>Account Name:</strong> Karatina University Christian Union</p>
+                <p><strong>Account Number:</strong> <span className="font-mono">0460291234567</span></p>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3">
+            <p className="text-xs text-blue-700 dark:text-blue-400">
+              <i className="fas fa-info-circle mr-1"></i>
+              All donations support KarUCU ministry activities, events, and outreach programs.
+            </p>
+          </div>
+        </div>
+
         <div className="mt-6 text-center">
           <Link href="/" className="text-purple-600 dark:text-purple-400 font-medium text-sm">
             <i className="fas fa-arrow-left mr-2"></i>Back to Home

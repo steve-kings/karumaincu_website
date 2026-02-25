@@ -15,10 +15,10 @@ export async function PUT(request, { params }) {
     const { title, speaker, sermon_date, video_url, audio_url, description, series, featured, status } = body
 
     await executeQuery(
-      `UPDATE sermons SET title = ?, speaker = ?, sermon_date = ?, video_url = ?, audio_url = ?, 
-       description = ?, series = ?, featured = ?, status = ?, updated_at = NOW() 
+      `UPDATE sermons SET title = ?, speaker = ?, sermon_date = ?, youtube_url = ?, 
+       description = ?, series_name = ?, featured = ?, status = ?, updated_at = NOW() 
        WHERE id = ?`,
-      [title, speaker, sermon_date, video_url, audio_url, description, series, featured, status, id]
+      [title, speaker, sermon_date, video_url, description, series, featured ? 1 : 0, status, id]
     )
 
     const [updatedSermon] = await executeQuery('SELECT * FROM sermons WHERE id = ?', [id])

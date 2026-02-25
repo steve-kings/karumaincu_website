@@ -1,0 +1,1484 @@
+% KarUCU Main Campus - Pitch Deck
+% Compile with: pdflatex pitch_deck.tex
+
+\documentclass[aspectratio=169]{beamer}
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% Packages
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{fontawesome5}
+\usepackage{hyperref}
+\usepackage{multicol}
+
+% Color scheme (Purple & Teal - matching KarUCU branding)
+\definecolor{karucupurple}{RGB}{147, 51, 234}
+\definecolor{karucuteal}{RGB}{20, 184, 166}
+\definecolor{karucudark}{RGB}{31, 41, 55}
+
+\setbeamercolor{structure}{fg=karucupurple}
+\setbeamercolor{palette primary}{bg=karucupurple,fg=white}
+\setbeamercolor{palette secondary}{bg=karucuteal,fg=white}
+\setbeamercolor{palette tertiary}{bg=karucudark,fg=white}
+
+% Title information
+\title{KarUCU Main Campus}
+\subtitle{Digital Platform for Christian Union}
+\author{Your Name}
+\institute{Karatina University}
+\date{\today}
+
+% Custom commands for icons
+\newcommand{\iconcheck}{\textcolor{green!70!black}{\faCheckCircle}}
+\newcommand{\iconstar}{\textcolor{orange}{\faStar}}
+\newcommand{\iconuser}{\textcolor{karucupurple}{\faUser}}
+\newcommand{\iconglobal}{\textcolor{karucuteal}{\faGlobe}}
+
+\begin{document}
+
+% Title Slide
+\begin{frame}
+\titlepage
+\centering
+\large \url{https://karumaincu.org}
+\end{frame}
+
+% Table of Contents
+\begin{frame}{Presentation Outline}
+\tableofcontents
+\end{frame}
+
+% SECTION 1: INTRODUCTION
+\section{Introduction}
+
+\begin{frame}{The Problem}
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{Before Digital Platform:}
+\begin{itemize}
+\item[\faTimesCircle] Manual paper registration
+\item[\faTimesCircle] WhatsApp-only communication
+\item[\faTimesCircle] No event tracking system
+\item[\faTimesCircle] No sermon archive
+\item[\faTimesCircle] Paper-based elections
+\item[\faTimesCircle] No spiritual growth tools
+\end{itemize}
+
+\column{0.5\textwidth}
+\textbf{The Impact:}
+\begin{itemize}
+\item Inefficient processes
+\item Lost records
+\item Poor communication
+\item Limited engagement
+\item No data insights
+\end{itemize}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}{The Solution}
+\begin{center}
+\Large \textbf{KarUCU Main Campus Digital Platform}
+
+\vspace{1em}
+\normalsize
+A comprehensive web application that digitizes and streamlines all CU operations
+\end{center}
+
+\vspace{1em}
+\begin{columns}
+\column{0.33\textwidth}
+\centering
+\faUsers \\
+\textbf{Member Portal} \\
+Spiritual growth tools
+
+\column{0.33\textwidth}
+\centering
+\faEdit \\
+\textbf{Content Management} \\
+Blogs, sermons, galleries
+
+\column{0.33\textwidth}
+\centering
+\faCog \\
+\textbf{Administration} \\
+Full system control
+\end{columns}
+\end{frame}
+
+% SECTION 2: USER ROLES
+\section{User Roles}
+
+\begin{frame}{Three User Types}
+\begin{columns}
+\column{0.33\textwidth}
+\begin{block}{Member}
+\centering
+\faUser \\
+\vspace{0.5em}
+Regular CU members \\
+\vspace{0.5em}
+\small
+\begin{itemize}
+\item Bible tools
+\item Prayer journal
+\item Write blogs
+\item Nominations
+\end{itemize}
+\end{block}
+
+\column{0.33\textwidth}
+\begin{block}{Editor}
+\centering
+\faUserEdit \\
+\vspace{0.5em}
+Content managers \\
+\vspace{0.5em}
+\small
+\begin{itemize}
+\item Review blogs
+\item Upload sermons
+\item Manage galleries
+\item Spiritual content
+\end{itemize}
+\end{block}
+
+\column{0.33\textwidth}
+\begin{block}{Admin}
+\centering
+\faUserShield \\
+\vspace{0.5em}
+CU leadership \\
+\vspace{0.5em}
+\small
+\begin{itemize}
+\item User management
+\item Events
+\item Elections
+\item Full control
+\end{itemize}
+\end{block}
+\end{columns}
+\end{frame}
+
+% SECTION 3: PUBLIC FEATURES
+\section{Public Features}
+
+\begin{frame}{Public Website (No Login Required)}
+\begin{multicols}{2}
+\textbf{Information Pages:}
+\begin{itemize}
+\item[\faHome] Home - Hero slider, ministries
+\item[\faInfoCircle] About - Vision, mission, values
+\item[\faCalendar] Events - Upcoming \& past
+\item[\faBlog] Blog - Testimonies \& articles
+\item[\faVideo] Sermons - YouTube archive
+\item[\faImages] Gallery - Photo collections
+\end{itemize}
+
+\columnbreak
+
+\textbf{Interactive Features:}
+\begin{itemize}
+\item[\faUsers] Leadership - Executive team
+\item[\faPrayingHands] Prayer Wall - Submit requests
+\item[\faMoneyBill] Donate - M-Pesa integration
+\item[\faEnvelope] Contact - Get in touch
+\item[\faUserPlus] Register - Join CU
+\item[\faSignInAlt] Login - Member access
+\end{itemize}
+\end{multicols}
+\end{frame}
+
+\begin{frame}{Home Page Features}
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{Hero Section:}
+\begin{itemize}
+\item 4 rotating slides
+\item Ministry highlights
+\item Call-to-action buttons
+\item Responsive design
+\end{itemize}
+
+\vspace{1em}
+\textbf{Ministry Showcase:}
+\begin{itemize}
+\item 8 ministry departments
+\item Interactive carousel
+\item Detailed descriptions
+\item Visual appeal
+\end{itemize}
+
+\column{0.5\textwidth}
+\textbf{Key Ministries:}
+\begin{enumerate}
+\item Prayer Ministry
+\item Music \& Worship
+\item Creative Arts
+\item Media Ministry
+\item Bible Study
+\item Missions \& Evangelism
+\item Fellowship Groups
+\item Hospitality
+\end{enumerate}
+\end{columns}
+\end{frame}
+
+
+% SECTION 4: MEMBER PORTAL
+\section{Member Portal}
+
+\begin{frame}{Member Dashboard}
+\begin{center}
+\textbf{Personalized Hub for Spiritual Growth}
+\end{center}
+
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{Dashboard Features:}
+\begin{itemize}
+\item Welcome banner
+\item Bible study alerts
+\item Personal information
+\item Quick access tools
+\item Activity tracking
+\end{itemize}
+
+\column{0.5\textwidth}
+\textbf{User Information:}
+\begin{itemize}
+\item Registration number
+\item Course \& year
+\item Member type
+\item Contact details
+\item Join date
+\end{itemize}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Spiritual Growth Tools (1/2)}
+\begin{columns}
+\column{0.5\textwidth}
+\begin{block}{Bible Reader}
+\faBook
+\begin{itemize}
+\item Full Bible access
+\item Multiple versions (KJV, NIV, ESV)
+\item Easy navigation
+\item Mobile-friendly
+\end{itemize}
+\end{block}
+
+\begin{block}{Verse of the Day}
+\faStar
+\begin{itemize}
+\item Daily scripture
+\item Commentary included
+\item Shareable content
+\item Archive access
+\end{itemize}
+\end{block}
+
+\column{0.5\textwidth}
+\begin{block}{Reading Calendar}
+\faCalendarCheck
+\begin{itemize}
+\item Monthly reading plan
+\item Progress tracking
+\item Devotional notes
+\item Catch-up feature
+\end{itemize}
+\end{block}
+
+\begin{block}{Prayer Journal}
+\faPrayingHands
+\begin{itemize}
+\item Private prayer tracker
+\item Categories \& priorities
+\item Mark answered
+\item Add testimonies
+\end{itemize}
+\end{block}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Spiritual Growth Tools (2/2)}
+\begin{columns}
+\column{0.5\textwidth}
+\begin{block}{My Blogs}
+\faPenFancy
+\begin{itemize}
+\item Write testimonies
+\item Rich text editor
+\item Image uploads
+\item Submission workflow
+\item Track approval status
+\end{itemize}
+\end{block}
+
+\column{0.5\textwidth}
+\begin{block}{Nominations}
+\faVoteYea
+\begin{itemize}
+\item View active elections
+\item Nominate leaders
+\item See all nominations
+\item Vote counts visible
+\item Fair participation limits
+\end{itemize}
+\end{block}
+\end{columns}
+
+\vspace{1em}
+\centering
+\textbf{Additional:} Profile Management, Bible Study Registration
+\end{frame}
+
+% SECTION 5: EDITOR PORTAL
+\section{Editor Portal}
+
+\begin{frame}{Editor Dashboard}
+\begin{center}
+\textbf{Content Management Hub}
+\end{center}
+
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{Dashboard Stats:}
+\begin{itemize}
+\item Pending blogs count
+\item Prayer requests
+\item Bible study registrations
+\item Recent activity feed
+\end{itemize}
+
+\column{0.5\textwidth}
+\textbf{Quick Actions:}
+\begin{itemize}
+\item Review blogs
+\item Upload sermons
+\item Add galleries
+\item Manage spiritual content
+\end{itemize}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Editor Features}
+\begin{columns}
+\column{0.5\textwidth}
+\begin{block}{Blog Review}
+\begin{itemize}
+\item View pending submissions
+\item Preview content
+\item Approve or reject
+\item Provide feedback
+\item Edit before publishing
+\end{itemize}
+\end{block}
+
+\begin{block}{Sermon Management}
+\begin{itemize}
+\item Upload YouTube links
+\item Set speaker \& date
+\item Organize by series
+\item Mark as featured
+\end{itemize}
+\end{block}
+
+\column{0.5\textwidth}
+\begin{block}{Gallery Management}
+\begin{itemize}
+\item Add photo albums
+\item Categorize content
+\item Set thumbnails
+\item Control visibility
+\end{itemize}
+\end{block}
+
+\begin{block}{Spiritual Content}
+\begin{itemize}
+\item Set verse of the day
+\item Manage reading calendar
+\item Add devotional notes
+\item Schedule content
+\end{itemize}
+\end{block}
+\end{columns}
+\end{frame}
+
+
+% SECTION 6: ADMIN PORTAL
+\section{Admin Portal}
+
+\begin{frame}{Admin Dashboard}
+\begin{center}
+\textbf{Complete System Control}
+\end{center}
+
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{Key Metrics:}
+\begin{itemize}
+\item Total members + growth
+\item Events (total \& upcoming)
+\item Blogs (published \& pending)
+\item Prayer requests
+\item Recent activity feed
+\end{itemize}
+
+\column{0.5\textwidth}
+\textbf{Content Overview:}
+\begin{itemize}
+\item Sermons count
+\item Announcements
+\item Active events
+\item Published blogs
+\item System health
+\end{itemize}
+\end{columns}
+\end{frame}
+
+\begin{frame}{User \& Role Management}
+\begin{columns}
+\column{0.5\textwidth}
+\begin{block}{User Management}
+\begin{itemize}
+\item View all members
+\item Search \& filter
+\item Activate/deactivate accounts
+\item Export user data
+\item Cleanup inactive users
+\end{itemize}
+\end{block}
+
+\column{0.5\textwidth}
+\begin{block}{Role Management}
+\begin{itemize}
+\item Assign roles (member/editor/admin)
+\item View role distribution
+\item Bulk role updates
+\item Permission control
+\end{itemize}
+\end{block}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Content Management (1/2)}
+\begin{columns}
+\column{0.5\textwidth}
+\begin{block}{Event Management}
+\begin{itemize}
+\item Create events
+\item Set registration limits
+\item Registration deadlines
+\item View attendees
+\item Publish/unpublish
+\end{itemize}
+\end{block}
+
+\begin{block}{Blog Management}
+\begin{itemize}
+\item All blog statuses
+\item Approve/reject
+\item Edit content
+\item Delete posts
+\item Manage categories
+\end{itemize}
+\end{block}
+
+\column{0.5\textwidth}
+\begin{block}{Sermon Management}
+\begin{itemize}
+\item Full CRUD operations
+\item YouTube integration
+\item Series organization
+\item Featured sermons
+\item Status control
+\end{itemize}
+\end{block}
+
+\begin{block}{Gallery Management}
+\begin{itemize}
+\item Add photo albums
+\item Categorize galleries
+\item External links
+\item Edit/delete
+\end{itemize}
+\end{block}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Content Management (2/2)}
+\begin{columns}
+\column{0.5\textwidth}
+\begin{block}{Announcements}
+\begin{itemize}
+\item Create announcements
+\item Priority levels (low/medium/high)
+\item Schedule publishing
+\item Set expiry dates
+\item Categories
+\end{itemize}
+\end{block}
+
+\begin{block}{Comment Moderation}
+\begin{itemize}
+\item View pending comments
+\item Approve/reject
+\item Delete inappropriate
+\item Spam protection
+\end{itemize}
+\end{block}
+
+\column{0.5\textwidth}
+\begin{block}{Prayer Requests}
+\begin{itemize}
+\item View all requests
+\item Moderate content
+\item Mark as answered
+\item Archive old requests
+\end{itemize}
+\end{block}
+
+\begin{block}{Blog Categories}
+\begin{itemize}
+\item Create categories
+\item Set colors
+\item Manage slugs
+\item Edit/delete
+\end{itemize}
+\end{block}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Leadership \& Elections}
+\begin{columns}
+\column{0.5\textwidth}
+\begin{block}{Leader Management}
+\begin{itemize}
+\item Add executive members
+\item Upload photos
+\item Set positions
+\item Display order
+\item Term dates
+\item Activate/deactivate
+\end{itemize}
+\end{block}
+
+\column{0.5\textwidth}
+\begin{block}{Election Management}
+\begin{itemize}
+\item Create elections
+\item Define positions
+\item Set start/end dates
+\item Nomination limits
+\item Status control (draft/open/closed)
+\item View results \& vote counts
+\end{itemize}
+\end{block}
+\end{columns}
+
+\vspace{1em}
+\centering
+\textbf{Transparent \& Fair Election Process}
+\end{frame}
+
+\begin{frame}{Bible Study Management}
+\begin{columns}
+\column{0.33\textwidth}
+\begin{block}{Sessions}
+\begin{itemize}
+\item Create sessions
+\item Set deadlines
+\item Open/close registration
+\item Session details
+\end{itemize}
+\end{block}
+
+\column{0.33\textwidth}
+\begin{block}{Locations}
+\begin{itemize}
+\item Add locations
+\item Set capacity
+\item Activate/deactivate
+\item Location details
+\end{itemize}
+\end{block}
+
+\column{0.33\textwidth}
+\begin{block}{Registrations}
+\begin{itemize}
+\item View all registrations
+\item Filter by location
+\item Assign groups
+\item Export data
+\end{itemize}
+\end{block}
+\end{columns}
+
+\vspace{1em}
+\centering
+\textbf{Complete Bible Study Coordination System}
+\end{frame}
+
+
+% SECTION 7: KEY USER JOURNEYS
+\section{User Journeys}
+
+\begin{frame}{Journey 1: New Member Registration}
+\begin{enumerate}
+\item Visit \texttt{karumaincu.org/register}
+\item Fill personal details (name, email, phone)
+\item Enter student info (reg number, course, year)
+\item Choose member type (student/associate)
+\item Agree to doctrinal statement
+\item Submit registration
+\item Account created (status: pending)
+\item Admin reviews and approves
+\item Member receives access
+\item Login and explore member portal
+\end{enumerate}
+
+\vspace{0.5em}
+\centering
+\textbf{Time: 2-3 minutes | Approval: 24 hours}
+\end{frame}
+
+\begin{frame}{Journey 2: Blog Submission \& Publishing}
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{Member Side:}
+\begin{enumerate}
+\item Login to portal
+\item Navigate to "My Blogs"
+\item Click "Write New Blog"
+\item Enter title \& content
+\item Select category
+\item Upload featured image
+\item Submit for review
+\item Track status
+\end{enumerate}
+
+\column{0.5\textwidth}
+\textbf{Editor/Admin Side:}
+\begin{enumerate}
+\item View pending blogs
+\item Preview content
+\item Review quality
+\item Approve → Published
+\item OR Reject → Feedback sent
+\item Member can edit \& resubmit
+\end{enumerate}
+\end{columns}
+
+\vspace{0.5em}
+\centering
+\textbf{Quality Control + Member Engagement}
+\end{frame}
+
+\begin{frame}{Journey 3: Bible Study Registration}
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{Setup (Admin):}
+\begin{enumerate}
+\item Create study session
+\item Set registration deadline
+\item Add study locations
+\item Open registration
+\end{enumerate}
+
+\column{0.5\textwidth}
+\textbf{Registration (Member):}
+\begin{enumerate}
+\item See banner on dashboard
+\item Click "Register Now"
+\item Select study location
+\item Fill additional details
+\item Submit registration
+\item Receive confirmation
+\end{enumerate}
+\end{columns}
+
+\vspace{1em}
+\textbf{Post-Registration (Admin):}
+\begin{itemize}
+\item View all registrations
+\item Assign study groups
+\item Export data for planning
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Journey 4: Leadership Election}
+\begin{enumerate}
+\item \textbf{Admin:} Create election with positions
+\item \textbf{Admin:} Set dates \& nomination limits
+\item \textbf{Admin:} Change status to "Open"
+\item \textbf{Members:} See election in Nominations page
+\item \textbf{Members:} Nominate fellow members
+\item \textbf{All:} View nominations \& vote counts (transparent)
+\item \textbf{Admin:} Monitor progress
+\item \textbf{Admin:} Close election when complete
+\item \textbf{Admin:} View results page
+\item \textbf{Admin:} Announce winners
+\item \textbf{Admin:} Archive election
+\end{enumerate}
+
+\vspace{0.5em}
+\centering
+\textbf{Transparent, Fair, \& Efficient}
+\end{frame}
+
+\begin{frame}{Journey 5: M-Pesa Donation}
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{Process:}
+\begin{enumerate}
+\item Visit \texttt{/give} page
+\item Enter M-Pesa phone number
+\item Enter donation amount
+\item Select category
+\item Click "Donate via M-Pesa"
+\item STK Push sent to phone
+\item Enter M-Pesa PIN
+\item Payment processed
+\item Confirmation received
+\item Donation recorded
+\end{enumerate}
+
+\column{0.5\textwidth}
+\textbf{Features:}
+\begin{itemize}
+\item Instant processing
+\item Secure transactions
+\item Multiple categories
+\item Donation history
+\item Receipt generation
+\item Anonymous option
+\end{itemize}
+
+\vspace{1em}
+\textbf{Categories:}
+\begin{itemize}
+\item Tithe
+\item Offering
+\item Missions
+\item Building Fund
+\end{itemize}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Journey 6: Event Registration}
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{Admin Setup:}
+\begin{enumerate}
+\item Create event
+\item Set details (date, location)
+\item Enable registration
+\item Set capacity limit
+\item Set deadline
+\item Publish event
+\end{enumerate}
+
+\column{0.5\textwidth}
+\textbf{Member Registration:}
+\begin{enumerate}
+\item Browse events page
+\item View event details
+\item Click "Register"
+\item Confirm registration
+\item Receive confirmation
+\item Attend event!
+\end{enumerate}
+\end{columns}
+
+\vspace{1em}
+\centering
+\textbf{Admin Benefits:} Track attendance, manage capacity, export lists
+\end{frame}
+
+
+% SECTION 8: TECHNICAL FEATURES
+\section{Technical Highlights}
+
+\begin{frame}{Technology Stack}
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{Frontend:}
+\begin{itemize}
+\item Next.js 14 (App Router)
+\item React 18
+\item Tailwind CSS
+\item Responsive design
+\item PWA support
+\end{itemize}
+
+\vspace{1em}
+\textbf{Backend:}
+\begin{itemize}
+\item Next.js API Routes
+\item MySQL database
+\item JWT authentication
+\item RESTful APIs
+\end{itemize}
+
+\column{0.5\textwidth}
+\textbf{Integrations:}
+\begin{itemize}
+\item Cloudinary (images)
+\item M-Pesa Daraja API
+\item Google OAuth
+\item Bible API
+\end{itemize}
+
+\vspace{1em}
+\textbf{Deployment:}
+\begin{itemize}
+\item VPS hosting
+\item PM2 process manager
+\item Nginx web server
+\item SSL/HTTPS
+\end{itemize}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Progressive Web App (PWA)}
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{Features:}
+\begin{itemize}
+\item[\iconcheck] Installable on any device
+\item[\iconcheck] Works offline
+\item[\iconcheck] Fast loading
+\item[\iconcheck] Native app feel
+\item[\iconcheck] Push notifications ready
+\item[\iconcheck] Add to home screen
+\end{itemize}
+
+\column{0.5\textwidth}
+\textbf{Benefits:}
+\begin{itemize}
+\item No app store needed
+\item Automatic updates
+\item Cross-platform
+\item Reduced data usage
+\item Better engagement
+\end{itemize}
+\end{columns}
+
+\vspace{1em}
+\centering
+\textbf{One Platform, All Devices}
+\end{frame}
+
+\begin{frame}{Security Features}
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{Authentication:}
+\begin{itemize}
+\item JWT tokens
+\item HTTP-only cookies
+\item Password hashing (bcrypt)
+\item Session management
+\item Google OAuth
+\end{itemize}
+
+\vspace{1em}
+\textbf{Authorization:}
+\begin{itemize}
+\item Role-based access control
+\item Permission checks
+\item Protected routes
+\end{itemize}
+
+\column{0.5\textwidth}
+\textbf{Data Protection:}
+\begin{itemize}
+\item SQL injection prevention
+\item XSS protection
+\item CSRF protection
+\item Input validation
+\item Sanitization
+\end{itemize}
+
+\vspace{1em}
+\textbf{Infrastructure:}
+\begin{itemize}
+\item SSL/HTTPS
+\item Secure headers
+\item Rate limiting
+\end{itemize}
+\end{columns}
+\end{frame}
+
+\begin{frame}{SEO \& Performance}
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{SEO Optimization:}
+\begin{itemize}
+\item Server-side rendering
+\item Dynamic sitemap
+\item Meta tags
+\item Open Graph
+\item Twitter Cards
+\item Structured data
+\item Robots.txt
+\end{itemize}
+
+\column{0.5\textwidth}
+\textbf{Performance:}
+\begin{itemize}
+\item Fast page loads
+\item Image optimization
+\item Code splitting
+\item Lazy loading
+\item Caching strategies
+\item CDN for images
+\end{itemize}
+\end{columns}
+
+\vspace{1em}
+\centering
+\textbf{Discoverable \& Fast}
+\end{frame}
+
+\begin{frame}{Mobile Responsive Design}
+\begin{center}
+\textbf{Works Perfectly on All Devices}
+\end{center}
+
+\begin{columns}
+\column{0.33\textwidth}
+\centering
+\faMobileAlt \\
+\textbf{Mobile} \\
+\vspace{0.5em}
+\small
+\begin{itemize}
+\item Touch-friendly
+\item Optimized layouts
+\item Fast on 3G
+\item Thumb-friendly navigation
+\end{itemize}
+
+\column{0.33\textwidth}
+\centering
+\faTabletAlt \\
+\textbf{Tablet} \\
+\vspace{0.5em}
+\small
+\begin{itemize}
+\item Adaptive layouts
+\item Landscape support
+\item Multi-column views
+\item Touch gestures
+\end{itemize}
+
+\column{0.33\textwidth}
+\centering
+\faDesktop \\
+\textbf{Desktop} \\
+\vspace{0.5em}
+\small
+\begin{itemize}
+\item Full features
+\item Keyboard shortcuts
+\item Multi-tasking
+\item Large displays
+\end{itemize}
+\end{columns}
+
+\vspace{1em}
+\centering
+\textbf{One Codebase, All Screen Sizes}
+\end{frame}
+
+% SECTION 9: IMPACT & BENEFITS
+\section{Impact \& Benefits}
+
+\begin{frame}{Before vs After}
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{Before Platform:}
+\begin{itemize}
+\item[\faTimesCircle] Paper forms
+\item[\faTimesCircle] WhatsApp only
+\item[\faTimesCircle] Manual tracking
+\item[\faTimesCircle] No sermon archive
+\item[\faTimesCircle] Paper elections
+\item[\faTimesCircle] No spiritual tools
+\item[\faTimesCircle] Cash only
+\item[\faTimesCircle] Lost records
+\end{itemize}
+
+\column{0.5\textwidth}
+\textbf{After Platform:}
+\begin{itemize}
+\item[\iconcheck] Online registration
+\item[\iconcheck] Centralized website
+\item[\iconcheck] Automated systems
+\item[\iconcheck] Searchable video library
+\item[\iconcheck] Transparent online voting
+\item[\iconcheck] Bible reader, prayer journal
+\item[\iconcheck] M-Pesa integration
+\item[\iconcheck] Digital records
+\end{itemize}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Key Benefits}
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{For Members:}
+\begin{itemize}
+\item[\iconstar] Spiritual growth tools
+\item[\iconstar] Easy registration
+\item[\iconstar] Share testimonies
+\item[\iconstar] Participate in elections
+\item[\iconstar] Access anywhere
+\item[\iconstar] Stay connected
+\end{itemize}
+
+\column{0.5\textwidth}
+\textbf{For Leadership:}
+\begin{itemize}
+\item[\iconstar] Efficient management
+\item[\iconstar] Data insights
+\item[\iconstar] Better communication
+\item[\iconstar] Transparent processes
+\item[\iconstar] Time savings
+\item[\iconstar] Professional image
+\end{itemize}
+\end{columns}
+
+\vspace{1em}
+\centering
+\textbf{Win-Win for Everyone}
+\end{frame}
+
+\begin{frame}{Measurable Impact}
+\begin{center}
+\textbf{Platform Achievements}
+\end{center}
+
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{Efficiency Gains:}
+\begin{itemize}
+\item 90\% faster registration
+\item 100\% digital records
+\item 24/7 accessibility
+\item Instant communication
+\item Real-time updates
+\end{itemize}
+
+\column{0.5\textwidth}
+\textbf{Engagement Boost:}
+\begin{itemize}
+\item More blog submissions
+\item Higher event attendance
+\item Active prayer community
+\item Transparent elections
+\item Better participation
+\end{itemize}
+\end{columns}
+
+\vspace{1em}
+\centering
+\textbf{Transforming CU Operations}
+\end{frame}
+
+
+% SECTION 10: FUTURE ROADMAP
+\section{Future Roadmap}
+
+\begin{frame}{Phase 2: Coming Soon}
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{Enhanced Features:}
+\begin{itemize}
+\item[\faCheckCircle] Push notifications
+\item[\faCheckCircle] SMS reminders
+\item[\faCheckCircle] Member directory
+\item[\faCheckCircle] Ministry sign-up
+\item[\faCheckCircle] Advanced search
+\item[\faCheckCircle] Email newsletters
+\end{itemize}
+
+\column{0.5\textwidth}
+\textbf{Content Features:}
+\begin{itemize}
+\item[\faCheckCircle] Podcast hosting
+\item[\faCheckCircle] Video testimonies
+\item[\faCheckCircle] Photo uploads
+\item[\faCheckCircle] Document library
+\item[\faCheckCircle] Resource center
+\end{itemize}
+\end{columns}
+
+\vspace{1em}
+\centering
+\textbf{Timeline: 3-6 months}
+\end{frame}
+
+\begin{frame}{Phase 3: Future Enhancements}
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{Community Features:}
+\begin{itemize}
+\item Live streaming
+\item Online Bible study rooms
+\item Mentorship matching
+\item Small group management
+\item Discussion forums
+\end{itemize}
+
+\column{0.5\textwidth}
+\textbf{Advanced Tools:}
+\begin{itemize}
+\item Alumni network
+\item Job board
+\item Event ticketing
+\item Volunteer management
+\item Attendance tracking
+\end{itemize}
+\end{columns}
+
+\vspace{1em}
+\centering
+\textbf{Timeline: 6-12 months}
+\end{frame}
+
+\begin{frame}{Phase 4: Long-term Vision}
+\begin{center}
+\textbf{Expanding the Platform}
+\end{center}
+
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{Platform Expansion:}
+\begin{itemize}
+\item Native mobile apps (iOS/Android)
+\item Multi-campus support
+\item White-label solution
+\item API for integrations
+\item Advanced analytics
+\end{itemize}
+
+\column{0.5\textwidth}
+\textbf{Integrations:}
+\begin{itemize}
+\item University systems
+\item Payment gateways
+\item Social media
+\item Email marketing
+\item CRM systems
+\end{itemize}
+\end{columns}
+
+\vspace{1em}
+\centering
+\textbf{Timeline: 12+ months}
+\end{frame}
+
+% SECTION 11: DEMO & WALKTHROUGH
+\section{Live Demo}
+
+\begin{frame}{Demo: Public Website}
+\begin{center}
+\Large \textbf{Live Walkthrough}
+\end{center}
+
+\textbf{Demo Points:}
+\begin{enumerate}
+\item Home page - Hero slider \& ministries
+\item Events page - Browse upcoming events
+\item Blog page - Read testimonies
+\item Sermons page - Watch videos
+\item Gallery page - View photos
+\item Prayer wall - Submit request
+\item Donate page - M-Pesa integration
+\end{enumerate}
+
+\vspace{1em}
+\centering
+\url{https://karumaincu.org}
+\end{frame}
+
+\begin{frame}{Demo: Member Portal}
+\begin{center}
+\Large \textbf{Member Features Walkthrough}
+\end{center}
+
+\textbf{Demo Points:}
+\begin{enumerate}
+\item Login process
+\item Member dashboard
+\item Bible reader
+\item Prayer journal
+\item Write a blog
+\item View nominations
+\item Profile management
+\end{enumerate}
+
+\vspace{1em}
+\centering
+\textbf{Show the spiritual growth tools in action}
+\end{frame}
+
+\begin{frame}{Demo: Admin Portal}
+\begin{center}
+\Large \textbf{Administration Walkthrough}
+\end{center}
+
+\textbf{Demo Points:}
+\begin{enumerate}
+\item Admin dashboard \& stats
+\item User management
+\item Create an event
+\item Review a blog
+\item Upload a sermon
+\item Create an election
+\item View Bible study registrations
+\end{enumerate}
+
+\vspace{1em}
+\centering
+\textbf{Show the power of centralized management}
+\end{frame}
+
+% SECTION 12: Q&A AND CLOSING
+\section{Conclusion}
+
+\begin{frame}{Platform Summary}
+\begin{center}
+\Large \textbf{KarUCU Main Campus Digital Platform}
+\end{center}
+
+\vspace{1em}
+\textbf{What We've Built:}
+\begin{itemize}
+\item Comprehensive web application for CU operations
+\item 3 user roles: Member, Editor, Admin
+\item 12+ public pages
+\item 8+ member spiritual tools
+\item 6+ editor content management features
+\item 15+ admin management modules
+\item M-Pesa payment integration
+\item PWA with offline support
+\end{itemize}
+
+\vspace{1em}
+\centering
+\textbf{A Complete Digital Transformation}
+\end{frame}
+
+\begin{frame}{Why This Matters}
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{For the CU:}
+\begin{itemize}
+\item Professional online presence
+\item Efficient operations
+\item Better member engagement
+\item Data-driven decisions
+\item Scalable solution
+\item Cost-effective
+\end{itemize}
+
+\column{0.5\textwidth}
+\textbf{For Members:}
+\begin{itemize}
+\item Spiritual growth tools
+\item Easy access to resources
+\item Community connection
+\item Transparent processes
+\item Convenient services
+\item Always available
+\end{itemize}
+\end{columns}
+
+\vspace{1em}
+\centering
+\textbf{Empowering the KarUCU Community}
+\end{frame}
+
+\begin{frame}{Call to Action}
+\begin{center}
+\Large \textbf{Get Started Today!}
+\end{center}
+
+\vspace{1em}
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{For Members:}
+\begin{enumerate}
+\item Visit \url{karumaincu.org}
+\item Click "Register"
+\item Fill the form
+\item Start your journey
+\end{enumerate}
+
+\column{0.5\textwidth}
+\textbf{For Leadership:}
+\begin{enumerate}
+\item Request admin access
+\item Explore features
+\item Import existing data
+\item Launch to community
+\end{enumerate}
+\end{columns}
+
+\vspace{2em}
+\centering
+\textbf{Contact:} karumaincu@gmail.com
+\end{frame}
+
+\begin{frame}{Questions \& Answers}
+\begin{center}
+\Huge \textbf{Q \& A}
+
+\vspace{2em}
+\Large Thank you for your attention!
+
+\vspace{2em}
+\normalsize
+\textbf{Website:} \url{https://karumaincu.org} \\
+\textbf{Email:} karumaincu@gmail.com \\
+\textbf{Location:} Karatina University, Main Campus
+\end{center}
+\end{frame}
+
+% Backup Slides
+\section*{Backup Slides}
+
+\begin{frame}{Backup: Technical Architecture}
+\begin{center}
+\textbf{System Architecture Overview}
+\end{center}
+
+\begin{itemize}
+\item \textbf{Frontend:} Next.js 14 with React 18
+\item \textbf{Styling:} Tailwind CSS
+\item \textbf{Backend:} Next.js API Routes
+\item \textbf{Database:} MySQL (MariaDB)
+\item \textbf{Authentication:} JWT + HTTP-only cookies
+\item \textbf{File Storage:} Cloudinary
+\item \textbf{Payments:} M-Pesa Daraja API
+\item \textbf{Hosting:} VPS with PM2 + Nginx
+\item \textbf{SSL:} Let's Encrypt
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Backup: Database Schema}
+\begin{multicols}{2}
+\textbf{Core Tables:}
+\begin{itemize}
+\item users
+\item blogs
+\item events
+\item sermons
+\item galleries
+\item announcements
+\item leaders
+\item prayer\_requests
+\end{itemize}
+
+\columnbreak
+
+\textbf{Feature Tables:}
+\begin{itemize}
+\item leader\_elections
+\item election\_positions
+\item leader\_nominations
+\item bible\_study\_sessions
+\item bible\_study\_registrations
+\item verse\_of\_day
+\item bible\_reading\_calendar
+\item donations
+\end{itemize}
+\end{multicols}
+\end{frame}
+
+\begin{frame}{Backup: Deployment Details}
+\textbf{Server Configuration:}
+\begin{itemize}
+\item VPS: 84.247.137.200
+\item OS: Linux (Ubuntu/Debian)
+\item Web Server: Nginx (reverse proxy)
+\item Process Manager: PM2
+\item Node.js: v18+
+\item Database: MySQL 8.0+
+\end{itemize}
+
+\vspace{1em}
+\textbf{Deployment Process:}
+\begin{enumerate}
+\item Git pull latest code
+\item Install dependencies: \texttt{npm install}
+\item Build application: \texttt{npm run build}
+\item Restart PM2: \texttt{pm2 restart karumaincu}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Backup: Security Measures}
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{Application Security:}
+\begin{itemize}
+\item Password hashing (bcrypt)
+\item JWT authentication
+\item HTTP-only cookies
+\item CSRF protection
+\item Input validation
+\item SQL injection prevention
+\item XSS protection
+\end{itemize}
+
+\column{0.5\textwidth}
+\textbf{Infrastructure Security:}
+\begin{itemize}
+\item SSL/TLS encryption
+\item Firewall configuration
+\item Regular backups
+\item Rate limiting
+\item Secure headers
+\item Environment variables
+\item Access control
+\end{itemize}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Backup: Performance Metrics}
+\begin{center}
+\textbf{Platform Performance}
+\end{center}
+
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{Speed:}
+\begin{itemize}
+\item Page load: < 2 seconds
+\item API response: < 500ms
+\item Image optimization: WebP
+\item Code splitting: Automatic
+\item Caching: Aggressive
+\end{itemize}
+
+\column{0.5\textwidth}
+\textbf{Scalability:}
+\begin{itemize}
+\item Concurrent users: 1000+
+\item Database optimization
+\item CDN for static assets
+\item Horizontal scaling ready
+\item Load balancing capable
+\end{itemize}
+\end{columns}
+\end{frame}
+
+\end{document}

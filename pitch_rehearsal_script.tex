@@ -1,0 +1,651 @@
+% KarUCU Main Campus - Pitch Rehearsal Script
+% Compile with: pdflatex pitch_rehearsal_script.tex
+
+\documentclass[12pt,a4paper]{article}
+
+% Packages
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{tcolorbox}
+\usepackage{fontawesome5}
+
+% Colors
+\definecolor{karucupurple}{RGB}{147, 51, 234}
+\definecolor{karucuteal}{RGB}{20, 184, 166}
+\definecolor{stagenote}{RGB}{100, 100, 100}
+
+% Header and Footer
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{KarUCU Pitch Rehearsal Script}
+\rhead{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% Custom commands
+\newcommand{\stage}[1]{\textcolor{stagenote}{\textit{[#1]}}}
+\newcommand{\pause}{\stage{Pause for effect}}
+\newcommand{\fillme}[1]{\textcolor{karucupurple}{\textbf{[#1]}}}
+
+% Title formatting
+\title{\textbf{\Huge KarUCU Main Campus Digital Platform} \\ 
+\Large Pitch Rehearsal Script}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+% Presenter Information Box
+\begin{tcolorbox}[colback=karucupurple!5,colframe=karucupurple,title=Presenter Information]
+\textbf{Name:} \fillme{YOUR FULL NAME} \\
+\textbf{Role:} \fillme{YOUR ROLE - e.g., Lead Developer / Project Manager} \\
+\textbf{Year of Study:} \fillme{YOUR YEAR - e.g., Third Year} \\
+\textbf{Course:} \fillme{YOUR COURSE} \\
+\textbf{CU Position:} \fillme{YOUR ROLE IN CU} \\
+\textbf{Presentation Date:} \fillme{DATE} \\
+\textbf{Target Audience:} \fillme{CU Leadership / Stakeholders / Investors} \\
+\textbf{Duration:} 15-20 minutes
+\end{tcolorbox}
+
+\tableofcontents
+\newpage
+
+% ============================================
+\section{Opening (1 minute)}
+% ============================================
+
+\stage{Stand confidently, make eye contact, smile}
+
+``Good \fillme{morning/afternoon}, everyone. My name is \fillme{YOUR NAME}, and I'm a \fillme{third-year} student at Karatina University studying \fillme{YOUR COURSE}. I'm also \fillme{YOUR ROLE IN CU - e.g., a member of the Christian Union and the lead developer} of the project I'm about to present.
+
+Today, I'm excited to share with you the \textbf{KarUCU Main Campus Digital Platform} - a comprehensive web application that's transforming how our Christian Union operates.''
+
+\pause
+
+``Before I dive in, let me ask you a question: How many of you have ever struggled with paper registration forms, lost records, or missed important CU announcements because they got buried in WhatsApp groups?''
+
+\stage{Wait for nods/responses}
+
+``That's exactly the problem we set out to solve.''
+
+% ============================================
+\section{The Problem (2 minutes)}
+% ============================================
+
+\stage{Show concern, speak with conviction}
+
+``Let me paint a picture of what CU operations looked like before this platform:
+
+\subsection*{Registration Process:}
+\begin{itemize}[leftmargin=*]
+\item New members filled out paper forms
+\item Forms got lost or damaged
+\item No way to track who was active
+\item Manual data entry was time-consuming and error-prone
+\end{itemize}
+
+\subsection*{Communication:}
+\begin{itemize}[leftmargin=*]
+\item Everything happened through WhatsApp groups
+\item Important announcements got lost in chat history
+\item No centralized place for information
+\item Difficult to reach everyone
+\end{itemize}
+
+\subsection*{Event Management:}
+\begin{itemize}[leftmargin=*]
+\item Manual attendance tracking
+\item No way to know capacity limits
+\item Paper sign-up sheets
+\item Lost registration records
+\end{itemize}
+
+\subsection*{Content Archiving:}
+\begin{itemize}[leftmargin=*]
+\item Sermons weren't archived
+\item No record of testimonies
+\item Photos scattered across devices
+\item No searchable database
+\end{itemize}
+
+\subsection*{Elections:}
+\begin{itemize}[leftmargin=*]
+\item Paper-based voting
+\item Time-consuming to count
+\item Concerns about transparency
+\item Difficult to track nominations
+\end{itemize}
+
+\subsection*{Spiritual Growth:}
+\begin{itemize}[leftmargin=*]
+\item No tools for personal Bible study
+\item No prayer tracking system
+\item Limited resources for members
+\item No structured reading plans
+\end{itemize}
+
+\pause
+
+The result? Inefficiency, lost data, poor engagement, and missed opportunities to serve our members better.''
+
+% ============================================
+\section{The Solution (2 minutes)}
+% ============================================
+
+\stage{Shift to excitement, speak with energy}
+
+``That's why we built the \textbf{KarUCU Main Campus Digital Platform}.''
+
+\stage{Show the website on screen: \url{https://karumaincu.org}}
+
+``This is not just a website - it's a complete digital ecosystem for our Christian Union. Let me show you what I mean.
+
+The platform serves \textbf{three types of users}, each with their own customized experience:
+
+\begin{enumerate}
+\item \textbf{Regular Members} - Our CU members get access to spiritual growth tools like a Bible reader, prayer journal, daily verse, and reading plans. They can write and share testimonies, participate in leadership elections, and register for events - all from their phones.
+
+\item \textbf{Content Editors} - Our content team can review blog submissions, upload sermon videos, manage photo galleries, and set daily spiritual content. Everything they need to keep our content fresh and engaging.
+
+\item \textbf{Administrators} - Our leadership gets complete control: manage members, create events, run elections, track registrations, and get insights through a comprehensive dashboard.
+\end{enumerate}
+
+\pause
+
+But here's what makes it special: \textbf{it works on any device} - phone, tablet, or computer. You can even install it as an app on your home screen. And it's \textbf{live right now} at karumaincu.org.''
+
+% ============================================
+\section{Public Features (2 minutes)}
+% ============================================
+
+\stage{Navigate to the website, show pages}
+
+``Let me walk you through what visitors see when they first arrive.
+
+\textbf{The Home Page} greets you with a beautiful hero slider showcasing our ministries. We have rotating slides highlighting our vision, discipleship programs, evangelism efforts, and unity in Christ. Below that, we showcase all eight of our ministry departments - from Prayer Ministry to Hospitality.
+
+\textbf{The About Page} tells our story - our vision to be agents of change, our mission to evangelize and disciple, and detailed information about each ministry.
+
+\textbf{The Events Page} shows all upcoming CU events. Past events are also visible for reference, marked with a `Past Event' badge. Members can register for events directly from this page.
+
+\textbf{The Blog Section} is where our members share their testimonies and faith journeys. Anyone can read these inspiring stories, and they're organized by categories like Testimony, Teaching, News, and Events.
+
+\textbf{The Sermons Page} hosts our YouTube sermon archive. You can search by speaker, title, or series. Featured sermons are highlighted at the top.
+
+\textbf{The Gallery} links to our photo collections on Google Photos - organized by worship, fellowship, outreach, events, and conferences.
+
+\textbf{The Leadership Page} introduces our executive committee with photos, positions, and bios.
+
+\textbf{The Prayer Wall} is a beautiful feature where anyone can submit prayer requests. You can choose to post anonymously or with your name. When prayers are answered, people can share their testimonies.
+
+\textbf{The Give Page} - and this is exciting - integrates M-Pesa for donations. You enter your phone number and amount, select a category like tithe or missions, and you get an STK push directly to your phone. Secure, instant, and convenient.''
+
+\pause
+
+``All of this is available to anyone, no login required. But the real power comes when you create an account.''
+
+% ============================================
+\section{Member Portal (3 minutes)}
+% ============================================
+
+\stage{Login to show member dashboard}
+
+``When a member logs in, they enter their personal spiritual growth hub.
+
+\textbf{The Dashboard} welcomes them by name and shows their student information. If there's an active Bible study session, they see a prominent registration banner right here.
+
+Now, let me show you the \textbf{spiritual tools} we've built:
+
+\subsection*{Bible Reader}
+Full access to Scripture with multiple Bible versions. You can navigate by book, chapter, and verse. Clean, distraction-free reading on any device.
+
+\subsection*{Verse of the Day}
+Every day, members get a fresh scripture with commentary. They can share it with friends or look back at previous verses.
+
+\subsection*{Reading Calendar}
+We provide a structured monthly Bible reading plan. Members can track their progress, see devotional notes for each day, and catch up on missed readings.
+
+\subsection*{Prayer Journal}
+This is completely private. Members can record their prayer requests, categorize them - personal, family, ministry, academics - set priority levels, and mark prayers as answered with testimonies. It's like having a digital prayer diary.
+
+\subsection*{My Blogs}
+Members can write and share their testimonies. We have a rich text editor, they can upload featured images, and submit for review. They can track whether their blog is pending, approved, or rejected. If rejected, they see feedback and can improve and resubmit.
+
+\subsection*{Nominations}
+During election periods, members see active elections here. They can nominate fellow members for leadership positions. The beautiful part? All nominations are visible with vote counts - completely transparent. We set fair limits, like maximum 5 nominations per member.
+
+\subsection*{Bible Study Registration}
+When we open registration for Bible study groups, members see that banner on their dashboard. They click, select their study location - Main Campus, Town Hostels, Karatina Town, etc. - fill in details, and they're registered.
+
+\subsection*{Profile Management}
+Members can update their information, change their password, and upload a profile photo.''
+
+\pause
+
+``Everything a member needs for spiritual growth and CU engagement, all in one place.''
+
+% ============================================
+\section{Editor Portal (2 minutes)}
+% ============================================
+
+\stage{Switch to editor view}
+
+``Our content editors have their own specialized dashboard.
+
+They see at a glance: how many blogs are pending review, active prayer requests, and Bible study registrations.
+
+\subsection*{Blog Review}
+Editors can see all pending blog submissions. They preview the content, check quality, and either approve it for publishing or reject it with constructive feedback. This ensures quality control while encouraging member participation.
+
+\subsection*{Sermon Management}
+Editors upload sermon videos by pasting YouTube links. They add details like speaker name, date, series, and can mark sermons as featured.
+
+\subsection*{Gallery Management}
+They add links to our Google Photos albums, categorize them, and set thumbnail images.
+
+\subsection*{Spiritual Content}
+Editors set the verse of the day with commentary, manage the monthly Bible reading calendar, and add devotional notes.
+
+\subsection*{Prayer Request Moderation}
+They can view all prayer requests, mark them as answered, and archive old ones.
+
+\subsection*{Bible Study}
+They can view who's registered for study sessions and export the data for planning.''
+
+\pause
+
+``This gives our content team the tools they need without overwhelming them with full admin access.''
+
+% ============================================
+\section{Admin Portal (3 minutes)}
+% ============================================
+
+\stage{Switch to admin view}
+
+``Now, let me show you the admin portal - where our leadership has complete control.
+
+\textbf{The Admin Dashboard} shows comprehensive statistics: total members with growth trends, upcoming events, published and pending blogs, active and answered prayers, and a recent activity feed showing everything happening in the system.
+
+Let me walk through the key management areas:
+
+\subsection*{User Management}
+Admins can see all registered members, search and filter, change user roles from member to editor or admin, activate or deactivate accounts, export user data for reports, and even run cleanup scripts to remove inactive accounts.
+
+\subsection*{Event Management}
+Creating an event is simple: add title, description, date, location, enable registration if needed, set capacity limits and deadlines, then publish. Admins can see who's registered and export attendance lists.
+
+\subsection*{Blog Management}
+Admins see all blogs regardless of status. They can approve, reject, edit, or delete any blog. They also manage blog categories.
+
+\subsection*{Comment Moderation}
+All blog comments go through approval. Admins can approve good comments and reject spam or inappropriate ones.
+
+\subsection*{Sermon Management}
+Full control over the sermon library. Upload, edit, delete, organize by series, mark as featured.
+
+\subsection*{Gallery Management}
+Add, edit, or remove photo galleries.
+
+\subsection*{Announcements}
+Admins can create announcements with priority levels - low, medium, or high for urgent messages. They can schedule announcements for future dates and set expiry dates.
+
+\subsection*{Leadership Management}
+Add executive committee members with photos, set their positions, arrange display order, and set term dates.
+
+\subsection*{Election Management}
+This is powerful. Admins create an election, define the positions being elected - Chairperson, Secretary, Treasurer, etc. - set start and end dates, set nomination limits, then change the status to `open'. Members can then nominate. Admins can monitor progress in real-time and view results showing who got how many nominations. When done, they close the election and archive it for records.
+
+\subsection*{Bible Study Management}
+Three sections: Sessions where they create study periods and set deadlines, Locations where they manage study locations with capacity limits, and Registrations where they see who signed up, filter by location, assign study groups, and export data.
+
+\subsection*{Spiritual Content}
+Admins can set the verse of the day, manage the Bible reading calendar, and run cleanup scripts for old content.''
+
+\pause
+
+``Everything needed to run the CU efficiently, all in one centralized system.''
+
+% ============================================
+\section{Key User Journeys (2 minutes)}
+% ============================================
+
+\stage{Speak conversationally, tell stories}
+
+``Let me share some real-world scenarios to show how this works in practice.
+
+\subsection*{New Member Registration:}
+Imagine a first-year student named Jane. She hears about CU, visits karumaincu.org on her phone, clicks Register, fills in her name, email, registration number, course, and year. She can even sign up with her Google account for speed. She agrees to our doctrinal statement and submits. Her account is created instantly with `pending' status. Our admin reviews it within 24 hours, approves it, and Jane gets access to the full member portal. Total time: 2 minutes for Jane, 30 seconds for admin.
+
+\subsection*{Blog Publishing:}
+John wants to share his testimony. He logs in, goes to `My Blogs', clicks `Write New Blog', types his story in our rich text editor, uploads a photo, selects `Testimony' category, and submits. His blog goes to `pending' status. An editor reviews it, loves it, and approves. The blog is instantly published on our public blog page where anyone can read it. If the editor had concerns, they could reject it with feedback, and John could improve and resubmit.
+
+\subsection*{Bible Study Registration:}
+Our admin creates a new Bible study session, sets the deadline for next Friday, adds locations like Main Campus Hostel and Town Hostels, and opens registration. Immediately, all members see a bright banner on their dashboard saying `Bible Study Registration Open!' Sarah clicks `Register Now', selects her location, fills in her details, and submits. She gets instant confirmation. The admin can see all registrations, assign people to study groups, and export the list for planning.
+
+\subsection*{Leadership Election:}
+It's election time. Admin creates an election called `2025 Leadership Election', adds positions like Chairperson, Vice Chair, Secretary, Treasurer, and sets the nomination period for two weeks. They change status to `open'. Members immediately see it in their Nominations page. They nominate fellow members they believe would be good leaders. All nominations are visible with vote counts - completely transparent. After two weeks, admin closes the election, views the results showing who got the most nominations, announces the winners, and archives the election for records.''
+
+\pause
+
+``These journeys show how the platform makes complex processes simple and transparent.''
+
+% ============================================
+\section{Technical Highlights (1 minute)}
+% ============================================
+
+\stage{Speak confidently about technology}
+
+``Let me briefly touch on the technical side, because it matters.
+
+We built this with \textbf{Next.js 14} and \textbf{React 18} - modern, fast, and reliable technologies. The design uses \textbf{Tailwind CSS} for a beautiful, responsive interface.
+
+It's a \textbf{Progressive Web App}, which means you can install it on your phone like a native app. It works offline for basic features and loads incredibly fast.
+
+\textbf{Security} is paramount. We use industry-standard JWT authentication, encrypted passwords with bcrypt, HTTP-only cookies, and protection against common attacks like SQL injection and XSS.
+
+For \textbf{payments}, we integrated the official M-Pesa Daraja API for secure, instant donations.
+
+\textbf{Images} are stored on Cloudinary, a professional cloud service, ensuring fast loading and reliability.
+
+The platform is \textbf{SEO optimized} with server-side rendering, dynamic sitemaps, and proper meta tags, so people can find us on Google.
+
+It's hosted on a \textbf{VPS server} with PM2 process management and Nginx web server, ensuring 99.9\% uptime.''
+
+\pause
+
+``Professional-grade technology delivering a professional experience.''
+
+% ============================================
+\section{Impact \& Benefits (2 minutes)}
+% ============================================
+
+\stage{Show enthusiasm, emphasize transformation}
+
+``Let me show you the transformation we've achieved.
+
+\begin{tcolorbox}[colback=red!5,colframe=red!75!black,title=Before This Platform]
+\begin{itemize}[leftmargin=*]
+\item Paper registration forms
+\item WhatsApp-only communication
+\item Manual event tracking
+\item No sermon archive
+\item Paper-based elections
+\item No spiritual growth tools
+\item Cash-only donations
+\item Lost records
+\end{itemize}
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=green!5,colframe=green!75!black,title=After This Platform]
+\begin{itemize}[leftmargin=*]
+\item Online registration in 2 minutes
+\item Centralized website for all information
+\item Automated event registration system
+\item Searchable sermon video library
+\item Transparent online elections
+\item Bible reader, prayer journal, reading plans
+\item M-Pesa instant donations
+\item Digital records that never get lost
+\end{itemize}
+\end{tcolorbox}
+
+\subsection*{The Measurable Impact:}
+
+\textbf{Efficiency:} Registration is 90\% faster. What took 10 minutes with paper forms now takes 2 minutes online. Admin tasks that took hours now take minutes.
+
+\textbf{Accessibility:} The platform is available 24/7 from any device. Members can access spiritual tools at 2 AM if they want.
+
+\textbf{Engagement:} We're seeing more blog submissions because the process is easy. Event attendance is up because registration is convenient. Prayer wall participation is growing.
+
+\textbf{Transparency:} Elections are completely transparent with visible vote counts. Everyone can see the process is fair.
+
+\textbf{Data:} We now have insights. How many members are active? Which events are most popular? What content resonates? Data-driven decisions.
+
+\textbf{Professionalism:} We now have a professional online presence. When someone searches `Karatina University Christian Union', they find a beautiful, functional website, not just a Facebook page.''
+
+\pause
+
+``This isn't just a website. It's a transformation of how we operate as a Christian Union.''
+
+% ============================================
+\section{Future Roadmap (1 minute)}
+% ============================================
+
+\stage{Show vision, inspire excitement}
+
+``And we're not stopping here. Let me share our vision for the future.
+
+\subsection*{Phase 2 - Coming in 3-6 months:}
+\begin{itemize}[leftmargin=*]
+\item Push notifications for announcements
+\item SMS reminders for events
+\item Member directory with search
+\item Ministry sign-up system
+\item Email newsletters
+\end{itemize}
+
+\subsection*{Phase 3 - 6-12 months:}
+\begin{itemize}[leftmargin=*]
+\item Live streaming for services
+\item Online Bible study rooms
+\item Mentorship matching system
+\item Alumni network features
+\item Discussion forums
+\end{itemize}
+
+\subsection*{Phase 4 - Long-term vision:}
+\begin{itemize}[leftmargin=*]
+\item Native mobile apps for iOS and Android
+\item Multi-campus support so other CUs can use this
+\item Advanced analytics dashboard
+\item Integration with university systems
+\end{itemize}
+
+\pause
+
+We're building not just for today, but for the future of KarUCU.''
+
+% ============================================
+\section{Live Demo (2 minutes)}
+% ============================================
+
+\stage{Navigate the website live}
+
+``Now, let me give you a quick live demonstration.''
+
+\stage{Open \url{https://karumaincu.org}}
+
+``Here's the home page with our hero slider. Watch how it transitions between slides showcasing our ministries.''
+
+\stage{Scroll down}
+
+``Here are our ministry cards and the carousel showing all eight departments.''
+
+\stage{Navigate to Events}
+
+``This is our events page. You can see upcoming events here. Notice this past event has a `Past Event' badge.''
+
+\stage{Navigate to Blog}
+
+``Our blog section with member testimonies. You can filter by category.''
+
+\stage{Navigate to Sermons}
+
+``Sermon archive with search functionality. Click any sermon to watch.''
+
+\stage{Navigate to Give}
+
+``The donation page. Enter phone number, amount, select category, and you get an M-Pesa prompt.''
+
+\stage{Login to member portal}
+
+``Here's the member dashboard. See the Bible study registration banner? Let me show you the Bible reader...''
+
+\stage{Show Bible reader}
+
+``Full Bible access with multiple versions.''
+
+\stage{Show Prayer Journal}
+
+``Private prayer tracking.''
+
+\stage{Switch to admin}
+
+``And here's the admin dashboard with all the statistics and management tools.''
+
+\pause
+
+``Everything working smoothly, live, right now.''
+
+% ============================================
+\section{Call to Action (1 minute)}
+% ============================================
+
+\stage{Speak directly, make it personal}
+
+``So, here's what I'm asking today:
+
+\subsection*{For CU Members:}
+If you're not registered yet, visit karumaincu.org right now, click Register, and join our digital community. Start using the spiritual growth tools. Write your testimony. Participate in elections.
+
+\subsection*{For CU Leadership:}
+Embrace this platform fully. Use it for all our events. Encourage members to register. Make it the official hub for KarUCU communications.
+
+\subsection*{For Content Creators:}
+If you have testimonies, photos, or content to share, this is your platform. Submit blogs, share your story, contribute to our community.
+
+\subsection*{For Everyone:}
+Share this with fellow students. Tell them about karumaincu.org. Help us grow our digital community.''
+
+\pause
+
+``This platform is live, it's working, and it's ready to serve our entire CU community. Let's use it to its full potential.
+
+Visit \textbf{karumaincu.org} today.''
+
+% ============================================
+\section{Closing (1 minute)}
+% ============================================
+
+\stage{Smile, show gratitude}
+
+``Before I take your questions, let me say this:
+
+This project represents \fillme{NUMBER} months of development, \fillme{NUMBER} lines of code, and countless hours of work. But more than that, it represents a vision - a vision of a Christian Union that leverages technology to serve its members better, to make spiritual growth more accessible, and to operate more efficiently.
+
+I believe this platform can transform not just KarUCU, but potentially other Christian Unions across Kenya and beyond.''
+
+\pause
+
+``Thank you for your time and attention. I'm now happy to take any questions you might have.''
+
+\stage{Prepare for Q\&A}
+
+\newpage
+
+% ============================================
+\section{Q\&A Preparation}
+% ============================================
+
+\subsection*{Common Questions \& Prepared Answers:}
+
+\begin{tcolorbox}[colback=blue!5,colframe=blue!75!black,title=Q: How much did this cost to build?]
+\textbf{A:} The development was done in-house by me/our team, so the main costs are hosting (about \fillme{AMOUNT} per month) and domain (about \fillme{AMOUNT} per year). Total operational cost is very affordable compared to the value it provides.
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=blue!5,colframe=blue!75!black,title=Q: What happens if you graduate? Who maintains it?]
+\textbf{A:} The platform is built with clean, documented code. I'm training \fillme{NUMBER} other students who can maintain it. Plus, the technology stack is standard, so any web developer can work on it. We also have comprehensive documentation.
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=blue!5,colframe=blue!75!black,title=Q: Is the data secure?]
+\textbf{A:} Absolutely. We use industry-standard security practices: encrypted passwords, secure authentication, HTTPS encryption, and regular backups. Member data is protected and private.
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=blue!5,colframe=blue!75!black,title=Q: Can other CUs use this?]
+\textbf{A:} Yes! That's part of our long-term vision. We can white-label this platform for other Christian Unions. The code is modular and can be customized.
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=blue!5,colframe=blue!75!black,title=Q: How do you handle M-Pesa transaction fees?]
+\textbf{A:} M-Pesa charges standard transaction fees. We're transparent about this on the donation page. The convenience and security make it worthwhile.
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=blue!5,colframe=blue!75!black,title=Q: What if someone doesn't have a smartphone?]
+\textbf{A:} The platform works on any device - even basic smartphones with a browser. For those without phones, we still maintain traditional methods as backup. But over 90\% of students have smartphones today.
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=blue!5,colframe=blue!75!black,title=Q: How do you prevent fake registrations?]
+\textbf{A:} All registrations require a valid university registration number and email. Admins review and approve each registration. We can also verify against university records if needed.
+\end{tcolorbox}
+
+\begin{tcolorbox}[colback=blue!5,colframe=blue!75!black,title=Q: What about internet connectivity issues?]
+\textbf{A:} The platform is optimized for slow connections and works on 3G. As a PWA, it caches content for offline viewing. Critical features work even with poor connectivity.
+\end{tcolorbox}
+
+\newpage
+
+% ============================================
+\section{Presentation Checklist}
+% ============================================
+
+\subsection*{Before the Presentation:}
+\begin{itemize}[label=$\square$]
+\item Test the website is working
+\item Prepare backup slides/screenshots in case of internet issues
+\item Have your phone ready to show mobile version
+\item Practice the demo flow
+\item Time yourself - aim for 15-18 minutes
+\item Prepare business cards or contact info to share
+\item Charge laptop and phone fully
+\item Test projector/screen connection
+\item Have water nearby
+\end{itemize}
+
+\subsection*{During the Presentation:}
+\begin{itemize}[label=$\square$]
+\item Maintain eye contact
+\item Speak clearly and confidently
+\item Use hand gestures naturally
+\item Pause for emphasis
+\item Show enthusiasm
+\item Engage with the audience
+\item Handle technical glitches calmly
+\item Watch your time
+\item Breathe and stay calm
+\end{itemize}
+
+\subsection*{After the Presentation:}
+\begin{itemize}[label=$\square$]
+\item Collect feedback
+\item Follow up with interested parties
+\item Share the website link
+\item Provide documentation if requested
+\item Send thank you emails
+\item Document lessons learned
+\end{itemize}
+
+% ============================================
+\section{Contact Information}
+% ============================================
+
+\begin{tcolorbox}[colback=karucupurple!10,colframe=karucupurple,title=Your Contact Details]
+\textbf{Name:} \fillme{YOUR FULL NAME} \\
+\textbf{Email:} \fillme{YOUR EMAIL} \\
+\textbf{Phone:} \fillme{YOUR PHONE} \\
+\textbf{Role:} \fillme{YOUR ROLE} \\
+\textbf{Website:} \url{https://karumaincu.org} \\
+\textbf{CU Email:} karumaincu@gmail.com
+\end{tcolorbox}
+
+\vspace{2em}
+
+\begin{center}
+\Large \textbf{Good luck with your pitch!} \\
+\vspace{1em}
+\normalsize You've built something amazing. Now go show the world!
+\end{center}
+
+\end{document}

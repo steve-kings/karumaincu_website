@@ -192,16 +192,19 @@ export default function AboutClient() {
             </p>
 
             <Link
-              href="/register"
+              href="/contact"
               className="relative inline-block bg-purple-600 hover:bg-purple-700 text-white px-10 py-5 rounded-full font-bold text-lg transition-all duration-300 shadow-2xl hover:shadow-purple-500/25 group"
             >
               <span className="relative z-10 flex items-center">
                 <i className="fas fa-user-plus mr-3 group-hover:animate-bounce"></i>
-                JOIN A MINISTRY
+                GET INVOLVED
                 <i className="fas fa-arrow-right ml-3 group-hover:translate-x-1 transition-transform duration-300"></i>
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </Link>
+            <p className="mt-4 text-white/80 text-sm">
+              Already a member? <Link href="/login" className="underline hover:text-white">Login</Link> to access ministry sign-ups
+            </p>
           </div>
         </div>
       </section>

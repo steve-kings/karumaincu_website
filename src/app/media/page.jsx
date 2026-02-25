@@ -179,7 +179,7 @@ export default async function MediaPage() {
               </div>
 
               <div className="mt-6 text-sm text-gray-500">
-                <p>🔴 Live streams every Sunday at 10:00 AM and Wednesday at 6:00 PM (EAT)</p>
+                <p>🔴 Live streams every Sunday at 8:50-11:00 AM and Thursday at 7:00-8:30 PM (EAT)</p>
               </div>
             </div>
           </div>
