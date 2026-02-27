@@ -183,20 +183,8 @@ export default function GivePage() {
                 M-Pesa Paybill
               </h4>
               <div className="text-sm text-gray-600 dark:text-neutral-400 space-y-1">
-                <p><strong>Paybill Number:</strong> <span className="font-mono">522533</span></p>
-                <p><strong>Account Number:</strong> <span className="font-mono">KarUCU</span></p>
-              </div>
-            </div>
-
-            <div className="border border-gray-200 dark:border-neutral-800 rounded-lg p-4">
-              <h4 className="font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
-                <i className="fas fa-university text-blue-600 mr-2"></i>
-                Bank Transfer
-              </h4>
-              <div className="text-sm text-gray-600 dark:text-neutral-400 space-y-1">
-                <p><strong>Bank:</strong> Equity Bank</p>
-                <p><strong>Account Name:</strong> Karatina University Christian Union</p>
-                <p><strong>Account Number:</strong> <span className="font-mono">0460291234567</span></p>
+                <p><strong>Paybill Number:</strong> <span className="font-mono">400222</span></p>
+                <p><strong>Account Number:</strong> <span className="font-mono">387371#offering/tithe/Thanksgiving </span></p>
               </div>
             </div>
           </div>
